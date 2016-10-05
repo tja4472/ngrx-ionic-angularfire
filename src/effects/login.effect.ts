@@ -28,7 +28,7 @@ import { Observable } from 'rxjs/Observable';
 import * as LoginActions from '../actions/login.action';
 
 // import { TextItem } from '../models';
-import { AngularFire, AuthMethods } from 'angularfire2';
+import { AngularFire, AuthMethods, AuthProviders } from 'angularfire2';
 
 import { State } from '../reducers';
 import { Store } from '@ngrx/store';
@@ -58,12 +58,41 @@ export class LoginEffects {
 
   @Effect({ dispatch: false }) createUser$ = this.actions$
     .ofType(LoginActions.LoginActionTypes.CREATE_USER)
-    .do(x => console.log('login.effect:createUser>', x))
+    // .do(x => console.log('login.effect:createUser>', x))
     .map((action: LoginActions.CreateUserAction) => action.payload)
     .map(payload => {
-      console.log('payload>', payload);
-      console.log('payload.userName>', payload.userName);
-    })
-  ;
+      this.af.auth.createUser(
+        { email: payload.userName, password: payload.password })
+        .then(user => this.state$.dispatch(new LoginActions.CreateUserSuccessAction(user)))
+        .catch(error => this.state$.dispatch(new LoginActions.CreateUserFailureAction(error)))
+    });
 
+  @Effect({ dispatch: false }) emailAuthentication$ = this.actions$
+    .ofType(LoginActions.LoginActionTypes.EMAIL_AUTHENTICATION)
+    // .do(x => console.log('login.effect:emailAuthentication>', x))
+    .map((action: LoginActions.EmailAuthenticationAction) => action.payload)
+    .map(payload => {
+      this.af.auth.login(
+        { email: payload.userName, password: payload.password },
+        {
+          provider: AuthProviders.Password,
+          method: AuthMethods.Password
+        })
+        .then(user => this.state$.dispatch(new LoginActions.EmailAuthenticationSuccessAction(user)))
+        .catch(error => this.state$.dispatch(new LoginActions.EmailAuthenticationFailureAction(error)))
+    });    
+
+  @Effect({ dispatch: false }) authorizeWithGoogle$ = this.actions$
+    .ofType(LoginActions.LoginActionTypes.GOOGLE_AUTHENTICATION)
+    // .do(x => console.log('login.effect:authorizeWithGoogle>', x))
+    // .map((action: LoginActions.GoogleAuthenticationAction) => action.payload)
+    .map(()=> {
+      this.af.auth.login(
+        {
+          provider: AuthProviders.Google,
+          method: AuthMethods.Popup
+        })
+        .then(user => this.state$.dispatch(new LoginActions.GoogleAuthenticationSuccessAction(user)))
+        .catch(error => this.state$.dispatch(new LoginActions.GoogleAuthenticationFailureAction(error)))
+    });     
 }

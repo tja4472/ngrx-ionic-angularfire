@@ -1,0 +1,46 @@
+{
+  "name": "ionic-hello-world",
+  "author": "Ionic Framework",
+  "homepage": "http://ionicframework.com/",
+  "private": true,
+  "scripts": {
+    "build": "ionic-app-scripts build",
+    "watch": "ionic-app-scripts watch",
+    "serve:before": "watch",
+    "emulate:before": "build",
+    "deploy:before": "build",
+    "build:before": "build",
+    "run:before": "build"
+  },
+  "dependencies": {
+    "@ngrx/core": "1.2.0",
+    "@ngrx/effects": "2.0.0",
+    "@ngrx/store": "2.2.1",
+    "@types/request": "0.0.31",
+    "angularfire2": "2.0.0-beta.5",
+    "firebase": "3.4.1",
+    "ionic-angular": "^2.0.0-rc.0",
+    "ionicons": "^3.0.0",
+    "@ionic/storage": "1.1.2",
+    "ionic-native": "^2.0.3",
+    "ngrx-store-logger": "0.1.7"    
+  },
+  "devDependencies": {
+    "@ionic/app-scripts": "0.0.28",
+    "ngrx-store-freeze": "0.1.0",    
+    "typescript": "^2.0.3"
+  },
+  "description": "my-side-menu: An Ionic project",
+  "config": {
+    "ionic_rollup": "./config/af-rollup.config.js"
+  },    
+  "cordovaPlugins": [
+    "cordova-plugin-device",
+    "cordova-plugin-console",
+    "cordova-plugin-whitelist",
+    "cordova-plugin-splashscreen",
+    "cordova-plugin-statusbar",
+    "ionic-plugin-keyboard"
+  ],
+  "cordovaPlatforms": []
+}

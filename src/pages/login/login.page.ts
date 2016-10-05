@@ -1,0 +1,81 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
+import { SignupPage } from '../signup/signup.page';
+
+// import { Error, ErrorInput } from '../../components/error/error.component';
+
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../../reducers';
+import * as loginActions from '../../actions/login.action'
+
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'login.page.html'
+})
+export class LoginPage {
+  // login: { username?: string, password?: string } = {};
+  submitted = false;
+  public loginForm: FormGroup; 
+
+  loginState$: any;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private nav: NavController,
+    private store: Store<fromRoot.State>,
+    ) {
+    //
+    this.loginState$ = this.store.let(fromRoot.getLoginState);
+  }
+
+  ionViewDidLoad() {
+    //
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
+
+  logForm() {
+    console.log(this.loginForm.value);
+    console.log('loginForm>', this.loginForm);
+
+    this.submitted = true;
+
+    if (this.loginForm.valid) {
+      this.store.dispatch(
+        new loginActions.EmailAuthenticationAction({
+          userName: this.loginForm.value.username,
+          password: this.loginForm.value.password
+        }));
+    }    
+  }
+/*
+  onLogin(form) {
+    this.submitted = true;
+
+    if (form.valid) {
+      this.store.dispatch(
+        this.loginActions.emailAuthentication(
+          this.login.username,
+          this.login.password));
+    }
+  }
+*/
+
+  onSignup() {
+    this.nav.push(SignupPage);
+  }
+
+  signInAnonymously() {
+    this.store.dispatch(
+      new loginActions.AnonymousAuthenticationAction());
+  }
+
+  signInWithGoogle() {
+    this.store.dispatch(
+      new loginActions.GoogleAuthenticationAction());
+  }
+}

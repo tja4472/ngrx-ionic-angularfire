@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle ion-button icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Home Page</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar (ionInput)="doSearch($event)"></ion-searchbar>
+
+  <example-list [posts]="(posts$ | async)" [isFetching]="(isFetching$ | async)">
+  </example-list>
+</ion-content>

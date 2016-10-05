@@ -1,0 +1,71 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle ion-button icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <form [formGroup]="loginForm" (ngSubmit)="logForm()" novalidate>
+      <ion-item>
+        <ion-label floating color="primary">Username</ion-label>
+        <ion-input type="text" formControlName="username">
+        </ion-input>
+      </ion-item>
+
+      <p *ngIf="!loginForm.controls.username.valid">This field is invalid!</p>
+      <p *ngIf="loginForm.controls.username.errors">This field is required!</p>
+      <p *ngIf="loginForm.controls.username.hasError('required')">This field is required! AAAA</p>
+
+      <!--    
+      <p [hidden]="username.valid || submitted == false" danger padding-left>
+        Username is required
+      </p>
+-->
+      <ion-item>
+        <ion-label floating color="primary">Password</ion-label>
+        <ion-input type="password" formControlName="password">
+        </ion-input>
+      </ion-item>
+
+      <p *ngIf="loginForm.controls.password.hasError('required')">This field is required!</p>      
+      <!--      
+      <p [hidden]="password.valid || submitted == false" danger padding-left>
+        Password is required
+      </p>
+-->
+      <ion-row responsive-sm>
+        <ion-col>
+          <!--
+            <button (click)="onLogin(loginForm)" type="submit" primary block>Login</button>
+-->
+          <button ion-button type="submit" color="primary" block>Login</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button (click)="onSignup()" color="light" block>Signup</button>
+        </ion-col>
+      </ion-row>
+      <ion-row responsive-sm>
+        <ion-col>
+          <button ion-button color="secondary" (click)="signInAnonymously()">Login Anonymously</button>
+        </ion-col>
+      </ion-row>
+      <ion-row responsive-sm>
+        <ion-col>
+          <button ion-button color="secondary" (click)="signInWithGoogle()">Login with Google</button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-list>
+
+  <h5>Login State</h5>
+  <p>
+    {{loginState$ | async | json}}
+  </p>
+
+  <error [error]="(loginState$ | async).error">
+  </error>
+</ion-content>

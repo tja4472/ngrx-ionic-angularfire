@@ -1,0 +1,68 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+// import { Error, ErrorInput } from '../../components/error/error.component';
+
+import { Store } from '@ngrx/store';
+// import { LoginActions } from '../../actions/login.action';
+// import { State, getLoginState } from '../../reducers';
+// import { LoginSelector } from '../../selectors';
+import * as fromRoot from '../../reducers';
+import * as loginActions from '../../actions/login.action'
+
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+
+
+
+@Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: 'signup.page.html'
+})
+export class SignupPage {
+  // signup: { username?: string, password?: string } = {};
+  submitted = false;
+  public loginForm: FormGroup;
+
+  loginState$: any;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private store: Store<fromRoot.State>) {
+    //
+    this.loginState$ = this.store.let(fromRoot.getLoginState);
+  }
+
+  ionViewDidLoad() {
+    //
+    this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
+
+  logForm() {
+    console.log(this.loginForm.value);
+    console.log('loginForm>', this.loginForm);
+
+    this.submitted = true;
+
+    if (this.loginForm.valid) {
+      this.store.dispatch(
+        new loginActions.CreateUserAction({
+          userName: this.loginForm.value.username,
+          password: this.loginForm.value.password,
+        }));
+    }
+  }
+  /*
+  onSignup(form) {
+    this.submitted = true;
+
+    if (form.valid) {
+      this.store.dispatch(
+        this.loginActions.createUser(
+          this.signup.username,
+          this.signup.password));
+    }
+  }
+*/
+}

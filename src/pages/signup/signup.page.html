@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle ion-button icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Signup</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="login-page">
+
+  <ion-list>
+    <form [formGroup]="loginForm" (ngSubmit)="logForm()" novalidate>
+      <ion-item>
+        <ion-label floating color="primary">Username</ion-label>
+        <ion-input type="text" formControlName="username">
+        </ion-input>
+      </ion-item>
+
+      <p *ngIf="!loginForm.controls.username.valid">This field is invalid!</p>
+      <p *ngIf="loginForm.controls.username.errors">This field is required!</p>
+      <p *ngIf="loginForm.controls.username.hasError('required')">This field is required! AAAA</p>
+
+      <ion-item>
+        <ion-label floating color="primary">Password</ion-label>
+        <ion-input type="password" formControlName="password">
+        </ion-input>
+      </ion-item>
+
+      <p *ngIf="loginForm.controls.password.hasError('required')">This field is required!</p>      
+
+      <div padding>
+        <button ion-button type="submit" color="primary" block>Create</button>
+      </div>
+    </form>
+  </ion-list>
+
+  <h5>Login State</h5>
+  <p>
+    {{loginState$ | async | json}}
+  </p>
+
+  <error [error]="(loginState$ | async).error">
+  </error>
+</ion-content>

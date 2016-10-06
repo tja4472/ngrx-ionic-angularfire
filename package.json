@@ -16,19 +16,19 @@
     "@ngrx/core": "1.2.0",
     "@ngrx/effects": "2.0.0",
     "@ngrx/store": "2.2.1",
-    "@types/request": "0.0.31",
+    "@types/request": "0.0.30",
     "angularfire2": "2.0.0-beta.5",
     "firebase": "3.4.1",
-    "ionic-angular": "^2.0.0-rc.0",
-    "ionicons": "^3.0.0",
+    "ionic-angular": "2.0.0-rc.0",
+    "ionicons": "3.0.0",
     "@ionic/storage": "1.1.2",
-    "ionic-native": "^2.0.3",
+    "ionic-native": "2.1.6",
     "ngrx-store-logger": "0.1.7"    
   },
   "devDependencies": {
-    "@ionic/app-scripts": "0.0.28",
+    "@ionic/app-scripts": "0.0.29",
     "ngrx-store-freeze": "0.1.0",    
-    "typescript": "^2.0.3"
+    "typescript": "2.0.3"
   },
   "description": "my-side-menu: An Ionic project",
   "config": {

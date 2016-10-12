@@ -17,7 +17,7 @@ import { Effect, Actions} from '@ngrx/effects';
 // tslint:disable-next-line:no-unused-variable
 import { Observable } from 'rxjs/Observable';
 
-import { LoadCollectionSuccessAction, TextItemActionTypes } from '../actions/textitem.action';
+import { LoadCollectionSuccessAction, ActionTypes } from '../actions/textitem.action';
 import { TextItem } from '../models';
 import { AngularFire, } from 'angularfire2';
 
@@ -33,7 +33,7 @@ export class TextItemEffects {
   ) { }
 
   @Effect() loadCollection$ = this.actions$
-    .ofType(TextItemActionTypes.LOAD_COLLECTION)
+    .ofType(ActionTypes.LOAD_COLLECTION)
     // This will cause the effect to run once immediately on startup
     // .startWith(new LoadCollectionAction())    
     .do(x => { console.log('Effect:loadCollection$:A', x); })

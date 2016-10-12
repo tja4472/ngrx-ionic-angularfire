@@ -45,7 +45,7 @@ export class LoginEffects {
   // But this link gives typescript promise errors.
 
   @Effect({ dispatch: false }) anonymousAuthentication$ = this.actions$
-    .ofType(LoginActions.LoginActionTypes.ANONYMOUS_AUTHENTICATION)
+    .ofType(LoginActions.ActionTypes.ANONYMOUS_AUTHENTICATION)
     .map(() =>
       this.af.auth.login(
         {
@@ -57,7 +57,7 @@ export class LoginEffects {
 
 
   @Effect({ dispatch: false }) createUser$ = this.actions$
-    .ofType(LoginActions.LoginActionTypes.CREATE_USER)
+    .ofType(LoginActions.ActionTypes.CREATE_USER)
     // .do(x => console.log('login.effect:createUser>', x))
     .map((action: LoginActions.CreateUserAction) => action.payload)
     .map(payload => {
@@ -68,7 +68,7 @@ export class LoginEffects {
     });
 
   @Effect({ dispatch: false }) emailAuthentication$ = this.actions$
-    .ofType(LoginActions.LoginActionTypes.EMAIL_AUTHENTICATION)
+    .ofType(LoginActions.ActionTypes.EMAIL_AUTHENTICATION)
     // .do(x => console.log('login.effect:emailAuthentication>', x))
     .map((action: LoginActions.EmailAuthenticationAction) => action.payload)
     .map(payload => {
@@ -83,7 +83,7 @@ export class LoginEffects {
     });    
 
   @Effect({ dispatch: false }) authorizeWithGoogle$ = this.actions$
-    .ofType(LoginActions.LoginActionTypes.GOOGLE_AUTHENTICATION)
+    .ofType(LoginActions.ActionTypes.GOOGLE_AUTHENTICATION)
     // .do(x => console.log('login.effect:authorizeWithGoogle>', x))
     // .map((action: LoginActions.GoogleAuthenticationAction) => action.payload)
     .map(()=> {

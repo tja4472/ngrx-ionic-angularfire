@@ -9,7 +9,7 @@ import { storeFreeze } from 'ngrx-store-freeze';
 import { combineReducers } from '@ngrx/store';
 //  error TS4023: Selector 
 // tslint:disable-next-line:no-unused-variable
-import { share, Selector } from '../utils/util';
+// import { share, Selector } from '../utils/util';
 
 import * as fromCollection from './collection';
 import * as fromLogin from './login.reducer';
@@ -44,22 +44,22 @@ export function reducer(state: any, action: any) {
 }
 */
 export function reducer(state: any, action: any) {
-    return developmentReducer(state, action);
+  return developmentReducer(state, action);
 }
 
 export function getCollectionState(state$: Observable<State>) {
-  return state$.select(s => s.collection);
+  return state$.select(state => state.collection);
 }
 
-export const getCollectionLoaded = share(compose(fromCollection.getLoaded, getCollectionState));
-export const getCollectionLoading = share(compose(fromCollection.getLoading, getCollectionState));
-export const getCollectionTextItems = share(compose(fromCollection.getTextItems, getCollectionState));
+export const getCollectionLoaded = compose(fromCollection.getLoaded, getCollectionState);
+export const getCollectionLoading = compose(fromCollection.getLoading, getCollectionState);
+export const getCollectionTextItems = compose(fromCollection.getTextItems, getCollectionState);
 //
 export function getLoginState(state$: Observable<State>) {
-  return state$.select(s => s.login);
+  return state$.select(state => state.login);
 }
 
-export const getLoginDisplayName = share(compose(fromLogin.getDisplayName, getLoginState));
-export const getLoginError = share(compose(fromLogin.getError, getLoginState));
-export const getLoginIsAuthenticated = share(compose(fromLogin.getIsAuthenticated, getLoginState));
-export const getLoginIsAuthenticating = share(compose(fromLogin.getIsAuthenticating, getLoginState));
+export const getLoginDisplayName = compose(fromLogin.getDisplayName, getLoginState);
+export const getLoginError = compose(fromLogin.getError, getLoginState);
+export const getLoginIsAuthenticated = compose(fromLogin.getIsAuthenticated, getLoginState);
+export const getLoginIsAuthenticating = compose(fromLogin.getIsAuthenticating, getLoginState);

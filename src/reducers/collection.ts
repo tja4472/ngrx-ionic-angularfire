@@ -3,7 +3,7 @@ import 'rxjs/add/operator/map';
 // import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { TextItemActions, TextItemActionTypes } from '../actions/textitem.action';
+import * as textItemAction from '../actions/textitem.action';
 import { TextItem } from '../models';
 
 import { assign } from '../utils';
@@ -20,15 +20,15 @@ const initialState: State = {
   textItems: []
 };
 
-export function reducer(state = initialState, action: TextItemActions): State {
+export function reducer(state = initialState, action: textItemAction.Actions): State {
   switch (action.type) {
-    case TextItemActionTypes.LOAD_COLLECTION: {
+    case textItemAction.ActionTypes.LOAD_COLLECTION: {
       return assign(state, {
         loading: true
       });
     }
 
-    case TextItemActionTypes.LOAD_COLLECTION_SUCCESS: {
+    case textItemAction.ActionTypes.LOAD_COLLECTION_SUCCESS: {
       const books: TextItem[] = action.payload;
 
       return {
@@ -45,14 +45,13 @@ export function reducer(state = initialState, action: TextItemActions): State {
 }
 
 export function getLoaded(state$: Observable<State>) {
-  return state$.select(s => s.loaded);
+  return state$.select(state => state.loaded);
 }
 
 export function getLoading(state$: Observable<State>) {
-  return state$.select(s => s.loading);
+  return state$.select(state => state.loading);
 }
 
 export function getTextItems(state$: Observable<State>) {
-  return state$.select(s => s.textItems);
+  return state$.select(state => state.textItems);
 }
-

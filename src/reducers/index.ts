@@ -2,7 +2,7 @@ import '@ngrx/core/add/operator/select';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/let';
 import { Observable } from 'rxjs/Observable';
-
+import { ActionReducer } from '@ngrx/store';
 import { compose } from '@ngrx/core/compose';
 import { storeLogger } from 'ngrx-store-logger';
 import { storeFreeze } from 'ngrx-store-freeze';
@@ -28,8 +28,8 @@ const reducers = {
   login: fromLogin.reducer
 };
 
-const developmentReducer = compose(storeFreeze, storeLogger(), combineReducers)(reducers);
-// const productionReducer = combineReducers(reducers);
+const developmentReducer: ActionReducer<State> = compose(storeFreeze, storeLogger(), combineReducers)(reducers);
+// const productionReducer: ActionReducer<State> = combineReducers(reducers);
 
 /*
 Don't know where PROD is set.

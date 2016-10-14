@@ -17,7 +17,7 @@ import { Effect, Actions} from '@ngrx/effects';
 // tslint:disable-next-line:no-unused-variable
 import { Observable } from 'rxjs/Observable';
 
-import { LoadCollectionSuccessAction, ActionTypes } from '../actions/textitem.action';
+import { LoadCollectionSuccessAction, ActionTypes } from '../actions/text-item.action';
 import { TextItem } from '../models';
 import { AngularFire, } from 'angularfire2';
 

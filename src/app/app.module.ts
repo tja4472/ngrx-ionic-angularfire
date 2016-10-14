@@ -15,7 +15,7 @@ import { AngularFireModule } from 'angularfire2';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
-import { reducer } from '../reducers';
+import { reducer } from '../reducers/index';
 
 import { LoginEffects } from '../effects/login.effect';
 import { TextItemEffects } from '../effects/text-item.effect';

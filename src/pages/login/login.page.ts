@@ -5,7 +5,7 @@ import { SignupPage } from '../signup/signup.page';
 // import { Error, ErrorInput } from '../../components/error/error.component';
 
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../reducers';
+import * as fromRoot from '../../reducers/index';
 import * as loginActions from '../../actions/login.action'
 
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';

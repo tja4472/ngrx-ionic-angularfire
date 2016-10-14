@@ -9,7 +9,7 @@ import { LoginPage } from '../pages/login/login.page';
 import { SignupPage } from '../pages/signup/signup.page';
 
 import { Store } from '@ngrx/store';
-import * as FromRoot from '../reducers';
+import * as FromRoot from '../reducers/index';
 
 // Should be import * as LoginActions from '../actions/login.action';
 // See: https://gitter.im/ngrx/effects?at=57f3a2cbd45d7f0f52601422
@@ -82,6 +82,7 @@ export class MyApp {
       StatusBar.styleDefault();
     });
 
+/*
     this.subscription =
       this.store
         .let(FromRoot.getLoginState)
@@ -99,8 +100,9 @@ export class MyApp {
                     else {
                       this.rootPage = LoginPage;
                     }
-          */
+          * /
         });
+*/        
   }
 
   openPage(page) {

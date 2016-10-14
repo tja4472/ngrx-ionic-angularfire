@@ -3,10 +3,10 @@ import 'rxjs/add/operator/map';
 // import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import * as textItemAction from '../actions/textitem.action';
+import * as textItemAction from '../actions/text-item.action';
 import { TextItem } from '../models';
 
-import { assign } from '../utils';
+import { assign } from '../utils/index';
 
 export interface State {
   loaded: boolean;

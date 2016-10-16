@@ -9,7 +9,7 @@ import { LoginPage } from '../pages/login/login.page';
 import { SignupPage } from '../pages/signup/signup.page';
 
 import { Store } from '@ngrx/store';
-import * as FromRoot from '../reducers/index';
+import * as FromRoot from '../reducers';
 
 // Should be import * as LoginActions from '../actions/login.action';
 // See: https://gitter.im/ngrx/effects?at=57f3a2cbd45d7f0f52601422
@@ -36,7 +36,7 @@ export class MyApp {
   pages: Array<{ title: string, component: any }>;
 
   loginState$: any;
-  private subscription;
+  // private subscription;
 
   constructor(
     public af: AngularFire,

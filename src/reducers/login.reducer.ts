@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import * as loginAction from '../actions/login.action';
 import { FirebaseAuthState } from 'angularfire2';
 
-import { assign } from '../utils/index';
+import { assign } from '../utils';
 
 export interface State {
     displayName: string;

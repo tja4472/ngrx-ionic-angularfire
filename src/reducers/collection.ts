@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import * as textItemAction from '../actions/text-item.action';
 import { TextItem } from '../models';
 
-import { assign } from '../utils/index';
+import { assign } from '../utils';
 
 export interface State {
   loaded: boolean;

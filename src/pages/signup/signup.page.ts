@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 // import { LoginActions } from '../../actions/login.action';
 // import { State, getLoginState } from '../../reducers';
 // import { LoginSelector } from '../../selectors';
-import * as fromRoot from '../../reducers/index';
+import * as fromRoot from '../../reducers';
 import * as loginActions from '../../actions/login.action'
 
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';

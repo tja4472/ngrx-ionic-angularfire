@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../reducers/index';
+import * as fromRoot from '../../reducers';
 import * as textItemActions from '../../actions/text-item.action'
 
 // import { AppState } from '../../reducers';

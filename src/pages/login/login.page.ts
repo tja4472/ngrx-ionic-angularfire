@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
 import * as loginActions from '../../actions/login.action'
 
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,7 +17,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 export class LoginPage {
   // login: { username?: string, password?: string } = {};
   submitted = false;
-  public loginForm: FormGroup; 
+  public loginForm; 
 
   loginState$: any;
 

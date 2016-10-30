@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "0.0.36",
-    "ngrx-store-freeze": "0.1.0",    
+    "ngrx-store-freeze": "0.1.4",    
     "typescript": "2.0.3"
   },
   "description": "my-side-menu: An Ionic project",

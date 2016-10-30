@@ -51,7 +51,11 @@ export class LoginEffects {
         {
           method: AuthMethods.Anonymous
         })
-        .then(user => this.state$.dispatch(new LoginActions.AnonymousAuthenticationSuccessAction(user)))
+        .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
+                        displayName: user.auth.displayName,
+                        email: user.auth.email,
+                        isAnonymous: user.auth.isAnonymous,
+                    })))
         .catch(error => this.state$.dispatch(new LoginActions.AnonymousAuthenticationFailureAction(error)))
     );
 
@@ -63,7 +67,11 @@ export class LoginEffects {
     .map(payload => {
       this.af.auth.createUser(
         { email: payload.userName, password: payload.password })
-        .then(user => this.state$.dispatch(new LoginActions.CreateUserSuccessAction(user)))
+        .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
+                        displayName: user.auth.displayName,
+                        email: user.auth.email,
+                        isAnonymous: user.auth.isAnonymous,
+                    })))
         .catch(error => this.state$.dispatch(new LoginActions.CreateUserFailureAction(error)))
     });
 
@@ -78,7 +86,11 @@ export class LoginEffects {
           provider: AuthProviders.Password,
           method: AuthMethods.Password
         })
-        .then(user => this.state$.dispatch(new LoginActions.EmailAuthenticationSuccessAction(user)))
+        .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
+                        displayName: user.auth.displayName,
+                        email: user.auth.email,
+                        isAnonymous: user.auth.isAnonymous,
+                    })))
         .catch(error => this.state$.dispatch(new LoginActions.EmailAuthenticationFailureAction(error)))
     });    
 
@@ -92,7 +104,11 @@ export class LoginEffects {
           provider: AuthProviders.Google,
           method: AuthMethods.Popup
         })
-        .then(user => this.state$.dispatch(new LoginActions.GoogleAuthenticationSuccessAction(user)))
+        .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
+                        displayName: user.auth.displayName,
+                        email: user.auth.email,
+                        isAnonymous: user.auth.isAnonymous,
+                    })))
         .catch(error => this.state$.dispatch(new LoginActions.GoogleAuthenticationFailureAction(error)))
     });     
 }

@@ -70,7 +70,11 @@ export class MyApp {
 
       if (authenticated) {
         this.store.dispatch(
-          new LoginActions.RestoreAuthenticationAction(authState));
+                    new LoginActions.RestoreAuthenticationAction({
+                        displayName: authState.auth.displayName,
+                        email: authState.auth.email,
+                        isAnonymous: authState.auth.isAnonymous,
+                    }));
       }
     });
   }

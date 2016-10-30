@@ -4,7 +4,6 @@ import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 
 import * as loginAction from '../actions/login.action';
-import { FirebaseAuthState } from 'angularfire2';
 
 import { assign } from '../utils';
 
@@ -30,18 +29,16 @@ export function reducer(state = initialState, action: loginAction.Actions): Stat
             });
         }
 
-        case loginAction.ActionTypes.ANONYMOUS_AUTHENTICATION_SUCCESS:
-        case loginAction.ActionTypes.CREATE_USER_SUCCESS:
-        case loginAction.ActionTypes.EMAIL_AUTHENTICATION_SUCCESS:
-        case loginAction.ActionTypes.GOOGLE_AUTHENTICATION_SUCCESS:
+        // case loginAction.ActionTypes.ANONYMOUS_AUTHENTICATION_SUCCESS:
+        // case loginAction.ActionTypes.CREATE_USER_SUCCESS:
+        // case loginAction.ActionTypes.EMAIL_AUTHENTICATION_SUCCESS:
+        // case loginAction.ActionTypes.GOOGLE_AUTHENTICATION_SUCCESS:
         case loginAction.ActionTypes.RESTORE_AUTHENTICATION: {
-            let user: FirebaseAuthState = action.payload;
-
             return assign(state, {
-                displayName: makeDisplayName(user),
+                displayName: makeDisplayName(action.payload),
                 isAuthenticated: true,
                 isAuthenticating: false
-            });
+            })
         }
 
         case loginAction.ActionTypes.LOGOUT: {
@@ -101,12 +98,16 @@ export function reducer(state = initialState, action: loginAction.Actions): Stat
     }
 }
 
-function makeDisplayName(user: FirebaseAuthState) {
-    if (user.auth.isAnonymous) return 'Anonymous';
+function makeDisplayName(user: {
+        isAnonymous: boolean;
+        displayName: string,
+        email: string,
+    }) {
+    if (user.isAnonymous) return 'Anonymous';
 
-    if (user.auth.displayName) return user.auth.displayName;
+    if (user.displayName) return user.displayName;
 
-    if (user.auth.email) return user.auth.email;
+    if (user.email) return user.email;
     return '';
 }
 

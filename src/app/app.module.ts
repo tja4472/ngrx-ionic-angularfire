@@ -19,9 +19,6 @@ import { reducer } from '../reducers';
 
 import { LoginEffects } from '../effects/login.effect';
 import { TextItemEffects } from '../effects/text-item.effect';
-// Bodge: error TS2503: Cannot find namespace 'firebase'.
-// tslint:disable-next-line:no-unused-variable
-import * as firebase from 'firebase';
 
 import { MyFirebaseAppConfig } from './my-firebase-app-config';
 

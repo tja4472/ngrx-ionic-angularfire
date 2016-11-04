@@ -28,8 +28,14 @@ export class LoginPage {
     ) {
     //
     this.loginState$ = this.store.let(fromRoot.getLoginState);
+
+     this.loginForm = this.formBuilder.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });   
   }
 
+/*
   ionViewDidLoad() {
     //
     this.loginForm = this.formBuilder.group({
@@ -37,6 +43,7 @@ export class LoginPage {
       password: ['', Validators.required],
     });
   }
+*/
 
   logForm() {
     console.log(this.loginForm.value);

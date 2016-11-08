@@ -31,8 +31,8 @@ import './rxjs-operators';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = Page1;
-
+  // rootPageAA: any = Page1;
+  rootPage: any;
   pages: Array<{ title: string, component: any }>;
 
   loginState$: any;
@@ -44,6 +44,7 @@ export class MyApp {
     private store: Store<FromRoot.State>,
   ) {
     //
+    console.log('MyApp:constructor');
     this.initializeApp();
 
     this.loginState$ = this.store.let(FromRoot.getLoginState);
@@ -67,49 +68,56 @@ export class MyApp {
       let authenticated: boolean = !!authState;
 
       console.log('authenticated:', authenticated);
-
+      // this.rootPage = HomePage;
       if (authenticated) {
+        this.rootPage = HomePage;
+
         this.store.dispatch(
-                    new LoginActions.RestoreAuthenticationAction({
-                        displayName: authState.auth.displayName,
-                        email: authState.auth.email,
-                        isAnonymous: authState.auth.isAnonymous,
-                    }));
+          new LoginActions.RestoreAuthenticationAction({
+            displayName: authState.auth.displayName,
+            email: authState.auth.email,
+            isAnonymous: authState.auth.isAnonymous,
+          }));
+      } else {
+        this.rootPage = Page1;
       }
     });
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
+      console.log('platform.ready');
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
     });
 
-/*
-    this.subscription =
-      this.store
-        .let(FromRoot.getLoginState)
-        .subscribe(loginState => {
-          // Triggered when loginState changes. 
-          // i.e. when user logs in or logs out.
-          console.log('loginState>', loginState);
-          console.log('loginState.isAuthorized>', loginState.isAuthenticated);
-          // this.enableMenu(loginState.isAuthenticated);
-
-          /*
-                    if (loginState.isAuthorized) {
-                      this.rootPage = HomePage;
-                    }
-                    else {
-                      this.rootPage = LoginPage;
-                    }
-          * /
-        });
-*/        
+    /*
+        this.subscription =
+          this.store
+            .let(FromRoot.getLoginState)
+            .subscribe(loginState => {
+              // Triggered when loginState changes. 
+              // i.e. when user logs in or logs out.
+              console.log('loginState>', loginState);
+              console.log('loginState.isAuthorized>', loginState.isAuthenticated);
+              // this.enableMenu(loginState.isAuthenticated);
+    
+              /*
+                        if (loginState.isAuthorized) {
+                          this.rootPage = HomePage;
+                        }
+                        else {
+                          this.rootPage = LoginPage;
+                        }
+              * /
+            });
+    */
   }
 
   openPage(page) {
+    console.log('openPage');
+
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);

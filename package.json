@@ -25,8 +25,8 @@
     "@ngrx/core": "1.2.0",
     "@ngrx/effects": "2.0.0",
     "@ngrx/store": "2.2.1",
-    "@types/jasmine": "2.5.36",      
-    "@types/request": "0.0.30",
+    "@types/jasmine": "2.5.37",      
+    "@types/request": "0.0.33",
     "angularfire2": "2.0.0-beta.6",
     "ionic-angular": "2.0.0-rc.2",
     "ionicons": "3.0.0",
@@ -37,9 +37,9 @@
     "zone.js": "0.6.21"        
   },
   "devDependencies": {
-    "@ionic/app-scripts": "0.0.39",
+    "@ionic/app-scripts": "0.0.41",
     "ngrx-store-freeze": "0.1.4",    
-    "typescript": "2.0.7"
+    "typescript": "2.0.8"
   },
   "description": "my-side-menu: An Ionic project",  
   "cordovaPlugins": [

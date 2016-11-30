@@ -47,7 +47,7 @@ export class MyApp {
     console.log('MyApp:constructor');
     this.initializeApp();
 
-    this.loginState$ = this.store.let(FromRoot.getLoginState);
+    this.loginState$ = this.store.select(FromRoot.getLoginState);
 
     // used for an example of ngFor and navigation
     this.pages = [

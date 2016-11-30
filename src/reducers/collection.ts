@@ -1,8 +1,3 @@
-import '@ngrx/core/add/operator/select';
-import 'rxjs/add/operator/map';
-// import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-
 import * as textItemAction from '../actions/text-item.action';
 import { TextItem } from '../models';
 
@@ -44,14 +39,6 @@ export function reducer(state = initialState, action: textItemAction.Actions): S
   }
 }
 
-export function getLoaded(state$: Observable<State>) {
-  return state$.select(state => state.loaded);
-}
-
-export function getLoading(state$: Observable<State>) {
-  return state$.select(state => state.loading);
-}
-
-export function getTextItems(state$: Observable<State>) {
-  return state$.select(state => state.textItems);
-}
+export const getLoaded = (state: State) => state.loaded;
+export const getLoading = (state: State) => state.loading;
+export const getTextItems = (state: State) => state.textItems;

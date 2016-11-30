@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { SignupPage } from '../signup/signup.page';
 
-// import { Error, ErrorInput } from '../../components/error/error.component';
-
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
 import * as loginActions from '../../actions/login.action'
@@ -27,7 +25,7 @@ export class LoginPage {
     private store: Store<fromRoot.State>,
     ) {
     //
-    this.loginState$ = this.store.let(fromRoot.getLoginState);
+    this.loginState$ = this.store.select(fromRoot.getLoginState);
 
      this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],

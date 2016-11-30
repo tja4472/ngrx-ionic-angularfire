@@ -1,11 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-// import { Error, ErrorInput } from '../../components/error/error.component';
-
 import { Store } from '@ngrx/store';
-// import { LoginActions } from '../../actions/login.action';
-// import { State, getLoginState } from '../../reducers';
-// import { LoginSelector } from '../../selectors';
+
 import * as fromRoot from '../../reducers';
 import * as loginActions from '../../actions/login.action'
 
@@ -26,7 +22,7 @@ export class SignupPage {
     private formBuilder: FormBuilder,
     private store: Store<fromRoot.State>) {
     //
-    this.loginState$ = this.store.let(fromRoot.getLoginState);
+    this.loginState$ = this.store.select(fromRoot.getLoginState);
 
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],

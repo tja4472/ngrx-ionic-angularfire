@@ -7,10 +7,7 @@ import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
 import * as textItemActions from '../../actions/text-item.action'
 
-// import { AppState } from '../../reducers';
-// import { TextItemActions } from '../../actions';
 import { TextItemEffects } from '../../effects/text-item.effect';
-// import { CollectionSelector} from '../../selectors';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,8 +24,8 @@ export class HomePage implements OnInit {
     private textItemEffects: TextItemEffects,
     private store: Store<fromRoot.State>
   ) {
-    this.isFetching$ = store.let(fromRoot.getCollectionLoading);
-    this.posts$ = store.let(fromRoot.getCollectionTextItems);
+    this.isFetching$ = store.select(fromRoot.getCollectionLoading);
+    this.posts$ = store.select(fromRoot.getCollectionTextItems);
 
     // this.effectsSubscription = textItemEffects.loadCollection$.subscribe(store);
   }

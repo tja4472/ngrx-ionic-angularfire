@@ -1,22 +1,12 @@
-import '@ngrx/core/add/operator/select';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/let';
-import { Observable } from 'rxjs/Observable';
+import { createSelector } from 'reselect';
 import { ActionReducer } from '@ngrx/store';
 import { compose } from '@ngrx/core/compose';
 import { storeLogger } from 'ngrx-store-logger';
 import { storeFreeze } from 'ngrx-store-freeze';
 import { combineReducers } from '@ngrx/store';
-//  error TS4023: Selector 
-// tslint:disable-next-line:no-unused-variable
-// import { share, Selector } from '../utils/util';
 
 import * as fromCollection from './collection';
 import * as fromLogin from './login.reducer';
-
-//  error TS4023: Selector 
-// tslint:disable-next-line:no-unused-variable
-import { TextItem } from '../models/textitem';
 
 export interface State {
   collection: fromCollection.State;
@@ -47,19 +37,15 @@ export function reducer(state: any, action: any) {
   return developmentReducer(state, action);
 }
 
-export function getCollectionState(state$: Observable<State>) {
-  return state$.select(state => state.collection);
-}
+export const getCollectionState = (state: State) => state.collection;
 
-export const getCollectionLoaded = compose(fromCollection.getLoaded, getCollectionState);
-export const getCollectionLoading = compose(fromCollection.getLoading, getCollectionState);
-export const getCollectionTextItems = compose(fromCollection.getTextItems, getCollectionState);
+export const getCollectionLoaded = createSelector(getCollectionState, fromCollection.getLoaded);
+export const getCollectionLoading = createSelector(getCollectionState, fromCollection.getLoading);
+export const getCollectionTextItems = createSelector(getCollectionState, fromCollection.getTextItems);
 //
-export function getLoginState(state$: Observable<State>) {
-  return state$.select(state => state.login);
-}
+export const getLoginState = (state: State) => state.login;
 
-export const getLoginDisplayName = compose(fromLogin.getDisplayName, getLoginState);
-export const getLoginError = compose(fromLogin.getError, getLoginState);
-export const getLoginIsAuthenticated = compose(fromLogin.getIsAuthenticated, getLoginState);
-export const getLoginIsAuthenticating = compose(fromLogin.getIsAuthenticating, getLoginState);
+export const getLoginDisplayName = createSelector(getLoginState, fromLogin.getDisplayName);
+export const getLoginError = createSelector(getLoginState, fromLogin.getError);
+export const getLoginIsAuthenticated = createSelector(getLoginState, fromLogin.getIsAuthenticated);
+export const getLoginIsAuthenticating = createSelector(getLoginState, fromLogin.getIsAuthenticating);

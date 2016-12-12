@@ -57,18 +57,18 @@ export class LoginPage {
         }));
     }    
   }
-/*
+
   onLogin(form) {
     this.submitted = true;
 
     if (form.valid) {
       this.store.dispatch(
-        this.loginActions.emailAuthentication(
-          this.login.username,
-          this.login.password));
+        new loginActions.EmailAuthenticationAction({
+          userName: form.value.username,
+          password: form.value.password
+        }));
     }
   }
-*/
 
   onSignup() {
     this.nav.push(SignupPage);

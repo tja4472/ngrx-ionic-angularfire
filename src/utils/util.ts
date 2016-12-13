@@ -1,5 +1,5 @@
 let typeCache: { [label: string]: boolean } = {};
-export function type<T>(label: T | ''): T {
+export function type<T extends string>(label: T): T {
   if (typeCache[<string>label]) {
     throw new Error(`Action type "${label}" is not unqiue"`);
   }

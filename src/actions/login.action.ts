@@ -1,31 +1,29 @@
 import { Action } from '@ngrx/store';
 import { type } from '../utils/util';
 
-export const ActionTypes = {
-    ANONYMOUS_AUTHENTICATION: type('[Login] Anonymous Authentication'),
-    ANONYMOUS_AUTHENTICATION_FAILURE: type('[Login] Anonymous Authentication Failure'),
-    // ANONYMOUS_AUTHENTICATION_SUCCESS: type('[Login] Anonymous Authentication Success'),
-    CREATE_USER: type('[Login] Create User'),
-    CREATE_USER_FAILURE: type('[Login] Create User Failure'),
-    // CREATE_USER_SUCCESS: type('[Login] Create User Success'),
-    EMAIL_AUTHENTICATION: type('[Login] Email Authentication'),
-    EMAIL_AUTHENTICATION_FAILURE: type('[Login] Email Authentication Failure'),
-    // EMAIL_AUTHENTICATION_SUCCESS: type('[Login] Email Authentication Success'),
-    GOOGLE_AUTHENTICATION: type('[Login] Google Authentication'),
-    GOOGLE_AUTHENTICATION_FAILURE: type('[Login] Google Authentication Failure'),
-    // GOOGLE_AUTHENTICATION_SUCCESS: type('[Login] Google Authentication Success'),
-    LOGOUT: type('[Login] Logout'),
-    RESTORE_AUTHENTICATION: type('[Login] Restore Authentication'),
+// Update action types definitions in order to work with typescript 2.1.4
+// https://github.com/ngrx/example-app/pull/88
+export const ActionTypes = new class {
+    readonly ANONYMOUS_AUTHENTICATION = type('[Login] Anonymous Authentication');
+    readonly ANONYMOUS_AUTHENTICATION_FAILURE = type('[Login] Anonymous Authentication Failure');
+    readonly CREATE_USER = type('[Login] Create User');
+    readonly CREATE_USER_FAILURE = type('[Login] Create User Failure');
+    readonly EMAIL_AUTHENTICATION = type('[Login] Email Authentication');
+    readonly EMAIL_AUTHENTICATION_FAILURE = type('[Login] Email Authentication Failure');
+    readonly GOOGLE_AUTHENTICATION = type('[Login] Google Authentication');
+    readonly GOOGLE_AUTHENTICATION_FAILURE = type('[Login] Google Authentication Failure');
+    readonly LOGOUT = type('[Login] Logout');
+    readonly RESTORE_AUTHENTICATION = type('[Login] Restore Authentication');
 };
 
 export class AnonymousAuthenticationAction implements Action {
-    type = ActionTypes.ANONYMOUS_AUTHENTICATION;
+    readonly type = ActionTypes.ANONYMOUS_AUTHENTICATION;
 
     constructor() { }
 }
 
 export class AnonymousAuthenticationFailureAction implements Action {
-    type = ActionTypes.ANONYMOUS_AUTHENTICATION_FAILURE;
+    readonly type = ActionTypes.ANONYMOUS_AUTHENTICATION_FAILURE;
 
     constructor(public payload: any) { } // error
 }
@@ -39,7 +37,7 @@ export class AnonymousAuthenticationSuccessAction implements Action {
 */
 
 export class CreateUserAction implements Action {
-    type = ActionTypes.CREATE_USER;
+    readonly type = ActionTypes.CREATE_USER;
 
     constructor(public payload: {
         userName: string,
@@ -48,7 +46,7 @@ export class CreateUserAction implements Action {
 }
 
 export class CreateUserFailureAction implements Action {
-    type = ActionTypes.CREATE_USER_FAILURE;
+    readonly type = ActionTypes.CREATE_USER_FAILURE;
 
     constructor(public payload: any) { } // error 
 }
@@ -62,7 +60,7 @@ export class CreateUserSuccessAction implements Action {
 */
 
 export class EmailAuthenticationAction implements Action {
-    type = ActionTypes.EMAIL_AUTHENTICATION;
+    readonly type = ActionTypes.EMAIL_AUTHENTICATION;
 
     constructor(public payload: {
         userName: string,
@@ -71,7 +69,7 @@ export class EmailAuthenticationAction implements Action {
 }
 
 export class EmailAuthenticationFailureAction implements Action {
-    type = ActionTypes.EMAIL_AUTHENTICATION_FAILURE;
+    readonly type = ActionTypes.EMAIL_AUTHENTICATION_FAILURE;
 
     constructor(public payload: any) { } // error 
 }
@@ -85,13 +83,13 @@ export class EmailAuthenticationSuccessAction implements Action {
 */
 
 export class GoogleAuthenticationAction implements Action {
-    type = ActionTypes.GOOGLE_AUTHENTICATION;
+    readonly type = ActionTypes.GOOGLE_AUTHENTICATION;
 
     constructor() { }
 }
 
 export class GoogleAuthenticationFailureAction implements Action {
-    type = ActionTypes.GOOGLE_AUTHENTICATION_FAILURE;
+    readonly type = ActionTypes.GOOGLE_AUTHENTICATION_FAILURE;
 
     constructor(public payload: any) { } // error 
 }
@@ -105,13 +103,13 @@ export class GoogleAuthenticationSuccessAction implements Action {
 */
 
 export class LogoutAction implements Action {
-    type = ActionTypes.LOGOUT;
+    readonly type = ActionTypes.LOGOUT;
 
     constructor() { }
 }
 
 export class RestoreAuthenticationAction implements Action {
-    type = ActionTypes.RESTORE_AUTHENTICATION;
+    readonly type = ActionTypes.RESTORE_AUTHENTICATION;
 
     constructor(public payload: {
         isAnonymous: boolean;

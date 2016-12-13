@@ -35,7 +35,7 @@
   "devDependencies": {
     "@ionic/app-scripts": "0.0.47",
     "ngrx-store-freeze": "0.1.4",    
-    "typescript": "2.0.10"
+    "typescript": "2.1.4"
   },
   "description": "my-side-menu: An Ionic project",  
   "cordovaPlugins": [

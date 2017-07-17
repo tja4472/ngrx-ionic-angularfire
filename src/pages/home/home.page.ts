@@ -21,7 +21,7 @@ export class HomePage implements OnInit {
   effectsSubscription: Subscription;
 
   constructor(
-    private textItemEffects: TextItemEffects,
+    // private textItemEffects: TextItemEffects,
     private store: Store<fromRoot.State>
   ) {
     this.isFetching$ = store.select(fromRoot.getCollectionLoading);

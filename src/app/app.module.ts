@@ -1,5 +1,8 @@
-import { NgModule } from '@angular/core';
-import { IonicApp, IonicModule } from 'ionic-angular';
+import { BrowserModule } from '@angular/platform-browser';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+
 import { MyApp } from './app.component';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
@@ -34,6 +37,7 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
     SignupPage,
   ],
   imports: [
+        BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(MyFirebaseAppConfig.config),
     StoreModule.provideStore(reducer),
@@ -49,6 +53,9 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
     LoginPage,
     SignupPage
   ],
-  providers: []
+  providers: [
+    StatusBar,
+    {provide: ErrorHandler, useClass: IonicErrorHandler}
+  ]
 })
 export class AppModule { }

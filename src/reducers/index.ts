@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect';
 import { ActionReducer } from '@ngrx/store';
-import { compose } from '@ngrx/core/compose';
-import { storeLogger } from 'ngrx-store-logger';
-import { storeFreeze } from 'ngrx-store-freeze';
+// import { compose } from '@ngrx/core/compose';
+// import { storeLogger } from 'ngrx-store-logger';
+// import { storeFreeze } from 'ngrx-store-freeze';
 import { combineReducers } from '@ngrx/store';
 
 import * as fromCollection from './collection';
@@ -13,12 +13,12 @@ export interface State {
   login: fromLogin.State;
 }
 
-const reducers = {
+export const reducers = {
   collection: fromCollection.reducer,
   login: fromLogin.reducer
 };
 
-const developmentReducer: ActionReducer<State> = compose(storeFreeze, storeLogger(), combineReducers)(reducers);
+//const developmentReducer: ActionReducer<State> = compose(storeFreeze, storeLogger(), combineReducers)(reducers);
 // const productionReducer: ActionReducer<State> = combineReducers(reducers);
 
 /*
@@ -33,10 +33,10 @@ export function reducer(state: any, action: any) {
   }
 }
 */
-export function reducer(state: any, action: any) {
+/*export function reducer(state: any, action: any) {
   return developmentReducer(state, action);
 }
-
+*/
 export const getCollectionState = (state: State) => state.collection;
 
 export const getCollectionLoaded = createSelector(getCollectionState, fromCollection.getLoaded);

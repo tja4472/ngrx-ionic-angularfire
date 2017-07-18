@@ -20,8 +20,9 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
 
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { reducer } from '../reducers';
+import { reducers } from '../reducers';
 
 import { LoginEffects } from '../effects/login.effect';
 import { TextItemEffects } from '../effects/text-item.effect';
@@ -38,14 +39,16 @@ import { TextItemEffects } from '../effects/text-item.effect';
     SignupPage,
   ],
   imports: [
-        BrowserModule,
+    BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(MyFirebaseAppConfig),
     AngularFireAuthModule,
-    AngularFireDatabaseModule,    
-    StoreModule.provideStore(reducer),
-    EffectsModule.run(LoginEffects),
-    EffectsModule.run(TextItemEffects),    
+    AngularFireDatabaseModule,
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument(),
+    EffectsModule.forRoot([
+      LoginEffects,
+      TextItemEffects]),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -58,7 +61,7 @@ import { TextItemEffects } from '../effects/text-item.effect';
   ],
   providers: [
     StatusBar,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
 export class AppModule { }

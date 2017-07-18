@@ -14,13 +14,11 @@ import * as FromRoot from '../reducers';
 // Should be import * as LoginActions from '../actions/login.action';
 // See: https://gitter.im/ngrx/effects?at=57f3a2cbd45d7f0f52601422
 import * as LoginActions from '../actions/login.action'
+//
+import { AngularFireAuth } from 'angularfire2/auth';
+// Do not import from 'firebase' as you'd lose the tree shaking benefits
+import * as firebase from 'firebase/app';
 
-import {
-  AngularFire,
-  //  defaultFirebase,
-  //  FIREBASE_PROVIDERS,
-  FirebaseAuthState
-} from 'angularfire2';
 
 // Add the RxJS Observable operators we need in this app.
 import './rxjs-operators';
@@ -39,7 +37,7 @@ export class MyApp {
   // private subscription;
 
   constructor(
-    public af: AngularFire,
+    public afAuth: AngularFireAuth ,
     public platform: Platform,
     public statusBar: StatusBar,
     private store: Store<FromRoot.State>,
@@ -61,7 +59,7 @@ export class MyApp {
     ];
     // Subscribe to the auth object to check for the login status
     // of the user.      
-    af.auth.take(1).subscribe((authState: FirebaseAuthState) => {
+    afAuth.authState.take(1).subscribe((authState: firebase.User) => {
       // Run once.
       // af.auth.unsubscribe();
 
@@ -75,9 +73,9 @@ export class MyApp {
 
         this.store.dispatch(
           new LoginActions.RestoreAuthenticationAction({
-            displayName: authState.auth.displayName,
-            email: authState.auth.email,
-            isAnonymous: authState.auth.isAnonymous,
+            displayName: authState.displayName,
+            email: authState.email,
+            isAnonymous: authState.isAnonymous,
           }));
       } else {
         this.rootPage = Page1;
@@ -129,7 +127,7 @@ export class MyApp {
         // this.userData.logout();
         this.store.dispatch(
           new LoginActions.LogoutAction());
-        this.af.auth.logout();
+        this.afAuth.auth.signOut();
       }, 1000);
     }
   }

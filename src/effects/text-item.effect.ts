@@ -19,7 +19,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { LoadCollectionSuccessAction, ActionTypes } from '../actions/text-item.action';
 import { TextItem } from '../models';
-import { AngularFire, } from 'angularfire2';
+// import { AngularFire, } from 'angularfire2';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 import { State } from '../reducers';
 import { Store } from '@ngrx/store';
@@ -29,7 +30,7 @@ export class TextItemEffects {
   constructor(
         private actions$: Actions,
         private state$: Store<State>,         
-        public af: AngularFire
+        public af: AngularFireDatabase
   ) { }
 
   @Effect() loadCollection$ = this.actions$
@@ -41,7 +42,7 @@ export class TextItemEffects {
     // tslint:disable-next-line:no-unused-variable    
     .filter(([action, state]) => (<State>state).login.isAuthenticated)
     // Watch database node and get TextItems.
-    .switchMap(() => this.af.database.list('/textItems'))
+    .switchMap(() => this.af.list('/textItems'))
     .do(x => { console.log('Effect:loadCollection$:B', x); })
     .map((textItems: TextItem[]) => new LoadCollectionSuccessAction(textItems));
 }

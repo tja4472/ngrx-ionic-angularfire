@@ -14,6 +14,9 @@ import { Error } from '../components/error/error.component';
 import { ExampleList } from '../components/example-list/example-list.component';
 
 import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { MyFirebaseAppConfig } from './my-firebase-app-config';
 
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -22,8 +25,6 @@ import { reducer } from '../reducers';
 
 import { LoginEffects } from '../effects/login.effect';
 import { TextItemEffects } from '../effects/text-item.effect';
-
-import { MyFirebaseAppConfig } from './my-firebase-app-config';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,9 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
   imports: [
         BrowserModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(MyFirebaseAppConfig.config),
+    AngularFireModule.initializeApp(MyFirebaseAppConfig),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,    
     StoreModule.provideStore(reducer),
     EffectsModule.run(LoginEffects),
     EffectsModule.run(TextItemEffects),    

@@ -28,7 +28,10 @@ import { Observable } from 'rxjs/Observable';
 import * as LoginActions from '../actions/login.action';
 
 // import { TextItem } from '../models';
-import { AngularFire, AuthMethods, AuthProviders } from 'angularfire2';
+//
+import { AngularFireAuth } from 'angularfire2/auth';
+// Do not import from 'firebase' as you'd lose the tree shaking benefits
+import * as firebase from 'firebase/app';
 
 import { State } from '../reducers';
 import { Store } from '@ngrx/store';
@@ -38,7 +41,7 @@ export class LoginEffects {
   constructor(
     private actions$: Actions,
     private state$: Store<State>,
-    public af: AngularFire
+    public af: AngularFireAuth
   ) { }
 
   // https://gitter.im/ngrx/store?at=57f1bf01b0ff456d3adca786
@@ -47,15 +50,12 @@ export class LoginEffects {
   @Effect({ dispatch: false }) anonymousAuthentication$ = this.actions$
     .ofType(LoginActions.ActionTypes.ANONYMOUS_AUTHENTICATION)
     .map(() =>
-      this.af.auth.login(
-        {
-          method: AuthMethods.Anonymous
-        })
+      this.af.auth.signInAnonymously()
         .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
-                        displayName: user.auth.displayName,
-                        email: user.auth.email,
-                        isAnonymous: user.auth.isAnonymous,
-                    })))
+          displayName: user.auth.displayName,
+          email: user.auth.email,
+          isAnonymous: user.auth.isAnonymous,
+        })))
         .catch(error => this.state$.dispatch(new LoginActions.AnonymousAuthenticationFailureAction(error)))
     );
 
@@ -65,16 +65,18 @@ export class LoginEffects {
     // .do(x => console.log('login.effect:createUser>', x))
     .map((action: LoginActions.CreateUserAction) => action.payload)
     .map(payload => {
-      this.af.auth.createUser(
-        { email: payload.userName, password: payload.password })
+      this.af.auth.createUserWithEmailAndPassword(
+        payload.userName,
+        payload.password)
         .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
-                        displayName: user.auth.displayName,
-                        email: user.auth.email,
-                        isAnonymous: user.auth.isAnonymous,
-                    })))
+          displayName: user.auth.displayName,
+          email: user.auth.email,
+          isAnonymous: user.auth.isAnonymous,
+        })))
         .catch(error => this.state$.dispatch(new LoginActions.CreateUserFailureAction(error)))
     });
 
+    /**************************
   @Effect({ dispatch: false }) emailAuthentication$ = this.actions$
     .ofType(LoginActions.ActionTypes.EMAIL_AUTHENTICATION)
     // .do(x => console.log('login.effect:emailAuthentication>', x))
@@ -87,28 +89,31 @@ export class LoginEffects {
           method: AuthMethods.Password
         })
         .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
-                        displayName: user.auth.displayName,
-                        email: user.auth.email,
-                        isAnonymous: user.auth.isAnonymous,
-                    })))
+          displayName: user.auth.displayName,
+          email: user.auth.email,
+          isAnonymous: user.auth.isAnonymous,
+        })))
         .catch(error => this.state$.dispatch(new LoginActions.EmailAuthenticationFailureAction(error)))
-    });    
+    });
 
   @Effect({ dispatch: false }) authorizeWithGoogle$ = this.actions$
     .ofType(LoginActions.ActionTypes.GOOGLE_AUTHENTICATION)
     // .do(x => console.log('login.effect:authorizeWithGoogle>', x))
     // .map((action: LoginActions.GoogleAuthenticationAction) => action.payload)
-    .map(()=> {
+    .map(() => {
       this.af.auth.login(
         {
           provider: AuthProviders.Google,
           method: AuthMethods.Popup
         })
         .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
-                        displayName: user.auth.displayName,
-                        email: user.auth.email,
-                        isAnonymous: user.auth.isAnonymous,
-                    })))
+          displayName: user.auth.displayName,
+          email: user.auth.email,
+          isAnonymous: user.auth.isAnonymous,
+        })))
         .catch(error => this.state$.dispatch(new LoginActions.GoogleAuthenticationFailureAction(error)))
-    });     
+    });
+
+******************/    
 }
+

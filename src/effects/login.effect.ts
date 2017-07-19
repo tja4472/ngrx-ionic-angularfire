@@ -23,9 +23,7 @@ import { Observable } from 'rxjs/Observable';
 
 // import { LoadCollectionSuccessAction, TextItemActionTypes } from '../actions/textitem.action';
 
-// Should be import * as LoginActions from '../actions/login.action';
-// See: https://gitter.im/ngrx/effects?at=57f3a2cbd45d7f0f52601422
-import * as LoginActions from '../actions/login.action';
+import * as loginActions from '../actions/login.action';
 
 // import { TextItem } from '../models';
 //
@@ -48,32 +46,32 @@ export class LoginEffects {
   // But this link gives typescript promise errors.
 
   @Effect({ dispatch: false }) anonymousAuthentication$ = this.actions$
-    .ofType(LoginActions.ActionTypes.ANONYMOUS_AUTHENTICATION)
+    .ofType(loginActions.ANONYMOUS_AUTHENTICATION)
     .map(() =>
       this.af.auth.signInAnonymously()
-        .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
+        .then(user => this.state$.dispatch(new loginActions.RestoreAuthenticationAction({
           displayName: user.auth.displayName,
           email: user.auth.email,
           isAnonymous: user.auth.isAnonymous,
         })))
-        .catch(error => this.state$.dispatch(new LoginActions.AnonymousAuthenticationFailureAction(error)))
+        .catch(error => this.state$.dispatch(new loginActions.AnonymousAuthenticationFailureAction(error)))
     );
 
 
   @Effect({ dispatch: false }) createUser$ = this.actions$
-    .ofType(LoginActions.ActionTypes.CREATE_USER)
+    .ofType(loginActions.CREATE_USER)
     // .do(x => console.log('login.effect:createUser>', x))
-    .map((action: LoginActions.CreateUserAction) => action.payload)
+    .map((action: loginActions.CreateUserAction) => action.payload)
     .map(payload => {
       this.af.auth.createUserWithEmailAndPassword(
         payload.userName,
         payload.password)
-        .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
+        .then(user => this.state$.dispatch(new loginActions.RestoreAuthenticationAction({
           displayName: user.auth.displayName,
           email: user.auth.email,
           isAnonymous: user.auth.isAnonymous,
         })))
-        .catch(error => this.state$.dispatch(new LoginActions.CreateUserFailureAction(error)))
+        .catch(error => this.state$.dispatch(new loginActions.CreateUserFailureAction(error)))
     });
 
     /**************************

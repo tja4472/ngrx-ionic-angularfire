@@ -17,7 +17,8 @@ import { Effect, Actions} from '@ngrx/effects';
 // tslint:disable-next-line:no-unused-variable
 import { Observable } from 'rxjs/Observable';
 
-import { LoadCollectionSuccessAction, ActionTypes } from '../actions/text-item.action';
+import * as textItemActions from '../actions/text-item.action';
+
 import { TextItem } from '../models';
 // import { AngularFire, } from 'angularfire2';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -34,7 +35,7 @@ export class TextItemEffects {
   ) { }
 
   @Effect() loadCollection$ = this.actions$
-    .ofType(ActionTypes.LOAD_COLLECTION)
+    .ofType(textItemActions.LOAD_COLLECTION)
     // This will cause the effect to run once immediately on startup
     // .startWith(new LoadCollectionAction())    
     .do(x => { console.log('Effect:loadCollection$:A', x); })
@@ -44,7 +45,7 @@ export class TextItemEffects {
     // Watch database node and get TextItems.
     .switchMap(() => this.af.list('/textItems'))
     .do(x => { console.log('Effect:loadCollection$:B', x); })
-    .map((textItems: TextItem[]) => new LoadCollectionSuccessAction(textItems));
+    .map((textItems: TextItem[]) => new textItemActions.LoadCollectionSuccessAction(textItems));
 }
 
 //   .withLatestFrom(this.store.select('masterGain'))

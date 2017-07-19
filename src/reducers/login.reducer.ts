@@ -1,4 +1,4 @@
-import * as loginAction from '../actions/login.action';
+import * as loginActions from '../actions/login.action';
 
 import { assign } from '../utils';
 
@@ -16,9 +16,9 @@ const initialState: State = {
     error: null
 };
 
-export function reducer(state = initialState, action: loginAction.Actions): State {
+export function reducer(state = initialState, action: loginActions.Actions): State {
     switch (action.type) {
-        case loginAction.ActionTypes.GOOGLE_AUTHENTICATION: {
+        case loginActions.GOOGLE_AUTHENTICATION: {
             return assign(state, {
                 isAuthenticating: true
             });
@@ -28,7 +28,7 @@ export function reducer(state = initialState, action: loginAction.Actions): Stat
         // case loginAction.ActionTypes.CREATE_USER_SUCCESS:
         // case loginAction.ActionTypes.EMAIL_AUTHENTICATION_SUCCESS:
         // case loginAction.ActionTypes.GOOGLE_AUTHENTICATION_SUCCESS:
-        case loginAction.ActionTypes.RESTORE_AUTHENTICATION: {
+        case loginActions.RESTORE_AUTHENTICATION: {
             return assign(state, {
                 displayName: makeDisplayName(action.payload),
                 isAuthenticated: true,
@@ -36,7 +36,7 @@ export function reducer(state = initialState, action: loginAction.Actions): Stat
             })
         }
 
-        case loginAction.ActionTypes.LOGOUT: {
+        case loginActions.LOGOUT: {
             return assign(state, {
                 displayName: '',
                 isAuthenticated: false,
@@ -44,18 +44,18 @@ export function reducer(state = initialState, action: loginAction.Actions): Stat
             });
         }
 
-        case loginAction.ActionTypes.ANONYMOUS_AUTHENTICATION:
-        case loginAction.ActionTypes.CREATE_USER:
-        case loginAction.ActionTypes.EMAIL_AUTHENTICATION: {
+        case loginActions.ANONYMOUS_AUTHENTICATION:
+        case loginActions.CREATE_USER:
+        case loginActions.EMAIL_AUTHENTICATION: {
             return assign(state, {
                 error: null,
                 isAuthenticating: true
             });
         }
 
-        case loginAction.ActionTypes.ANONYMOUS_AUTHENTICATION_FAILURE:
-        case loginAction.ActionTypes.CREATE_USER_FAILURE:
-        case loginAction.ActionTypes.EMAIL_AUTHENTICATION_FAILURE: {
+        case loginActions.ANONYMOUS_AUTHENTICATION_FAILURE:
+        case loginActions.CREATE_USER_FAILURE:
+        case loginActions.EMAIL_AUTHENTICATION_FAILURE: {
             return assign(state, {
                 error: action.payload,
                 isAuthenticating: false

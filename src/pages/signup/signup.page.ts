@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../../reducers';
-import * as loginActions from '../../actions/login.action'
+import * as loginActions from '../../actions/login.action';
 
-import { Validators, FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,7 +14,7 @@ import { Validators, FormBuilder } from '@angular/forms';
 export class SignupPage {
   // signup: { username?: string, password?: string } = {};
   submitted = false;
-  public loginForm;
+  public loginForm: FormGroup;
 
   loginState$: any;
 

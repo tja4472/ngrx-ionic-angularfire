@@ -4,9 +4,9 @@ import { SignupPage } from '../signup/signup.page';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
-import * as loginActions from '../../actions/login.action'
+import * as loginActions from '../../actions/login.action';
 
-import { Validators, FormBuilder } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,7 +15,7 @@ import { Validators, FormBuilder } from '@angular/forms';
 export class LoginPage {
   // login: { username?: string, password?: string } = {};
   submitted = false;
-  public loginForm; 
+  public loginForm: FormGroup; 
 
   loginState$: any;
 
@@ -58,14 +58,14 @@ export class LoginPage {
     }    
   }
 
-  onLogin(form) {
+  onLogin() {
     this.submitted = true;
 
-    if (form.valid) {
+    if (this.loginForm.valid) {
       this.store.dispatch(
         new loginActions.EmailAuthenticationAction({
-          userName: form.value.username,
-          password: form.value.password
+          userName: this.loginForm.value.username,
+          password: this.loginForm.value.password
         }));
     }
   }

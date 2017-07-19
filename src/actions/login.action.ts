@@ -109,8 +109,8 @@ export class RestoreAuthenticationAction implements Action {
 
     constructor(public payload: {
         isAnonymous: boolean;
-        displayName: string,
-        email: string,
+        displayName: string | null,
+        email: string | null,
     }) { }
 }
 

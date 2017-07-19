@@ -98,8 +98,8 @@ export function reducer(state = initialState, action: loginActions.Actions): Sta
 
 function makeDisplayName(user: {
         isAnonymous: boolean;
-        displayName: string,
-        email: string,
+        displayName: string | null,
+        email: string | null,
     }) {
     if (user.isAnonymous) return 'Anonymous';
 

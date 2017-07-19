@@ -23,6 +23,15 @@ import * as firebase from 'firebase/app';
 // Add the RxJS Observable operators we need in this app.
 import './rxjs-operators';
 
+export interface PageInterface {
+  title: string;
+  component: any;
+  // icon: string;
+  // logsOut?: boolean;
+  // index?: number;
+  // tabComponent?: any;
+}
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -31,7 +40,7 @@ export class MyApp {
 
   // rootPageAA: any = Page1;
   rootPage: any;
-  pages: Array<{ title: string, component: any }>;
+  pages: Array<PageInterface>;
 
   loginState$: any;
   // private subscription;
@@ -114,7 +123,7 @@ export class MyApp {
     */
   }
 
-  openPage(page) {
+  openPage(page: PageInterface) {
     console.log('openPage');
 
     // Reset the content nav to have just this page

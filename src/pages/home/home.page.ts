@@ -38,7 +38,7 @@ export class HomePage implements OnInit {
     // .do(v => {console.log('posts>', v)});   
   }
 
-  doSearch(ev) {
+  doSearch(ev: any) {
     //
     // set val to the value of the ev target
     console.log('doSearch');

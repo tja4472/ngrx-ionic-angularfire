@@ -1,7 +1,5 @@
 import * as loginActions from '../actions/login.action';
 
-import { assign } from '../utils';
-
 export interface State {
     displayName: string;
     isAuthenticated: boolean;
@@ -19,9 +17,10 @@ const initialState: State = {
 export function reducer(state = initialState, action: loginActions.Actions): State {
     switch (action.type) {
         case loginActions.GOOGLE_AUTHENTICATION: {
-            return assign(state, {
+            return {
+                ...state, 
                 isAuthenticating: true
-            });
+            };
         }
 
         // case loginAction.ActionTypes.ANONYMOUS_AUTHENTICATION_SUCCESS:
@@ -29,37 +28,41 @@ export function reducer(state = initialState, action: loginActions.Actions): Sta
         // case loginAction.ActionTypes.EMAIL_AUTHENTICATION_SUCCESS:
         // case loginAction.ActionTypes.GOOGLE_AUTHENTICATION_SUCCESS:
         case loginActions.RESTORE_AUTHENTICATION: {
-            return assign(state, {
+            return {
+                ...state, 
                 displayName: makeDisplayName(action.payload),
                 isAuthenticated: true,
                 isAuthenticating: false
-            })
+            };
         }
 
         case loginActions.LOGOUT: {
-            return assign(state, {
+            return { 
+                ...state, 
                 displayName: '',
                 isAuthenticated: false,
                 isAuthenticating: false
-            });
+            };
         }
 
         case loginActions.ANONYMOUS_AUTHENTICATION:
         case loginActions.CREATE_USER:
         case loginActions.EMAIL_AUTHENTICATION: {
-            return assign(state, {
+            return {
+                ...state, 
                 error: null,
                 isAuthenticating: true
-            });
+            };
         }
 
         case loginActions.ANONYMOUS_AUTHENTICATION_FAILURE:
         case loginActions.CREATE_USER_FAILURE:
         case loginActions.EMAIL_AUTHENTICATION_FAILURE: {
-            return assign(state, {
+            return {
+                ...state, 
                 error: action.payload,
                 isAuthenticating: false
-            });
+            };
         }
 
         /*

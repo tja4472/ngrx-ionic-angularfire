@@ -2,8 +2,6 @@ import * as textItemActions from '../actions/text-item.action';
 
 import { TextItem } from '../models';
 
-import { assign } from '../utils';
-
 export interface State {
   loaded: boolean;
   loading: boolean;
@@ -19,9 +17,10 @@ const initialState: State = {
 export function reducer(state = initialState, action: textItemActions.Actions): State {
   switch (action.type) {
     case textItemActions.LOAD_COLLECTION: {
-      return assign(state, {
+      return {
+        ...state, 
         loading: true
-      });
+      };
     }
 
     case textItemActions.LOAD_COLLECTION_SUCCESS: {

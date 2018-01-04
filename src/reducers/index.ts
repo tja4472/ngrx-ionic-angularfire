@@ -1,9 +1,9 @@
-import { createSelector } from 'reselect';
+// import { createSelector } from 'reselect';
 import { ActionReducer } from '@ngrx/store';
 // import { compose } from '@ngrx/core/compose';
 // import { storeLogger } from 'ngrx-store-logger';
 // import { storeFreeze } from 'ngrx-store-freeze';
-import { combineReducers } from '@ngrx/store';
+import { combineReducers, createSelector } from '@ngrx/store';
 
 import * as fromCollection from './collection';
 import * as fromLogin from './login.reducer';

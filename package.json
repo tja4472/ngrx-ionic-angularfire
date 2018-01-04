@@ -30,7 +30,7 @@
     "@types/jasmine": "2.5.37",
     "@types/request": "0.0.33",
     "angularfire2": "5.0.0-rc.4",
-    "firebase": "4.6.0",
+    "firebase": "4.8.0",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "reselect": "2.5.4",

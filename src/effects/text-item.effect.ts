@@ -31,7 +31,7 @@ export class TextItemEffects {
   constructor(
         private actions$: Actions,
         private state$: Store<State>,         
-        public af: AngularFireDatabase
+        public afDb: AngularFireDatabase
   ) { }
 
   @Effect() loadCollection$ = this.actions$
@@ -43,7 +43,7 @@ export class TextItemEffects {
     // tslint:disable-next-line:no-unused-variable    
     .filter(([action, state]) => (<State>state).login.isAuthenticated)
     // Watch database node and get TextItems.
-    .switchMap(() => this.af.list('/textItems'))
+    .switchMap(() => this.afDb.list('/textItems').valueChanges())
     .do(x => { console.log('Effect:loadCollection$:B', x); })
     .map((textItems: TextItem[]) => new textItemActions.LoadCollectionSuccessAction(textItems));
 }

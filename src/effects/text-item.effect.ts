@@ -12,7 +12,7 @@ import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/observable/of';
 
 import { Injectable } from '@angular/core';
-import { Effect, Actions} from '@ngrx/effects';
+import { Effect, Actions } from '@ngrx/effects';
 // error TS4029: https://github.com/Microsoft/TypeScript/issues/5938
 // tslint:disable-next-line:no-unused-variable
 import { Observable } from 'rxjs/Observable';
@@ -29,23 +29,31 @@ import { Store } from '@ngrx/store';
 @Injectable()
 export class TextItemEffects {
   constructor(
-        private actions$: Actions,
-        private state$: Store<State>,         
-        public afDb: AngularFireDatabase
-  ) { }
+    private actions$: Actions,
+    private state$: Store<State>,
+    public afDb: AngularFireDatabase
+  ) {}
 
-  @Effect() loadCollection$ = this.actions$
+  @Effect()
+  loadCollection$ = this.actions$
     .ofType(textItemActions.LOAD_COLLECTION)
     // This will cause the effect to run once immediately on startup
-    // .startWith(new LoadCollectionAction())    
-    .do(x => { console.log('Effect:loadCollection$:A', x); })
+    // .startWith(new LoadCollectionAction())
+    .do((x) => {
+      console.log('Effect:loadCollection$:A', x);
+    })
     .withLatestFrom(this.state$)
-    // tslint:disable-next-line:no-unused-variable    
+    // tslint:disable-next-line:no-unused-variable
     .filter(([action, state]) => (<State>state).login.isAuthenticated)
     // Watch database node and get TextItems.
     .switchMap(() => this.afDb.list('/textItems').valueChanges())
-    .do(x => { console.log('Effect:loadCollection$:B', x); })
-    .map((textItems: TextItem[]) => new textItemActions.LoadCollectionSuccessAction(textItems));
+    .do((x) => {
+      console.log('Effect:loadCollection$:B', x);
+    })
+    .map(
+      (textItems: TextItem[]) =>
+        new textItemActions.LoadCollectionSuccessAction(textItems)
+    );
 }
 
 //   .withLatestFrom(this.store.select('masterGain'))
@@ -108,4 +116,4 @@ export class UserService implements OnDestroy {
       .map((responseNote:Note) => ({ type: "UPDATE_NOTE_FROM_SERVER", payload: { note: responseNote } }))
       .catch(() => Observable.of({ type: "UPDATE_FAILED" }))
     )    
-*/    
+*/

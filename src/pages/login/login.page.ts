@@ -10,30 +10,30 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: 'login.page.html'
+  templateUrl: 'login.page.html',
 })
 export class LoginPage {
   // login: { username?: string, password?: string } = {};
   submitted = false;
-  public loginForm: FormGroup; 
+  public loginForm: FormGroup;
 
   loginState$: any;
 
   constructor(
     private formBuilder: FormBuilder,
     private nav: NavController,
-    private store: Store<fromRoot.State>,
-    ) {
+    private store: Store<fromRoot.State>
+  ) {
     //
     this.loginState$ = this.store.select(fromRoot.getLoginState);
 
-     this.loginForm = this.formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-    });   
+    });
   }
 
-/*
+  /*
   ionViewDidLoad() {
     //
     this.loginForm = this.formBuilder.group({
@@ -53,9 +53,10 @@ export class LoginPage {
       this.store.dispatch(
         new loginActions.EmailAuthenticationAction({
           userName: this.loginForm.value.username,
-          password: this.loginForm.value.password
-        }));
-    }    
+          password: this.loginForm.value.password,
+        })
+      );
+    }
   }
 
   onLogin() {
@@ -65,8 +66,9 @@ export class LoginPage {
       this.store.dispatch(
         new loginActions.EmailAuthenticationAction({
           userName: this.loginForm.value.username,
-          password: this.loginForm.value.password
-        }));
+          password: this.loginForm.value.password,
+        })
+      );
     }
   }
 
@@ -75,12 +77,10 @@ export class LoginPage {
   }
 
   signInAnonymously() {
-    this.store.dispatch(
-      new loginActions.AnonymousAuthenticationAction());
+    this.store.dispatch(new loginActions.AnonymousAuthenticationAction());
   }
 
   signInWithGoogle() {
-    this.store.dispatch(
-      new loginActions.GoogleAuthenticationAction());
+    this.store.dispatch(new loginActions.GoogleAuthenticationAction());
   }
 }

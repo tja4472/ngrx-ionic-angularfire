@@ -46,22 +46,13 @@ import { TextItemEffects } from '../effects/text-item.effect';
     AngularFireDatabaseModule,
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument(),
-    EffectsModule.forRoot([
-      LoginEffects,
-      TextItemEffects]),
+    EffectsModule.forRoot([LoginEffects, TextItemEffects]),
   ],
   bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    Page1,
-    Page2,
-    HomePage,
-    LoginPage,
-    SignupPage
-  ],
+  entryComponents: [MyApp, Page1, Page2, HomePage, LoginPage, SignupPage],
   providers: [
     StatusBar,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
-  ]
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+  ],
 })
-export class AppModule { }
+export class AppModule {}

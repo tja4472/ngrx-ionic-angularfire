@@ -15,7 +15,7 @@ export interface State {
 
 export const reducers = {
   collection: fromCollection.reducer,
-  login: fromLogin.reducer
+  login: fromLogin.reducer,
 };
 
 //const developmentReducer: ActionReducer<State> = compose(storeFreeze, storeLogger(), combineReducers)(reducers);
@@ -39,13 +39,31 @@ export function reducer(state: any, action: any) {
 */
 export const getCollectionState = (state: State) => state.collection;
 
-export const getCollectionLoaded = createSelector(getCollectionState, fromCollection.getLoaded);
-export const getCollectionLoading = createSelector(getCollectionState, fromCollection.getLoading);
-export const getCollectionTextItems = createSelector(getCollectionState, fromCollection.getTextItems);
+export const getCollectionLoaded = createSelector(
+  getCollectionState,
+  fromCollection.getLoaded
+);
+export const getCollectionLoading = createSelector(
+  getCollectionState,
+  fromCollection.getLoading
+);
+export const getCollectionTextItems = createSelector(
+  getCollectionState,
+  fromCollection.getTextItems
+);
 //
 export const getLoginState = (state: State) => state.login;
 
-export const getLoginDisplayName = createSelector(getLoginState, fromLogin.getDisplayName);
+export const getLoginDisplayName = createSelector(
+  getLoginState,
+  fromLogin.getDisplayName
+);
 export const getLoginError = createSelector(getLoginState, fromLogin.getError);
-export const getLoginIsAuthenticated = createSelector(getLoginState, fromLogin.getIsAuthenticated);
-export const getLoginIsAuthenticating = createSelector(getLoginState, fromLogin.getIsAuthenticating);
+export const getLoginIsAuthenticated = createSelector(
+  getLoginState,
+  fromLogin.getIsAuthenticated
+);
+export const getLoginIsAuthenticating = createSelector(
+  getLoginState,
+  fromLogin.getIsAuthenticating
+);

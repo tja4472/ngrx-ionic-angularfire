@@ -1,71 +1,74 @@
 import * as loginActions from '../actions/login.action';
 
 export interface State {
-    displayName: string;
-    isAuthenticated: boolean;
-    isAuthenticating: boolean;
-    error: any;
-};
+  displayName: string;
+  isAuthenticated: boolean;
+  isAuthenticating: boolean;
+  error: any;
+}
 
 const initialState: State = {
-    displayName: '',
-    isAuthenticated: false,
-    isAuthenticating: false,
-    error: null
+  displayName: '',
+  isAuthenticated: false,
+  isAuthenticating: false,
+  error: null,
 };
 
-export function reducer(state = initialState, action: loginActions.Actions): State {
-    switch (action.type) {
-        case loginActions.GOOGLE_AUTHENTICATION: {
-            return {
-                ...state, 
-                isAuthenticating: true
-            };
-        }
+export function reducer(
+  state = initialState,
+  action: loginActions.Actions
+): State {
+  switch (action.type) {
+    case loginActions.GOOGLE_AUTHENTICATION: {
+      return {
+        ...state,
+        isAuthenticating: true,
+      };
+    }
 
-        // case loginAction.ActionTypes.ANONYMOUS_AUTHENTICATION_SUCCESS:
-        // case loginAction.ActionTypes.CREATE_USER_SUCCESS:
-        // case loginAction.ActionTypes.EMAIL_AUTHENTICATION_SUCCESS:
-        // case loginAction.ActionTypes.GOOGLE_AUTHENTICATION_SUCCESS:
-        case loginActions.RESTORE_AUTHENTICATION: {
-            return {
-                ...state, 
-                displayName: makeDisplayName(action.payload),
-                isAuthenticated: true,
-                isAuthenticating: false
-            };
-        }
+    // case loginAction.ActionTypes.ANONYMOUS_AUTHENTICATION_SUCCESS:
+    // case loginAction.ActionTypes.CREATE_USER_SUCCESS:
+    // case loginAction.ActionTypes.EMAIL_AUTHENTICATION_SUCCESS:
+    // case loginAction.ActionTypes.GOOGLE_AUTHENTICATION_SUCCESS:
+    case loginActions.RESTORE_AUTHENTICATION: {
+      return {
+        ...state,
+        displayName: makeDisplayName(action.payload),
+        isAuthenticated: true,
+        isAuthenticating: false,
+      };
+    }
 
-        case loginActions.LOGOUT: {
-            return { 
-                ...state, 
-                displayName: '',
-                isAuthenticated: false,
-                isAuthenticating: false
-            };
-        }
+    case loginActions.LOGOUT: {
+      return {
+        ...state,
+        displayName: '',
+        isAuthenticated: false,
+        isAuthenticating: false,
+      };
+    }
 
-        case loginActions.ANONYMOUS_AUTHENTICATION:
-        case loginActions.CREATE_USER:
-        case loginActions.EMAIL_AUTHENTICATION: {
-            return {
-                ...state, 
-                error: null,
-                isAuthenticating: true
-            };
-        }
+    case loginActions.ANONYMOUS_AUTHENTICATION:
+    case loginActions.CREATE_USER:
+    case loginActions.EMAIL_AUTHENTICATION: {
+      return {
+        ...state,
+        error: null,
+        isAuthenticating: true,
+      };
+    }
 
-        case loginActions.ANONYMOUS_AUTHENTICATION_FAILURE:
-        case loginActions.CREATE_USER_FAILURE:
-        case loginActions.EMAIL_AUTHENTICATION_FAILURE: {
-            return {
-                ...state, 
-                error: action.payload,
-                isAuthenticating: false
-            };
-        }
+    case loginActions.ANONYMOUS_AUTHENTICATION_FAILURE:
+    case loginActions.CREATE_USER_FAILURE:
+    case loginActions.EMAIL_AUTHENTICATION_FAILURE: {
+      return {
+        ...state,
+        error: action.payload,
+        isAuthenticating: false,
+      };
+    }
 
-        /*
+    /*
                 case LoginActions.ANONYMOUS_AUTHENTICATION_SUCCESS: {
                     let user: FirebaseAuthState = action.payload;
         
@@ -77,7 +80,7 @@ export function reducer(state = initialState, action: loginActions.Actions): Sta
                     });
                 } 
         */
-        /*
+    /*
                 case LoginActions.CREATE_USER_SUCCESS:  
                 case LoginActions.EMAIL_AUTHENTICATION_SUCCESS: {
                     let user: FirebaseAuthState = action.payload;
@@ -90,23 +93,23 @@ export function reducer(state = initialState, action: loginActions.Actions): Sta
                     });
                 }        
         */
-        default: {
-            return state;
-        }
+    default: {
+      return state;
     }
+  }
 }
 
 function makeDisplayName(user: {
-        isAnonymous: boolean;
-        displayName: string | null,
-        email: string | null,
-    }) {
-    if (user.isAnonymous) return 'Anonymous';
+  isAnonymous: boolean;
+  displayName: string | null;
+  email: string | null;
+}) {
+  if (user.isAnonymous) return 'Anonymous';
 
-    if (user.displayName) return user.displayName;
+  if (user.displayName) return user.displayName;
 
-    if (user.email) return user.email;
-    return '';
+  if (user.email) return user.email;
+  return '';
 }
 
 export const getDisplayName = (state: State) => state.displayName;

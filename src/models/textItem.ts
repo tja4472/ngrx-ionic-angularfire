@@ -1,7 +1,7 @@
 export interface TextItem {
-    $key: string;
-    description: string;
-    timestamp: number;
-    title: string;
-    user: string;
+  $key: string;
+  description: string;
+  timestamp: number;
+  title: string;
+  user: string;
 }

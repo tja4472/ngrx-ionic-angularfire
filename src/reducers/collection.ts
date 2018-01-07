@@ -6,20 +6,23 @@ export interface State {
   loaded: boolean;
   loading: boolean;
   textItems: TextItem[];
-};
+}
 
 const initialState: State = {
   loaded: false,
   loading: false,
-  textItems: []
+  textItems: [],
 };
 
-export function reducer(state = initialState, action: textItemActions.Actions): State {
+export function reducer(
+  state = initialState,
+  action: textItemActions.Actions
+): State {
   switch (action.type) {
     case textItemActions.LOAD_COLLECTION: {
       return {
-        ...state, 
-        loading: true
+        ...state,
+        loading: true,
       };
     }
 
@@ -29,7 +32,7 @@ export function reducer(state = initialState, action: textItemActions.Actions): 
       return {
         loaded: true,
         loading: false,
-        textItems: books.map(book => book)
+        textItems: books.map((book) => book),
       };
     }
 

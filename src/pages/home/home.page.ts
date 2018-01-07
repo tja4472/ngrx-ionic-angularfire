@@ -1,18 +1,21 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { IsFetchingInput, PostsInput } from '../../components/example-list/example-list.component';
+import {
+  IsFetchingInput,
+  PostsInput,
+} from '../../components/example-list/example-list.component';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../reducers';
-import * as textItemActions from '../../actions/text-item.action'
+import * as textItemActions from '../../actions/text-item.action';
 
 import { TextItemEffects } from '../../effects/text-item.effect';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ TextItemEffects ],
-  templateUrl: 'home.page.html'
+  providers: [TextItemEffects],
+  templateUrl: 'home.page.html',
 })
 export class HomePage implements OnInit {
   posts$: Observable<PostsInput>;
@@ -31,11 +34,10 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(
-      new textItemActions.LoadCollectionAction());
+    this.store.dispatch(new textItemActions.LoadCollectionAction());
     // this.isFetching$ = Observable.of(false);
     // this.posts$ = this.af.database.list('/textItems')
-    // .do(v => {console.log('posts>', v)});   
+    // .do(v => {console.log('posts>', v)});
   }
 
   doSearch(ev: any) {

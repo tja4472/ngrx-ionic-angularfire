@@ -40,41 +40,56 @@ export class LoginEffects {
     private actions$: Actions,
     private state$: Store<State>,
     public af: AngularFireAuth
-  ) { }
+  ) {}
 
   // https://gitter.im/ngrx/store?at=57f1bf01b0ff456d3adca786
   // But this link gives typescript promise errors.
 
-  @Effect({ dispatch: false }) anonymousAuthentication$ = this.actions$
+  @Effect({ dispatch: false })
+  anonymousAuthentication$ = this.actions$
     .ofType(loginActions.ANONYMOUS_AUTHENTICATION)
     .map(() =>
-      this.af.auth.signInAnonymously()
-        .then(user => this.state$.dispatch(new loginActions.RestoreAuthenticationAction({
-          displayName: user.auth.displayName,
-          email: user.auth.email,
-          isAnonymous: user.auth.isAnonymous,
-        })))
-        .catch(error => this.state$.dispatch(new loginActions.AnonymousAuthenticationFailureAction(error)))
+      this.af.auth
+        .signInAnonymously()
+        .then((user) =>
+          this.state$.dispatch(
+            new loginActions.RestoreAuthenticationAction({
+              displayName: user.auth.displayName,
+              email: user.auth.email,
+              isAnonymous: user.auth.isAnonymous,
+            })
+          )
+        )
+        .catch((error) =>
+          this.state$.dispatch(
+            new loginActions.AnonymousAuthenticationFailureAction(error)
+          )
+        )
     );
 
-
-  @Effect({ dispatch: false }) createUser$ = this.actions$
+  @Effect({ dispatch: false })
+  createUser$ = this.actions$
     .ofType(loginActions.CREATE_USER)
     // .do(x => console.log('login.effect:createUser>', x))
     .map((action: loginActions.CreateUserAction) => action.payload)
-    .map(payload => {
-      this.af.auth.createUserWithEmailAndPassword(
-        payload.userName,
-        payload.password)
-        .then(user => this.state$.dispatch(new loginActions.RestoreAuthenticationAction({
-          displayName: user.auth.displayName,
-          email: user.auth.email,
-          isAnonymous: user.auth.isAnonymous,
-        })))
-        .catch(error => this.state$.dispatch(new loginActions.CreateUserFailureAction(error)))
+    .map((payload) => {
+      this.af.auth
+        .createUserWithEmailAndPassword(payload.userName, payload.password)
+        .then((user) =>
+          this.state$.dispatch(
+            new loginActions.RestoreAuthenticationAction({
+              displayName: user.auth.displayName,
+              email: user.auth.email,
+              isAnonymous: user.auth.isAnonymous,
+            })
+          )
+        )
+        .catch((error) =>
+          this.state$.dispatch(new loginActions.CreateUserFailureAction(error))
+        );
     });
 
-    /**************************
+  /**************************
   @Effect({ dispatch: false }) emailAuthentication$ = this.actions$
     .ofType(LoginActions.ActionTypes.EMAIL_AUTHENTICATION)
     // .do(x => console.log('login.effect:emailAuthentication>', x))
@@ -112,6 +127,5 @@ export class LoginEffects {
         .catch(error => this.state$.dispatch(new LoginActions.GoogleAuthenticationFailureAction(error)))
     });
 
-******************/    
+******************/
 }
-

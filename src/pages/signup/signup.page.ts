@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: 'signup.page.html'
+  templateUrl: 'signup.page.html',
 })
 export class SignupPage {
   // signup: { username?: string, password?: string } = {};
@@ -20,17 +20,18 @@ export class SignupPage {
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<fromRoot.State>) {
+    private store: Store<fromRoot.State>
+  ) {
     //
     this.loginState$ = this.store.select(fromRoot.getLoginState);
 
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-    });    
+    });
   }
 
-/*
+  /*
   ionViewDidLoad() {
     //
     this.loginForm = this.formBuilder.group({
@@ -51,7 +52,8 @@ export class SignupPage {
         new loginActions.CreateUserAction({
           userName: this.loginForm.value.username,
           password: this.loginForm.value.password,
-        }));
+        })
+      );
     }
   }
   /*

@@ -8,7 +8,10 @@
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "prettier:base": "prettier \"./{e2e,src}/**/*.{scss,ts}\"",
+    "prettier:list": "npm run prettier:base -- --list-different",
+    "prettier:write": "npm run prettier:base -- --write"
   },
   "dependencies": {
     "@angular/common": "5.0.0",
@@ -37,6 +40,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.7",
+    "prettier": "1.9.2",
     "typescript": "2.4.2"
   },
   "description": "my-side-menu: An Ionic project",

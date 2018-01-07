@@ -13,12 +13,11 @@ import * as FromRoot from '../reducers';
 
 // Should be import * as LoginActions from '../actions/login.action';
 // See: https://gitter.im/ngrx/effects?at=57f3a2cbd45d7f0f52601422
-import * as LoginActions from '../actions/login.action'
+import * as LoginActions from '../actions/login.action';
 //
 import { AngularFireAuth } from 'angularfire2/auth';
 // Do not import from 'firebase' as you'd lose the tree shaking benefits
 import * as firebase from 'firebase/app';
-
 
 // Add the RxJS Observable operators we need in this app.
 import './rxjs-operators';
@@ -33,7 +32,7 @@ export interface PageInterface {
 }
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -46,10 +45,10 @@ export class MyApp {
   // private subscription;
 
   constructor(
-    public afAuth: AngularFireAuth ,
+    public afAuth: AngularFireAuth,
     public platform: Platform,
     public statusBar: StatusBar,
-    private store: Store<FromRoot.State>,
+    private store: Store<FromRoot.State>
   ) {
     //
     console.log('MyApp:constructor');
@@ -67,7 +66,7 @@ export class MyApp {
       { title: 'Logout', component: Page1 },
     ];
     // Subscribe to the auth object to check for the login status
-    // of the user.      
+    // of the user.
     afAuth.authState.take(1).subscribe((authState: firebase.User) => {
       // Run once.
       // af.auth.unsubscribe();
@@ -85,7 +84,8 @@ export class MyApp {
             displayName: authState.displayName,
             email: authState.email,
             isAnonymous: authState.isAnonymous,
-          }));
+          })
+        );
       } else {
         this.rootPage = Page1;
       }
@@ -134,8 +134,7 @@ export class MyApp {
       // Give the menu time to close before changing to logged out
       setTimeout(() => {
         // this.userData.logout();
-        this.store.dispatch(
-          new LoginActions.LogoutAction());
+        this.store.dispatch(new LoginActions.LogoutAction());
         this.afAuth.auth.signOut();
       }, 1000);
     }

@@ -1,9 +1,9 @@
 // import { createSelector } from 'reselect';
-import { ActionReducer } from '@ngrx/store';
+// import { ActionReducer } from '@ngrx/store';
 // import { compose } from '@ngrx/core/compose';
 // import { storeLogger } from 'ngrx-store-logger';
 // import { storeFreeze } from 'ngrx-store-freeze';
-import { combineReducers, createSelector } from '@ngrx/store';
+import { ActionReducerMap, createSelector } from '@ngrx/store';
 
 import * as fromCollection from './collection';
 import * as fromLogin from './login.reducer';
@@ -13,7 +13,7 @@ export interface State {
   login: fromLogin.State;
 }
 
-export const reducers = {
+export const reducers: ActionReducerMap<State> = {
   collection: fromCollection.reducer,
   login: fromLogin.reducer,
 };

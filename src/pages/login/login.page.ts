@@ -51,7 +51,7 @@ export class LoginPage {
 
     if (this.loginForm.valid) {
       this.store.dispatch(
-        new loginActions.EmailAuthenticationAction({
+        new loginActions.EmailAuthentication({
           userName: this.loginForm.value.username,
           password: this.loginForm.value.password,
         })
@@ -64,7 +64,7 @@ export class LoginPage {
 
     if (this.loginForm.valid) {
       this.store.dispatch(
-        new loginActions.EmailAuthenticationAction({
+        new loginActions.EmailAuthentication({
           userName: this.loginForm.value.username,
           password: this.loginForm.value.password,
         })
@@ -77,10 +77,10 @@ export class LoginPage {
   }
 
   signInAnonymously() {
-    this.store.dispatch(new loginActions.AnonymousAuthenticationAction());
+    this.store.dispatch(new loginActions.AnonymousAuthentication());
   }
 
   signInWithGoogle() {
-    this.store.dispatch(new loginActions.GoogleAuthenticationAction());
+    this.store.dispatch(new loginActions.GoogleAuthentication());
   }
 }

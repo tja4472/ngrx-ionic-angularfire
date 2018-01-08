@@ -49,7 +49,7 @@ export class SignupPage {
 
     if (this.loginForm.valid) {
       this.store.dispatch(
-        new loginActions.CreateUserAction({
+        new loginActions.CreateUser({
           userName: this.loginForm.value.username,
           password: this.loginForm.value.password,
         })

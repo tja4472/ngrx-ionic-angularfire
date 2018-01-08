@@ -1,4 +1,4 @@
-import * as loginActions from '../actions/login.action';
+import { LoginActions, LoginActionTypes } from '../actions/login.action';
 
 export interface State {
   displayName: string;
@@ -14,12 +14,9 @@ const initialState: State = {
   error: null,
 };
 
-export function reducer(
-  state = initialState,
-  action: loginActions.Actions
-): State {
+export function reducer(state = initialState, action: LoginActions): State {
   switch (action.type) {
-    case loginActions.GOOGLE_AUTHENTICATION: {
+    case LoginActionTypes.GoogleAuthentication: {
       return {
         ...state,
         isAuthenticating: true,
@@ -30,7 +27,7 @@ export function reducer(
     // case loginAction.ActionTypes.CREATE_USER_SUCCESS:
     // case loginAction.ActionTypes.EMAIL_AUTHENTICATION_SUCCESS:
     // case loginAction.ActionTypes.GOOGLE_AUTHENTICATION_SUCCESS:
-    case loginActions.RESTORE_AUTHENTICATION: {
+    case LoginActionTypes.RestoreAuthentication: {
       return {
         ...state,
         displayName: makeDisplayName(action.payload),
@@ -39,7 +36,7 @@ export function reducer(
       };
     }
 
-    case loginActions.LOGOUT: {
+    case LoginActionTypes.Logout: {
       return {
         ...state,
         displayName: '',
@@ -48,9 +45,9 @@ export function reducer(
       };
     }
 
-    case loginActions.ANONYMOUS_AUTHENTICATION:
-    case loginActions.CREATE_USER:
-    case loginActions.EMAIL_AUTHENTICATION: {
+    case LoginActionTypes.AnonymousAuthentication:
+    case LoginActionTypes.CreateUser:
+    case LoginActionTypes.EmailAuthentication: {
       return {
         ...state,
         error: null,
@@ -58,9 +55,9 @@ export function reducer(
       };
     }
 
-    case loginActions.ANONYMOUS_AUTHENTICATION_FAILURE:
-    case loginActions.CREATE_USER_FAILURE:
-    case loginActions.EMAIL_AUTHENTICATION_FAILURE: {
+    case LoginActionTypes.AnonymousAuthenticationFailure:
+    case LoginActionTypes.CreateUserFailure:
+    case LoginActionTypes.EmailAuthenticationFailure: {
       return {
         ...state,
         error: action.payload,

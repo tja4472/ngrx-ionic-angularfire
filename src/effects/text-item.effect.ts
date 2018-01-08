@@ -1,30 +1,29 @@
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/switchMapTo';
 import 'rxjs/add/operator/toArray';
 import 'rxjs/add/operator/withLatestFrom';
-import 'rxjs/add/observable/of';
 
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
-// error TS4029: https://github.com/Microsoft/TypeScript/issues/5938
-// tslint:disable-next-line:no-unused-variable
-import { Observable } from 'rxjs/Observable';
 
-import * as textItemActions from '../actions/text-item.action';
-
-import { TextItem } from '../models';
-// import { AngularFire, } from 'angularfire2';
 import { AngularFireDatabase } from 'angularfire2/database';
 
-import { State } from '../reducers';
+import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+
+import {
+  LoadCollectionSuccessAction,
+  TextItemActionTypes,
+} from '../actions/text-item.action';
+import { TextItem } from '../models';
+import { State } from '../reducers';
 
 @Injectable()
 export class TextItemEffects {
@@ -36,7 +35,7 @@ export class TextItemEffects {
 
   @Effect()
   loadCollection$ = this.actions$
-    .ofType(textItemActions.LOAD_COLLECTION)
+    .ofType(TextItemActionTypes.LoadCollection)
     // This will cause the effect to run once immediately on startup
     // .startWith(new LoadCollectionAction())
     .do((x) => {
@@ -50,10 +49,7 @@ export class TextItemEffects {
     .do((x) => {
       console.log('Effect:loadCollection$:B', x);
     })
-    .map(
-      (textItems: TextItem[]) =>
-        new textItemActions.LoadCollectionSuccessAction(textItems)
-    );
+    .map((textItems: TextItem[]) => new LoadCollectionSuccessAction(textItems));
 }
 
 //   .withLatestFrom(this.store.select('masterGain'))

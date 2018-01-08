@@ -80,7 +80,7 @@ export class MyApp {
         this.rootPage = HomePage;
 
         this.store.dispatch(
-          new LoginActions.RestoreAuthenticationAction({
+          new LoginActions.RestoreAuthentication({
             displayName: authState.displayName,
             email: authState.email,
             isAnonymous: authState.isAnonymous,
@@ -134,7 +134,7 @@ export class MyApp {
       // Give the menu time to close before changing to logged out
       setTimeout(() => {
         // this.userData.logout();
-        this.store.dispatch(new LoginActions.LogoutAction());
+        this.store.dispatch(new LoginActions.Logout());
         this.afAuth.auth.signOut();
       }, 1000);
     }

@@ -1,5 +1,7 @@
-import * as textItemActions from '../actions/text-item.action';
-
+import {
+  TextItemActions,
+  TextItemActionTypes,
+} from '../actions/text-item.action';
 import { TextItem } from '../models';
 
 export interface State {
@@ -14,19 +16,16 @@ const initialState: State = {
   textItems: [],
 };
 
-export function reducer(
-  state = initialState,
-  action: textItemActions.Actions
-): State {
+export function reducer(state = initialState, action: TextItemActions): State {
   switch (action.type) {
-    case textItemActions.LOAD_COLLECTION: {
+    case TextItemActionTypes.LoadCollection: {
       return {
         ...state,
         loading: true,
       };
     }
 
-    case textItemActions.LOAD_COLLECTION_SUCCESS: {
+    case TextItemActionTypes.LoadCollectionSuccess: {
       const books: TextItem[] = action.payload;
 
       return {

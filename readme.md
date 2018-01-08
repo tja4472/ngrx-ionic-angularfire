@@ -9,28 +9,20 @@ Started using sidemenu template
 ionic start my-side-menu sidemenu --v2
 ```
 
-## Changes required
-See: https://github.com/danbucholtz/ionic-rollup-angularfire2
-
-Using CommonJS modules with rollup: 
-https://github.com/driftyco/ionic-app-scripts/issues/16
-
-http://ionicframework.com/docs/v2/resources/app-scripts/
-
-http://ionicframework.com/docs/v2/resources/third-party-libs/
-
 ### my-firebase-app-config.ts
 ``` typescript
-import {
-    FirebaseAppConfig
-} from 'angularfire2';
+import { FirebaseAppConfig } from 'angularfire2';
 
-export class MyFirebaseAppConfig {
-    static config: FirebaseAppConfig = {
-    apiKey: 'xxxxx',
-    authDomain: 'xxxxx',
-    databaseURL: 'xxxxx',
-    storageBucket: 'xxxxxx''
-  };
-}
+export const MyFirebaseAppConfig: Readonly<FirebaseAppConfig> = {
+  apiKey: 'xxxxxx',
+  authDomain: 'xxxxxx',
+  databaseURL: 'xxxxxx',
+  storageBucket: 'xxxxxx',
+};
 ```
+## ngrx 4.1.1
+### Actions
+Using [example-app/book.ts](https://github.com/ngrx/platform/blob/master/example-app/app/books/actions/book.ts) as pattern.
+
+[Action doc](https://github.com/ngrx/platform/blob/master/docs/store/actions.md)
+

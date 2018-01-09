@@ -20,9 +20,28 @@ export const MyFirebaseAppConfig: Readonly<FirebaseAppConfig> = {
   storageBucket: 'xxxxxx',
 };
 ```
+## State
+- collection
+  - loaded
+  - loading
+  - textItems
+    - 0
+      - description
+      - title 
+    - 1
+      - description
+      - title       
+- login
+  - displayName
+  - isAuthenticated
+  - isAuthenticating
+  - error
+
 ## ngrx 4.1.1
 ### Actions
 Using [example-app/book.ts](https://github.com/ngrx/platform/blob/master/example-app/app/books/actions/book.ts) as pattern.
 
 [Action doc](https://github.com/ngrx/platform/blob/master/docs/store/actions.md)
+### Reducers
+https://github.com/ngrx/platform/blob/master/example-app/app/auth/reducers/auth.ts
 

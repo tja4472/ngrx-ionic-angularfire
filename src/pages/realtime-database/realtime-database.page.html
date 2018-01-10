@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Realtime Database</ion-title>
+        <ion-buttons end>
+            <button ion-button
+                    icon-end
+                    outline
+                    (click)="viewAdd()">
+                Add
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-row>
+        <ion-list>
+            <ion-item *ngFor="let item of (textItem$ | async)">
+                <div>{{item.title}}</div>
+                <p>{{item.description}}</p>
+                <button ion-button
+                        (click)="viewEdit(item)">Edit</button>
+                <button ion-button
+                        color="danger"
+                        (click)="viewDelete(item)">delete</button>
+            </ion-item>
+        </ion-list>
+    </ion-row>
+</ion-content>

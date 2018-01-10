@@ -23,6 +23,7 @@ import { SignupPage } from '../pages/signup/signup.page';
 import { reducers } from '../reducers';
 import { MyApp } from './app.component';
 import { MyFirebaseAppConfig } from './my-firebase-app-config';
+import { RealtimeDatabasePage } from "../pages/realtime-database/realtime-database.page";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
     Page2,
     HomePage,
     LoginPage,
+    RealtimeDatabasePage,
     SignupPage,
   ],
   imports: [
@@ -46,7 +48,7 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
     EffectsModule.forRoot([LoginEffects, TextItemEffects]),
   ],
   bootstrap: [IonicApp],
-  entryComponents: [MyApp, Page1, Page2, HomePage, LoginPage, SignupPage],
+  entryComponents: [MyApp, Page1, Page2, HomePage, LoginPage, RealtimeDatabasePage, SignupPage],
   providers: [
     StatusBar,
     { provide: ErrorHandler, useClass: IonicErrorHandler },

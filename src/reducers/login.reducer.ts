@@ -101,11 +101,17 @@ function makeDisplayName(user: {
   displayName: string | null;
   email: string | null;
 }) {
-  if (user.isAnonymous) { return 'Anonymous'; }
+  if (user.isAnonymous) {
+    return 'Anonymous';
+  }
 
-  if (user.displayName) { return user.displayName; }
+  if (user.displayName) {
+    return user.displayName;
+  }
 
-  if (user.email) { return user.email; }
+  if (user.email) {
+    return user.email;
+  }
   return '';
 }
 

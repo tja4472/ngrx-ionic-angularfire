@@ -2,21 +2,27 @@
 // import { ActionReducer } from '@ngrx/store';
 // import { compose } from '@ngrx/core/compose';
 // import { storeLogger } from 'ngrx-store-logger';
-// import { storeFreeze } from 'ngrx-store-freeze';
-import { ActionReducerMap, createSelector } from '@ngrx/store';
+import { ActionReducerMap, createSelector, MetaReducer } from '@ngrx/store';
+import { storeFreeze } from 'ngrx-store-freeze';
 
+import * as fromWidget from '../widget/widget.reducer';
 import * as fromCollection from './collection';
 import * as fromLogin from './login.reducer';
+
 
 export interface State {
   collection: fromCollection.State;
   login: fromLogin.State;
+  widget: fromWidget.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
   collection: fromCollection.reducer,
   login: fromLogin.reducer,
+  widget: fromWidget.reducer,
 };
+
+export const metaReducers: Array<MetaReducer<State>> = [storeFreeze];
 
 //const developmentReducer: ActionReducer<State> = compose(storeFreeze, storeLogger(), combineReducers)(reducers);
 // const productionReducer: ActionReducer<State> = combineReducers(reducers);
@@ -66,4 +72,18 @@ export const getLoginIsAuthenticated = createSelector(
 export const getLoginIsAuthenticating = createSelector(
   getLoginState,
   fromLogin.getIsAuthenticating
+);
+//
+export const getWidgetState = (state: State) => state.widget;
+
+export const selectWidgetIds = createSelector(getWidgetState, fromWidget.selectWidgetIds);
+export const selectWidgetEntities = createSelector(getWidgetState, fromWidget.selectWidgetEntities);
+export const selectAllWidgets = createSelector(getWidgetState, fromWidget.selectAllWidgets);
+export const selectWidgetTotal = createSelector(getWidgetState, fromWidget.selectWidgetTotal);
+export const selectCurrentWidgetId = createSelector(getWidgetState, fromWidget.getSelectedWidgetId);
+
+export const selectCurrentWidget = createSelector(
+  selectWidgetEntities,
+  selectCurrentWidgetId,
+  (widgetEntities, widgetId) => widgetEntities[widgetId]
 );

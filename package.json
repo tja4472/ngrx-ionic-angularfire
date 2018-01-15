@@ -41,6 +41,7 @@
   "devDependencies": {
     "@ionic/app-scripts": "3.1.7",
     "prettier": "1.9.2",
+    "ngrx-store-freeze": "0.2.0",
     "typescript": "2.4.2"
   },
   "description": "my-side-menu: An Ionic project",

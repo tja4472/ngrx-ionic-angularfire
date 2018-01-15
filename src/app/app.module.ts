@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { EffectsModule } from '@ngrx/effects';
@@ -20,13 +21,20 @@ import { LoginPage } from '../pages/login/login.page';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import { SignupPage } from '../pages/signup/signup.page';
-import { reducers } from '../reducers';
+import { metaReducers, reducers } from '../reducers';
 import { MyApp } from './app.component';
 import { MyFirebaseAppConfig } from './my-firebase-app-config';
-import { RealtimeDatabasePage } from "../pages/realtime-database/realtime-database.page";
+import { RealtimeDatabasePage } from '../pages/realtime-database/realtime-database.page';
+import { WidgetListPage } from '../widget/pages/widget-list/widget-list.page';
+import { WidgetService } from '../widget/widget.service';
+import { WidgetDetailModal } from '../widget/modals/widget-detail/widget-detail.modal';
+import { WidgetDataService } from '../widget/widget.data.service';
+import { WidgetEffects } from '../widget/widget.effect';
 
 @NgModule({
   declarations: [
+    WidgetDetailModal,
+    WidgetListPage,
     Error,
     ExampleList,
     MyApp,
@@ -43,15 +51,28 @@ import { RealtimeDatabasePage } from "../pages/realtime-database/realtime-databa
     AngularFireModule.initializeApp(MyFirebaseAppConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    StoreModule.forRoot(reducers),
+    AngularFirestoreModule.enablePersistence(),    
+    StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument(),
-    EffectsModule.forRoot([LoginEffects, TextItemEffects]),
+    EffectsModule.forRoot([LoginEffects, TextItemEffects, WidgetEffects]),
   ],
   bootstrap: [IonicApp],
-  entryComponents: [MyApp, Page1, Page2, HomePage, LoginPage, RealtimeDatabasePage, SignupPage],
+  entryComponents: [
+    WidgetDetailModal,
+    WidgetListPage,
+    MyApp,
+    Page1,
+    Page2,
+    HomePage,
+    LoginPage,
+    RealtimeDatabasePage,
+    SignupPage,
+  ],
   providers: [
     StatusBar,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    WidgetDataService,
+    WidgetService,
   ],
 })
 export class AppModule {}

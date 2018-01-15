@@ -45,3 +45,5 @@ Using [example-app/book.ts](https://github.com/ngrx/platform/blob/master/example
 ### Reducers
 https://github.com/ngrx/platform/blob/master/example-app/app/auth/reducers/auth.ts
 
+https://github.com/ngrx/platform/blob/master/docs/entity/adapter.md#createentityadapter
+

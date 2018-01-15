@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
-import { TextItem } from '../../models';
+import { ITextItem } from '../../models';
 
 export type IsFetchingInput = boolean;
-export type PostsInput = TextItem[];
+export type PostsInput = ITextItem[];
 
 @Component({
   selector: 'example-list',

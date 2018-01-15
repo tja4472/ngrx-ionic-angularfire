@@ -39,9 +39,9 @@ export class WidgetDetailModal {
     console.log('navParams.data>', navParams.data);
     console.log('navParams.get("item")>', navParams.get('item'));
 
-    let paramItem: IWidget = navParams.get('item');
+    const paramItem: IWidget = navParams.get('item');
 
-    if (paramItem == undefined) {
+    if (paramItem === undefined) {
       // new item.
       this.formItem = { id: '', description: '', name: '' };
     } else {
@@ -57,7 +57,7 @@ export class WidgetDetailModal {
     // a.description = 'GGGGGGGGGGGG';
     console.log('navParamsTodo>', navParamsTodo);
 
-    /*    
+    /*
     const navParamsTodo: Readonly<IWidget> = Object.assign(new TodoListsItem(), navParams.get('todo'));
     console.log('navParamsTodo>', navParamsTodo);
     console.log('navParamsTodo.isNew()>', navParamsTodo.isNew());
@@ -83,7 +83,7 @@ export class WidgetDetailModal {
 
   public viewCancel() {
     console.log('viewCancel>');
-    let result: IModalResult = { save: false };
+    const result: IModalResult = { save: false };
 
     this.viewController.dismiss(result);
   }
@@ -99,7 +99,7 @@ export class WidgetDetailModal {
     console.log('this.formItem>', this.formItem);
 
     const editedItem: IWidget = { ...this.formItem, ...this.viewForm.value };
-    let result: IModalResult = { save: true, item: editedItem };
+    const result: IModalResult = { save: true, item: editedItem };
     this.viewController.dismiss(result);
   }
 }

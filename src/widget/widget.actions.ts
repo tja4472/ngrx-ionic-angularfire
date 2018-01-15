@@ -1,3 +1,4 @@
+// tslint:disable:max-classes-per-file
 import { Action } from '@ngrx/store';
 // ngrx v5 import { Update } from '@ngrx/entity';
 import { IWidget } from './widget.model';
@@ -20,27 +21,27 @@ export enum WidgetActionTypes {
   CLEAR_WIDGETS = '[Widget] Clear Widgets',
 }
 //
-export class A_DeleteItem implements Action {
+export class DeleteItem implements Action {
   readonly type = WidgetActionTypes.A_DELETE_ITEM;
 
   constructor(public payload: { id: string }) {}
 }
 
-export class A_ListenForData implements Action {
+export class AListenForData implements Action {
   readonly type = WidgetActionTypes.A_LISTEN_FOR_DATA;
 }
 
-export class A_LoadSuccess implements Action {
+export class ALoadSuccess implements Action {
   readonly type = WidgetActionTypes.A_LOAD_SUCCESS;
 
   constructor(public payload: { widgets: IWidget[] }) {}
 }
 
-export class A_UnlistenForData implements Action {
+export class AUnlistenForData implements Action {
   readonly type = WidgetActionTypes.A_UNLISTEN_FOR_DATA;
 }
 
-export class A_UpsertItem implements Action {
+export class AUpsertItem implements Action {
   readonly type = WidgetActionTypes.A_UPSERT_ITEM;
 
   constructor(public payload: { item: IWidget }) {}
@@ -70,7 +71,7 @@ export class UpdateWidget implements Action {
   constructor(public payload: { widget: { id: string; changes: IWidget } }) {}
 }
 
-/* ngrx v5 
+/* ngrx v5
 export class UpdateWidget implements Action {
   readonly type = WidgetActionTypes.UPDATE_WIDGET;
 
@@ -101,7 +102,7 @@ export class ClearWidgets implements Action {
 }
 
 export type WidgetActions =
-  | A_LoadSuccess
+  | ALoadSuccess
   | LoadWidgets
   | AddWidget
   | AddWidgets

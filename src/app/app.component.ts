@@ -24,7 +24,7 @@ import './rxjs-operators';
 import { RealtimeDatabasePage } from '../pages/realtime-database/realtime-database.page';
 import { WidgetListPage } from '../widget/pages/widget-list/widget-list.page';
 
-export interface PageInterface {
+export interface IPageInterface {
   title: string;
   component: any;
   // icon: string;
@@ -41,7 +41,7 @@ export class MyApp {
 
   // rootPageAA: any = Page1;
   rootPage: any;
-  pages: Array<PageInterface>;
+  pages: IPageInterface[];
 
   loginState$: any;
   // private subscription;
@@ -50,7 +50,7 @@ export class MyApp {
     public afAuth: AngularFireAuth,
     public platform: Platform,
     public statusBar: StatusBar,
-    private store: Store<FromRoot.State>
+    private store: Store<FromRoot.IState>
   ) {
     //
     console.log('MyApp:constructor');
@@ -76,7 +76,7 @@ export class MyApp {
       // af.auth.unsubscribe();
 
       console.log('af.auth.subscribe:authState>', authState);
-      let authenticated: boolean = !!authState;
+      const authenticated: boolean = !!authState;
 
       console.log('authenticated:', authenticated);
       // this.rootPage = HomePage;
@@ -109,12 +109,12 @@ export class MyApp {
           this.store
             .let(FromRoot.getLoginState)
             .subscribe(loginState => {
-              // Triggered when loginState changes. 
+              // Triggered when loginState changes.
               // i.e. when user logs in or logs out.
               console.log('loginState>', loginState);
               console.log('loginState.isAuthorized>', loginState.isAuthenticated);
               // this.enableMenu(loginState.isAuthenticated);
-    
+
               /*
                         if (loginState.isAuthorized) {
                           this.rootPage = HomePage;
@@ -127,7 +127,7 @@ export class MyApp {
     */
   }
 
-  openPage(page: PageInterface) {
+  openPage(page: IPageInterface) {
     console.log('openPage');
 
     // Reset the content nav to have just this page

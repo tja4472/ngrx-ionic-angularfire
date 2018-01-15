@@ -2,7 +2,7 @@
 // tslint:disable:no-empty
 import { Action } from '@ngrx/store';
 
-import { TextItem } from '../models';
+import { ITextItem } from '../models';
 
 export enum TextItemActionTypes {
   LoadCollection = '[TextItem] Load Collection',
@@ -18,7 +18,7 @@ export class LoadCollectionAction implements Action {
 export class LoadCollectionSuccessAction implements Action {
   readonly type = TextItemActionTypes.LoadCollectionSuccess;
 
-  constructor(public payload: TextItem[]) {}
+  constructor(public payload: ITextItem[]) {}
 }
 
 export type TextItemActions =

@@ -9,21 +9,21 @@ import * as fromWidget from '../widget/widget.reducer';
 import * as fromCollection from './collection';
 import * as fromLogin from './login.reducer';
 
-export interface State {
-  collection: fromCollection.State;
-  login: fromLogin.State;
-  widget: fromWidget.State;
+export interface IState {
+  collection: fromCollection.IState;
+  login: fromLogin.IState;
+  widget: fromWidget.IState;
 }
 
-export const reducers: ActionReducerMap<State> = {
+export const reducers: ActionReducerMap<IState> = {
   collection: fromCollection.reducer,
   login: fromLogin.reducer,
   widget: fromWidget.reducer,
 };
 
-export const metaReducers: Array<MetaReducer<State>> = [storeFreeze];
+export const metaReducers: Array<MetaReducer<IState>> = [storeFreeze];
 
-//const developmentReducer: ActionReducer<State> = compose(storeFreeze, storeLogger(), combineReducers)(reducers);
+// const developmentReducer: ActionReducer<State> = compose(storeFreeze, storeLogger(), combineReducers)(reducers);
 // const productionReducer: ActionReducer<State> = combineReducers(reducers);
 
 /*
@@ -42,7 +42,7 @@ export function reducer(state: any, action: any) {
   return developmentReducer(state, action);
 }
 */
-export const getCollectionState = (state: State) => state.collection;
+export const getCollectionState = (state: IState) => state.collection;
 
 export const getCollectionLoaded = createSelector(
   getCollectionState,
@@ -57,7 +57,7 @@ export const getCollectionTextItems = createSelector(
   fromCollection.getTextItems
 );
 //
-export const getLoginState = (state: State) => state.login;
+export const getLoginState = (state: IState) => state.login;
 
 export const getLoginDisplayName = createSelector(
   getLoginState,
@@ -73,7 +73,7 @@ export const getLoginIsAuthenticating = createSelector(
   fromLogin.getIsAuthenticating
 );
 //
-export const getWidgetState = (state: State) => state.widget;
+export const getWidgetState = (state: IState) => state.widget;
 
 export const selectWidgetIds = createSelector(
   getWidgetState,

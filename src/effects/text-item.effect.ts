@@ -22,17 +22,18 @@ import {
   LoadCollectionSuccessAction,
   TextItemActionTypes,
 } from '../actions/text-item.action';
-import { TextItem } from '../models';
-import { State } from '../reducers';
+import { ITextItem } from '../models';
+import { IState } from '../reducers';
 
 @Injectable()
 export class TextItemEffects {
   constructor(
     private actions$: Actions,
-    private state$: Store<State>,
+    private state$: Store<IState>,
     public afDb: AngularFireDatabase
   ) {}
 
+  // tslint:disable-next-line:member-ordering
   @Effect()
   loadCollection$ = this.actions$
     .ofType(TextItemActionTypes.LoadCollection)
@@ -43,13 +44,15 @@ export class TextItemEffects {
     })
     .withLatestFrom(this.state$)
     // tslint:disable-next-line:no-unused-variable
-    .filter(([action, state]) => (<State>state).login.isAuthenticated)
+    .filter(([action, state]) => (state as IState).login.isAuthenticated)
     // Watch database node and get TextItems.
     .switchMap(() => this.afDb.list('/textItems').valueChanges())
     .do((x) => {
       console.log('Effect:loadCollection$:B', x);
     })
-    .map((textItems: TextItem[]) => new LoadCollectionSuccessAction(textItems));
+    .map(
+      (textItems: ITextItem[]) => new LoadCollectionSuccessAction(textItems)
+    );
 }
 
 //   .withLatestFrom(this.store.select('masterGain'))
@@ -111,5 +114,5 @@ export class UserService implements OnDestroy {
     .switchMap((updatedNote:Note) => this.notesDataService.addOrUpdateNote(updatedNote)
       .map((responseNote:Note) => ({ type: "UPDATE_NOTE_FROM_SERVER", payload: { note: responseNote } }))
       .catch(() => Observable.of({ type: "UPDATE_FAILED" }))
-    )    
+    )
 */

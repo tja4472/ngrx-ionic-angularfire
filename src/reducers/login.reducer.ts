@@ -1,20 +1,20 @@
 import { LoginActions, LoginActionTypes } from '../actions/login.action';
 
-export interface State {
+export interface IState {
   displayName: string;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   error: any;
 }
 
-const initialState: State = {
+const initialState: IState = {
   displayName: '',
   isAuthenticated: false,
   isAuthenticating: false,
   error: null,
 };
 
-export function reducer(state = initialState, action: LoginActions): State {
+export function reducer(state = initialState, action: LoginActions): IState {
   switch (action.type) {
     case LoginActionTypes.GoogleAuthentication: {
       return {
@@ -68,27 +68,27 @@ export function reducer(state = initialState, action: LoginActions): State {
     /*
                 case LoginActions.ANONYMOUS_AUTHENTICATION_SUCCESS: {
                     let user: FirebaseAuthState = action.payload;
-        
+
                     return Object.assign({}, state, {
                         error: null,
                         displayName: 'Anonymous',
                         isAuthenticated: true,
                         isAuthenticating: false
                     });
-                } 
+                }
         */
     /*
-                case LoginActions.CREATE_USER_SUCCESS:  
+                case LoginActions.CREATE_USER_SUCCESS:
                 case LoginActions.EMAIL_AUTHENTICATION_SUCCESS: {
                     let user: FirebaseAuthState = action.payload;
-        
+
                     return Object.assign({}, state, {
                         error: null,
                         displayName: user.auth.email,
                         isAuthenticated: true,
                         isAuthenticating: false
                     });
-                }        
+                }
         */
     default: {
       return state;
@@ -101,15 +101,15 @@ function makeDisplayName(user: {
   displayName: string | null;
   email: string | null;
 }) {
-  if (user.isAnonymous) return 'Anonymous';
+  if (user.isAnonymous) { return 'Anonymous'; }
 
-  if (user.displayName) return user.displayName;
+  if (user.displayName) { return user.displayName; }
 
-  if (user.email) return user.email;
+  if (user.email) { return user.email; }
   return '';
 }
 
-export const getDisplayName = (state: State) => state.displayName;
-export const getError = (state: State) => state.error;
-export const getIsAuthenticated = (state: State) => state.isAuthenticated;
-export const getIsAuthenticating = (state: State) => state.isAuthenticating;
+export const getDisplayName = (state: IState) => state.displayName;
+export const getError = (state: IState) => state.error;
+export const getIsAuthenticated = (state: IState) => state.isAuthenticated;
+export const getIsAuthenticating = (state: IState) => state.isAuthenticating;

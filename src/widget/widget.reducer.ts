@@ -2,19 +2,19 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { IWidget } from './widget.model';
 import { WidgetActions, WidgetActionTypes } from './widget.actions';
 
-export interface State extends EntityState<IWidget> {
+export interface IState extends EntityState<IWidget> {
   // additional entities state properties
   selectedWidgetId: string;
 }
 
 export const adapter: EntityAdapter<IWidget> = createEntityAdapter<IWidget>();
 
-export const initialState: State = adapter.getInitialState({
+export const initialState: IState = adapter.getInitialState({
   // additional entity state properties
   selectedWidgetId: '',
 });
 
-export function reducer(state = initialState, action: WidgetActions): State {
+export function reducer(state = initialState, action: WidgetActions): IState {
   switch (action.type) {
     case WidgetActionTypes.ADD_WIDGET: {
       return adapter.addOne(action.payload.widget, state);
@@ -27,7 +27,7 @@ export function reducer(state = initialState, action: WidgetActions): State {
     case WidgetActionTypes.UPDATE_WIDGET: {
       return adapter.updateOne(action.payload.widget, state);
     }
-    /* ngrx v5 
+    /* ngrx v5
     case WidgetActionTypes.UPDATE_WIDGET: {
       return adapter.updateOne(action.payload.widget, state);
     }
@@ -62,7 +62,7 @@ export function reducer(state = initialState, action: WidgetActions): State {
   }
 }
 
-export const getSelectedWidgetId = (state: State) => state.selectedWidgetId;
+export const getSelectedWidgetId = (state: IState) => state.selectedWidgetId;
 
 export const {
   // select the array of widget ids

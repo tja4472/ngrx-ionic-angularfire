@@ -15,7 +15,7 @@ export class RealtimeDatabasePage implements OnInit {
 
   constructor(
     // private textItemEffects: TextItemEffects,
-    private store: Store<fromRoot.State>
+    private store: Store<fromRoot.IState>
   ) {
     this.isFetching$ = store.select(fromRoot.getCollectionLoading);
     this.textItem$ = store.select(fromRoot.getCollectionTextItems);
@@ -23,7 +23,9 @@ export class RealtimeDatabasePage implements OnInit {
     // this.effectsSubscription = textItemEffects.loadCollection$.subscribe(store);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    //
+  }
 
   public viewAdd(): void {
     console.log('viewAdd');

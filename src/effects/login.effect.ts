@@ -31,7 +31,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 // Do not import from 'firebase' as you'd lose the tree shaking benefits
 import * as firebase from 'firebase/app';
 
-import { State } from '../reducers';
+import { IState } from '../reducers';
 import { Store } from '@ngrx/store';
 import {
   LoginActionTypes,
@@ -45,13 +45,13 @@ import {
 export class LoginEffects {
   constructor(
     private actions$: Actions,
-    private state$: Store<State>,
+    private state$: Store<IState>,
     public af: AngularFireAuth
   ) {}
 
   // https://gitter.im/ngrx/store?at=57f1bf01b0ff456d3adca786
   // But this link gives typescript promise errors.
-
+  // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
   anonymousAuthentication$ = this.actions$
     .ofType(LoginActionTypes.AnonymousAuthentication)
@@ -72,6 +72,7 @@ export class LoginEffects {
         )
     );
 
+  // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
   createUser$ = this.actions$
     .ofType(LoginActionTypes.CreateUser)

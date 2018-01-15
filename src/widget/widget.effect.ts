@@ -8,10 +8,10 @@ import { empty } from 'rxjs/observable/empty';
 import * as FromRootReducer from '../reducers';
 import { WidgetDataService } from './widget.data.service';
 import {
-  A_DeleteItem,
-  A_LoadSuccess,
+  DeleteItem,
+  ALoadSuccess,
   WidgetActionTypes,
-  A_UpsertItem,
+  AUpsertItem,
 } from './widget.actions';
 import { IWidget } from './widget.model';
 
@@ -19,7 +19,7 @@ import { IWidget } from './widget.model';
 export class WidgetEffects {
   constructor(
     private actions$: Actions,
-    private state$: Store<FromRootReducer.State>,
+    private state$: Store<FromRootReducer.IState>,
     private dataService: WidgetDataService
   ) {}
 
@@ -27,7 +27,7 @@ export class WidgetEffects {
   @Effect({ dispatch: false })
   deleteItem$ = this.actions$
     .ofType(WidgetActionTypes.A_DELETE_ITEM)
-    .map((action: A_DeleteItem) => action.payload)
+    .map((action: DeleteItem) => action.payload)
     .do((payload) => {
       console.log('Effect:deleteItem$:A', payload);
       this.dataService.deleteItem(payload.id);
@@ -55,13 +55,13 @@ export class WidgetEffects {
     .do((x) => {
       console.log('Effect:listenForData$:B', x);
     })
-    .map((items: IWidget[]) => new A_LoadSuccess({ widgets: items }));
+    .map((items: IWidget[]) => new ALoadSuccess({ widgets: items }));
 
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
   upsertItem$ = this.actions$
     .ofType(WidgetActionTypes.A_UPSERT_ITEM)
-    .map((action: A_UpsertItem) => action.payload)
+    .map((action: AUpsertItem) => action.payload)
     .do((payload) => {
       console.log('Effect:upsertItem$:A', payload);
       this.dataService.upsertItem(payload.item);

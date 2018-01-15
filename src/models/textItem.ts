@@ -1,4 +1,4 @@
-export interface TextItem {
+export interface ITextItem {
   $key: string;
   description: string;
   timestamp: number;

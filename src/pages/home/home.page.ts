@@ -25,7 +25,7 @@ export class HomePage implements OnInit {
 
   constructor(
     // private textItemEffects: TextItemEffects,
-    private store: Store<fromRoot.State>
+    private store: Store<fromRoot.IState>
   ) {
     this.isFetching$ = store.select(fromRoot.getCollectionLoading);
     this.posts$ = store.select(fromRoot.getCollectionTextItems);
@@ -44,7 +44,7 @@ export class HomePage implements OnInit {
     //
     // set val to the value of the ev target
     console.log('doSearch');
-    var val = ev.target.value;
+    const val = ev.target.value;
 
     // if the value is an empty string don't filter the items
     if (val && val.trim() !== '') {

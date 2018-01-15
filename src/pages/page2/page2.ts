@@ -37,9 +37,9 @@ export class Page2 {
     this.items = [];
     for (let i = 1; i < 11; i++) {
       this.items.push({
-        title: 'Item ' + i,
-        note: 'This is item #' + i,
         icon: this.icons[Math.floor(Math.random() * this.icons.length)],
+        note: 'This is item #' + i,
+        title: 'Item ' + i,
       });
     }
   }
@@ -47,7 +47,7 @@ export class Page2 {
   itemTapped(event: Event, item: ItemInterface) {
     // That's right, we're pushing to ourselves!
     this.navCtrl.push(Page2, {
-      item: item,
+      item,
     });
   }
 }

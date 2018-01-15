@@ -7,15 +7,15 @@ import * as FromRootReducer from '../reducers/index';
 import { IWidget } from './widget.model';
 import {
   AddWidget,
-  A_DeleteItem,
-  A_ListenForData,
-  A_UpsertItem,
+  DeleteItem,
+  AListenForData,
+  AUpsertItem,
   UpdateWidget,
 } from './widget.actions';
 
 @Injectable()
 export class WidgetService {
-  constructor(private store: Store<FromRootReducer.State>) {
+  constructor(private store: Store<FromRootReducer.IState>) {
     this.ListenForData();
   }
 
@@ -24,7 +24,7 @@ export class WidgetService {
   }
 
   public ListenForData(): void {
-    this.store.dispatch(new A_ListenForData());
+    this.store.dispatch(new AListenForData());
   }
 
   public add(item: IWidget) {
@@ -33,7 +33,7 @@ export class WidgetService {
   }
 
   public deleteItem(item: IWidget) {
-    this.store.dispatch(new A_DeleteItem({ id: item.id }));
+    this.store.dispatch(new DeleteItem({ id: item.id }));
   }
 
   public update(item: IWidget) {
@@ -43,7 +43,7 @@ export class WidgetService {
   }
 
   public upsert(item: IWidget) {
-    this.store.dispatch(new A_UpsertItem({ item }));
+    this.store.dispatch(new AUpsertItem({ item }));
     /*
     if (item.id === '') {
       this.add(item);

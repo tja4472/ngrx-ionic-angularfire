@@ -17,6 +17,7 @@ export const MyFirebaseAppConfig: Readonly<FirebaseAppConfig> = {
   apiKey: 'xxxxxx',
   authDomain: 'xxxxxx',
   databaseURL: 'xxxxxx',
+  projectId: 'xxxxxx',
   storageBucket: 'xxxxxx',
 };
 ```
@@ -36,6 +37,21 @@ export const MyFirebaseAppConfig: Readonly<FirebaseAppConfig> = {
   - isAuthenticated
   - isAuthenticating
   - error
+- widget
+  - ids
+    - 0: "aa"
+    - 1: "bb"
+  - entities
+    - aa
+      - description
+      - id
+      - name
+    - bb
+      - description
+      - id
+      - name
+  - selectedWidgetId
+
 
 ## ngrx 4.1.1
 ### Actions

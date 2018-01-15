@@ -51,7 +51,7 @@ import { WidgetEffects } from '../widget/widget.effect';
     AngularFireModule.initializeApp(MyFirebaseAppConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFirestoreModule.enablePersistence(),    
+    AngularFirestoreModule.enablePersistence(),
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument(),
     EffectsModule.forRoot([LoginEffects, TextItemEffects, WidgetEffects]),

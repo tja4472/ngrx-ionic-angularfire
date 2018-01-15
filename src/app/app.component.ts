@@ -21,8 +21,8 @@ import * as firebase from 'firebase/app';
 
 // Add the RxJS Observable operators we need in this app.
 import './rxjs-operators';
-import { RealtimeDatabasePage } from "../pages/realtime-database/realtime-database.page";
-import { WidgetListPage } from "../widget/pages/widget-list/widget-list.page";
+import { RealtimeDatabasePage } from '../pages/realtime-database/realtime-database.page';
+import { WidgetListPage } from '../widget/pages/widget-list/widget-list.page';
 
 export interface PageInterface {
   title: string;
@@ -63,8 +63,8 @@ export class MyApp {
       { title: 'Page One', component: Page1 },
       { title: 'Page Two', component: Page2 },
       { title: 'Page Home', component: HomePage },
-      { title: 'Widgets(Cloud Firestore)', component: WidgetListPage},      
-      { title: 'Realtime Database', component: RealtimeDatabasePage},
+      { title: 'Widgets(Cloud Firestore)', component: WidgetListPage },
+      { title: 'Realtime Database', component: RealtimeDatabasePage },
       { title: 'Page Login', component: LoginPage },
       { title: 'Page Signup', component: SignupPage },
       { title: 'Logout', component: Page1 },

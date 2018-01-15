@@ -6,8 +6,8 @@ export enum WidgetActionTypes {
   //
   A_DELETE_ITEM = '[Widget] Delete Item',
   A_LISTEN_FOR_DATA = '[Widget] Listen For Data',
-  A_LOAD_SUCCESS = '[Widget] Load Success',  
-  A_UNLISTEN_FOR_DATA = '[Widget] Unlisten For Data',  
+  A_LOAD_SUCCESS = '[Widget] Load Success',
+  A_UNLISTEN_FOR_DATA = '[Widget] Unlisten For Data',
   A_UPSERT_ITEM = '[Widget] Upsert item',
   //
   LOAD_WIDGETS = '[Widget] Load Widgets',
@@ -33,7 +33,7 @@ export class A_ListenForData implements Action {
 export class A_LoadSuccess implements Action {
   readonly type = WidgetActionTypes.A_LOAD_SUCCESS;
 
-  constructor(public payload: { widgets: IWidget[] }) { }  
+  constructor(public payload: { widgets: IWidget[] }) {}
 }
 
 export class A_UnlistenForData implements Action {
@@ -67,7 +67,7 @@ export class AddWidgets implements Action {
 export class UpdateWidget implements Action {
   readonly type = WidgetActionTypes.UPDATE_WIDGET;
 
-  constructor(public payload: { widget: { id: string, changes: IWidget } }) {}
+  constructor(public payload: { widget: { id: string; changes: IWidget } }) {}
 }
 
 /* ngrx v5 
@@ -101,11 +101,11 @@ export class ClearWidgets implements Action {
 }
 
 export type WidgetActions =
-A_LoadSuccess
+  | A_LoadSuccess
   | LoadWidgets
   | AddWidget
   | AddWidgets
-  | UpdateWidget  
+  | UpdateWidget
   // ngrx v5 | UpdateWidget
   // ngrx v5 | UpdateWidgets
   | DeleteWidget

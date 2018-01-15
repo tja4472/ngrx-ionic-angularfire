@@ -26,7 +26,7 @@ export function reducer(state = initialState, action: WidgetActions): State {
 
     case WidgetActionTypes.UPDATE_WIDGET: {
       return adapter.updateOne(action.payload.widget, state);
-    }    
+    }
     /* ngrx v5 
     case WidgetActionTypes.UPDATE_WIDGET: {
       return adapter.updateOne(action.payload.widget, state);

@@ -9,7 +9,6 @@ import * as fromWidget from '../widget/widget.reducer';
 import * as fromCollection from './collection';
 import * as fromLogin from './login.reducer';
 
-
 export interface State {
   collection: fromCollection.State;
   login: fromLogin.State;
@@ -76,11 +75,26 @@ export const getLoginIsAuthenticating = createSelector(
 //
 export const getWidgetState = (state: State) => state.widget;
 
-export const selectWidgetIds = createSelector(getWidgetState, fromWidget.selectWidgetIds);
-export const selectWidgetEntities = createSelector(getWidgetState, fromWidget.selectWidgetEntities);
-export const selectAllWidgets = createSelector(getWidgetState, fromWidget.selectAllWidgets);
-export const selectWidgetTotal = createSelector(getWidgetState, fromWidget.selectWidgetTotal);
-export const selectCurrentWidgetId = createSelector(getWidgetState, fromWidget.getSelectedWidgetId);
+export const selectWidgetIds = createSelector(
+  getWidgetState,
+  fromWidget.selectWidgetIds
+);
+export const selectWidgetEntities = createSelector(
+  getWidgetState,
+  fromWidget.selectWidgetEntities
+);
+export const selectAllWidgets = createSelector(
+  getWidgetState,
+  fromWidget.selectAllWidgets
+);
+export const selectWidgetTotal = createSelector(
+  getWidgetState,
+  fromWidget.selectWidgetTotal
+);
+export const selectCurrentWidgetId = createSelector(
+  getWidgetState,
+  fromWidget.getSelectedWidgetId
+);
 
 export const selectCurrentWidget = createSelector(
   selectWidgetEntities,

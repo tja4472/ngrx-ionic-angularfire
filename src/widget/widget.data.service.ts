@@ -41,11 +41,11 @@ export class WidgetDataService {
 
     this.itemsCollection.stateChanges(['modified']).subscribe((x) => {
       console.log('stateChanges-modified>', x);
-    });   
-    
+    });
+
     this.itemsCollection.stateChanges(['removed']).subscribe((x) => {
       console.log('stateChanges-removed>', x);
-    });    
+    });
   }
 
   public getData$(): Observable<IWidget[]> {

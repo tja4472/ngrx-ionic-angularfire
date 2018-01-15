@@ -24,13 +24,14 @@ export class WidgetEffects {
   ) {}
 
   // tslint:disable-next-line:member-ordering
-  @Effect({ dispatch: false }) deleteItem$ = this.actions$
-  .ofType(WidgetActionTypes.A_DELETE_ITEM)
-  .map((action: A_DeleteItem) => action.payload)
-  .do((payload) => {
-    console.log('Effect:deleteItem$:A', payload);
-    this.dataService.deleteItem(payload.id);
-  });
+  @Effect({ dispatch: false })
+  deleteItem$ = this.actions$
+    .ofType(WidgetActionTypes.A_DELETE_ITEM)
+    .map((action: A_DeleteItem) => action.payload)
+    .do((payload) => {
+      console.log('Effect:deleteItem$:A', payload);
+      this.dataService.deleteItem(payload.id);
+    });
 
   // tslint:disable-next-line:member-ordering
   @Effect()

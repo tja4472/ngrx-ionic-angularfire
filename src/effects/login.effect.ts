@@ -1,46 +1,44 @@
+import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/switchMapTo';
 import 'rxjs/add/operator/toArray';
 import 'rxjs/add/operator/withLatestFrom';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/fromPromise';
-
-import 'rxjs/add/operator/first';
 
 import { Injectable } from '@angular/core';
-import { Effect, Actions } from '@ngrx/effects';
+
+import { AngularFireAuth } from 'angularfire2/auth';
+
+import { Actions, Effect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+
+import {
+  AnonymousAuthenticationFailure,
+  CreateUser,
+  CreateUserFailure,
+  LoginActionTypes,
+  RestoreAuthentication,
+} from '../actions/login.action';
+import { IState } from '../reducers';
+
 // error TS4029: https://github.com/Microsoft/TypeScript/issues/5938
 // tslint:disable-next-line:no-unused-variable
-import { Observable } from 'rxjs/Observable';
-
 // import { LoadCollectionSuccessAction, TextItemActionTypes } from '../actions/textitem.action';
 
 // import * as loginActions from '../actions/login.action';
 
 // import { TextItem } from '../models';
 //
-import { AngularFireAuth } from 'angularfire2/auth';
 // Do not import from 'firebase' as you'd lose the tree shaking benefits
-import * as firebase from 'firebase/app';
-
-import { IState } from '../reducers';
-import { Store } from '@ngrx/store';
-import {
-  LoginActionTypes,
-  RestoreAuthentication,
-  AnonymousAuthenticationFailure,
-  CreateUser,
-  CreateUserFailure,
-} from '../actions/login.action';
-
 @Injectable()
 export class LoginEffects {
   constructor(

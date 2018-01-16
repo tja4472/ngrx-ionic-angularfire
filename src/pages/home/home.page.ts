@@ -1,16 +1,16 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import * as textItemActions from '../../actions/text-item.action';
 import {
   IsFetchingInput,
   PostsInput,
 } from '../../components/example-list/example-list.component';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import { Store } from '@ngrx/store';
-import * as fromRoot from '../../reducers';
-import * as textItemActions from '../../actions/text-item.action';
-
 import { TextItemEffects } from '../../effects/text-item.effect';
+import * as fromRoot from '../../reducers';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

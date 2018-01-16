@@ -20,16 +20,16 @@ import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
+import { RealtimeDatabasePage } from '../pages/realtime-database/realtime-database.page';
 import { SignupPage } from '../pages/signup/signup.page';
 import { metaReducers, reducers } from '../reducers';
-import { MyApp } from './app.component';
-import { MyFirebaseAppConfig } from './my-firebase-app-config';
-import { RealtimeDatabasePage } from '../pages/realtime-database/realtime-database.page';
-import { WidgetListPage } from '../widget/pages/widget-list/widget-list.page';
-import { WidgetService } from '../widget/widget.service';
 import { WidgetDetailModal } from '../widget/modals/widget-detail/widget-detail.modal';
+import { WidgetListPage } from '../widget/pages/widget-list/widget-list.page';
 import { WidgetDataService } from '../widget/widget.data.service';
 import { WidgetEffects } from '../widget/widget.effect';
+import { WidgetService } from '../widget/widget.service';
+import { MyApp } from './app.component';
+import { MyFirebaseAppConfig } from './my-firebase-app-config';
 
 @NgModule({
   declarations: [

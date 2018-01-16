@@ -4,14 +4,14 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import * as FromRootReducer from '../reducers/index';
-import { IWidget } from './widget.model';
 import {
   AddWidget,
-  DeleteItem,
   AListenForData,
   AUpsertItem,
+  DeleteItem,
   UpdateWidget,
 } from './widget.actions';
+import { IWidget } from './widget.model';
 
 @Injectable()
 export class WidgetService {

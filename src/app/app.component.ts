@@ -1,29 +1,29 @@
-import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
+import './rxjs-operators';
 
-import { Page1 } from '../pages/page1/page1';
-import { Page2 } from '../pages/page2/page2';
+import { Component, ViewChild } from '@angular/core';
+
+import { AngularFireAuth } from 'angularfire2/auth';
+
+import { StatusBar } from '@ionic-native/status-bar';
+import { Store } from '@ngrx/store';
+import * as firebase from 'firebase/app';
+import { Nav, Platform } from 'ionic-angular';
+
+import * as LoginActions from '../actions/login.action';
 import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
+import { Page1 } from '../pages/page1/page1';
+import { Page2 } from '../pages/page2/page2';
+import { RealtimeDatabasePage } from '../pages/realtime-database/realtime-database.page';
 import { SignupPage } from '../pages/signup/signup.page';
-
-import { Store } from '@ngrx/store';
 import * as FromRoot from '../reducers';
+import { WidgetListPage } from '../widget/pages/widget-list/widget-list.page';
 
 // Should be import * as LoginActions from '../actions/login.action';
 // See: https://gitter.im/ngrx/effects?at=57f3a2cbd45d7f0f52601422
-import * as LoginActions from '../actions/login.action';
 //
-import { AngularFireAuth } from 'angularfire2/auth';
 // Do not import from 'firebase' as you'd lose the tree shaking benefits
-import * as firebase from 'firebase/app';
-
 // Add the RxJS Observable operators we need in this app.
-import './rxjs-operators';
-import { RealtimeDatabasePage } from '../pages/realtime-database/realtime-database.page';
-import { WidgetListPage } from '../widget/pages/widget-list/widget-list.page';
-
 export interface IPageInterface {
   title: string;
   component: any;

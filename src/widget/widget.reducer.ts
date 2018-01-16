@@ -1,6 +1,7 @@
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { IWidget } from './widget.model';
+import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
+
 import { WidgetActions, WidgetActionTypes } from './widget.actions';
+import { IWidget } from './widget.model';
 
 export interface IState extends EntityState<IWidget> {
   // additional entities state properties

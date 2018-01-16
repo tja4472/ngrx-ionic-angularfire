@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+
 import { NavParams, ViewController } from 'ionic-angular';
-import { Validators, FormBuilder } from '@angular/forms';
+
 import { IWidget } from '../../widget.model';
 
 export interface IModalInput {

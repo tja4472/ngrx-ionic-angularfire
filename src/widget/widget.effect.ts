@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 
-import { Effect, Actions } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-
 import { empty } from 'rxjs/observable/empty';
 
 import * as FromRootReducer from '../reducers';
-import { WidgetDataService } from './widget.data.service';
 import {
-  DeleteItem,
   ALoadSuccess,
-  WidgetActionTypes,
   AUpsertItem,
+  DeleteItem,
+  WidgetActionTypes,
 } from './widget.actions';
+import { WidgetDataService } from './widget.data.service';
 import { IWidget } from './widget.model';
 
 @Injectable()

@@ -1,17 +1,19 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { WidgetService } from '../../widget.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+import { ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+
+import {
+  IModalInput,
+  IModalResult,
+  WidgetDetailModal,
+} from '../../modals/widget-detail/widget-detail.modal';
 import { IWidget } from '../../widget.model';
+import { WidgetService } from '../../widget.service';
+
 // import { Store } from '@ngrx/store';
 
 // import * as fromRoot from '../../reducers';
-import { NavController, ModalController } from 'ionic-angular';
-import {
-  WidgetDetailModal,
-  IModalResult,
-  IModalInput,
-} from '../../modals/widget-detail/widget-detail.modal';
-
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'tja-page-widget-list',

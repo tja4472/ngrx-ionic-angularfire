@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { SignupPage } from '../signup/signup.page';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../reducers';
-import * as loginActions from '../../actions/login.action';
+import { NavController } from 'ionic-angular';
 
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import * as loginActions from '../../actions/login.action';
+import * as fromRoot from '../../reducers';
+import { SignupPage } from '../signup/signup.page';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

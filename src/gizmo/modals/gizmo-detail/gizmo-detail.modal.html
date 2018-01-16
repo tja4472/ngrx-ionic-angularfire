@@ -1,0 +1,40 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons left>
+            <button ion-button
+                    (click)="viewCancel()">
+                cancel
+            </button>
+        </ion-buttons>
+        <ion-title>Gizmo</ion-title>
+        <ion-buttons end>
+            <button ion-button
+                    (click)="viewSave()"
+                    [disabled]="viewCanSave">
+                save
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content padding>
+    <form [formGroup]="viewForm"
+          novalidate>
+        <ion-list>
+            <ion-item>
+                <ion-label stacked
+                           color="primary">Name</ion-label>
+                <ion-input type="text"
+                           formControlName="name">
+                </ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-label stacked
+                           color="primary">Description</ion-label>
+                <ion-input type="text"
+                           formControlName="description">
+                </ion-input>
+            </ion-item>
+        </ion-list>
+    </form>
+</ion-content>

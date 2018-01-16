@@ -16,6 +16,11 @@ import { Error } from '../components/error/error.component';
 import { ExampleList } from '../components/example-list/example-list.component';
 import { LoginEffects } from '../effects/login.effect';
 import { TextItemEffects } from '../effects/text-item.effect';
+import { GizmoDataService } from '../gizmo/gizmo.data.service';
+import { GizmoEffects } from '../gizmo/gizmo.effect';
+import { GizmoService } from '../gizmo/gizmo.service';
+import { GizmoDetailModal } from '../gizmo/modals/gizmo-detail/gizmo-detail.modal';
+import { GizmoListPage } from '../gizmo/pages/gizmo-list/gizmo-list.page';
 import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
 import { Page1 } from '../pages/page1/page1';
@@ -35,6 +40,8 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
   declarations: [
     WidgetDetailModal,
     WidgetListPage,
+    GizmoDetailModal,
+    GizmoListPage,
     Error,
     ExampleList,
     MyApp,
@@ -54,10 +61,17 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
     AngularFirestoreModule.enablePersistence(),
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument(),
-    EffectsModule.forRoot([LoginEffects, TextItemEffects, WidgetEffects]),
+    EffectsModule.forRoot([
+      LoginEffects,
+      TextItemEffects,
+      WidgetEffects,
+      GizmoEffects,
+    ]),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
+    GizmoDetailModal,
+    GizmoListPage,
     WidgetDetailModal,
     WidgetListPage,
     MyApp,
@@ -71,6 +85,8 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
   providers: [
     StatusBar,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    GizmoDataService,
+    GizmoService,
     WidgetDataService,
     WidgetService,
   ],

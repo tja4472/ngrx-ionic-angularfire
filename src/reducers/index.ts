@@ -5,6 +5,7 @@
 import { ActionReducerMap, createSelector, MetaReducer } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 
+import * as fromGizmo from '../gizmo/gizmo.reducer';
 import * as fromWidget from '../widget/widget.reducer';
 import * as fromCollection from './collection';
 import * as fromLogin from './login.reducer';
@@ -12,12 +13,14 @@ import * as fromLogin from './login.reducer';
 export interface IState {
   collection: fromCollection.IState;
   login: fromLogin.IState;
+  gizmo: fromGizmo.IState;
   widget: fromWidget.IState;
 }
 
 export const reducers: ActionReducerMap<IState> = {
   collection: fromCollection.reducer,
   login: fromLogin.reducer,
+  gizmo: fromGizmo.reducer,
   widget: fromWidget.reducer,
 };
 
@@ -71,6 +74,35 @@ export const getLoginIsAuthenticated = createSelector(
 export const getLoginIsAuthenticating = createSelector(
   getLoginState,
   fromLogin.getIsAuthenticating,
+);
+//
+export const getGizmoState = (state: IState) => state.gizmo;
+
+export const selectGizmoIds = createSelector(
+  getGizmoState,
+  fromGizmo.selectGizmoIds,
+);
+export const selectGizmoEntities = createSelector(
+  getGizmoState,
+  fromGizmo.selectGizmoEntities,
+);
+export const selectAllGizmos = createSelector(
+  getGizmoState,
+  fromGizmo.selectAllGizmos,
+);
+export const selectGizmoTotal = createSelector(
+  getGizmoState,
+  fromGizmo.selectGizmoTotal,
+);
+export const selectCurrentGizmoId = createSelector(
+  getGizmoState,
+  fromGizmo.getSelectedGizmoId,
+);
+
+export const selectCurrentGizmo = createSelector(
+  selectGizmoEntities,
+  selectCurrentGizmoId,
+  (gizmoEntities, gizmoId) => gizmoEntities[gizmoId],
 );
 //
 export const getWidgetState = (state: IState) => state.widget;

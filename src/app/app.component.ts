@@ -10,6 +10,7 @@ import * as firebase from 'firebase/app';
 import { Nav, Platform } from 'ionic-angular';
 
 import * as LoginActions from '../actions/login.action';
+import { GizmoListPage } from '../gizmo/pages/gizmo-list/gizmo-list.page';
 import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
 import { Page1 } from '../pages/page1/page1';
@@ -63,6 +64,7 @@ export class MyApp {
       { title: 'Page One', component: Page1 },
       { title: 'Page Two', component: Page2 },
       { title: 'Page Home', component: HomePage },
+      { title: 'Gizmos(Cloud Firestore)', component: GizmoListPage },
       { title: 'Widgets(Cloud Firestore)', component: WidgetListPage },
       { title: 'Realtime Database', component: RealtimeDatabasePage },
       { title: 'Page Login', component: LoginPage },

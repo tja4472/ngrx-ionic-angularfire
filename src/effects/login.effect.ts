@@ -51,7 +51,7 @@ export class LoginEffects {
   // But this link gives typescript promise errors.
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
-  anonymousAuthentication$ = this.actions$
+  public anonymousAuthentication$ = this.actions$
     .ofType(LoginActionTypes.AnonymousAuthentication)
     .map(() =>
       this.af.auth
@@ -72,7 +72,7 @@ export class LoginEffects {
 
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
-  createUser$ = this.actions$
+  public createUser$ = this.actions$
     .ofType(LoginActionTypes.CreateUser)
     // .do(x => console.log('login.effect:createUser>', x))
     .map((action: CreateUser) => action.payload)

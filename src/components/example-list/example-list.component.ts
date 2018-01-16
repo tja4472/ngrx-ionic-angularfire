@@ -11,6 +11,6 @@ export type PostsInput = ITextItem[];
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExampleList {
-  @Input() posts: PostsInput;
-  @Input() isFetching: IsFetchingInput;
+  @Input() public posts: PostsInput;
+  @Input() public isFetching: IsFetchingInput;
 }

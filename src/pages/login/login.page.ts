@@ -14,10 +14,10 @@ import { SignupPage } from '../signup/signup.page';
 })
 export class LoginPage {
   // login: { username?: string, password?: string } = {};
-  submitted = false;
+  public submitted = false;
   public loginForm: FormGroup;
 
-  loginState$: any;
+  public loginState$: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -43,7 +43,7 @@ export class LoginPage {
   }
 */
 
-  logForm() {
+  public logForm() {
     console.log(this.loginForm.value);
     console.log('loginForm>', this.loginForm);
 
@@ -59,7 +59,7 @@ export class LoginPage {
     }
   }
 
-  onLogin() {
+  public onLogin() {
     this.submitted = true;
 
     if (this.loginForm.valid) {
@@ -72,15 +72,15 @@ export class LoginPage {
     }
   }
 
-  onSignup() {
+  public onSignup() {
     this.nav.push(SignupPage);
   }
 
-  signInAnonymously() {
+  public signInAnonymously() {
     this.store.dispatch(new loginActions.AnonymousAuthentication());
   }
 
-  signInWithGoogle() {
+  public signInWithGoogle() {
     this.store.dispatch(new loginActions.GoogleAuthentication());
   }
 }

@@ -37,13 +37,13 @@ export interface IPageInterface {
   templateUrl: 'app.html',
 })
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
+  @ViewChild(Nav) public nav: Nav;
 
   // rootPageAA: any = Page1;
-  rootPage: any;
-  pages: IPageInterface[];
+  public rootPage: any;
+  public pages: IPageInterface[];
 
-  loginState$: any;
+  public loginState$: any;
   // private subscription;
 
   constructor(
@@ -96,7 +96,7 @@ export class MyApp {
     });
   }
 
-  initializeApp() {
+  public initializeApp() {
     this.platform.ready().then(() => {
       console.log('platform.ready');
       // Okay, so the platform is ready and our plugins are available.
@@ -127,7 +127,7 @@ export class MyApp {
     */
   }
 
-  openPage(page: IPageInterface) {
+  public openPage(page: IPageInterface) {
     console.log('openPage');
 
     // Reset the content nav to have just this page

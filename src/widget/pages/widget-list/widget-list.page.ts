@@ -29,7 +29,7 @@ export class WidgetListPage {
     this.viewData$ = widgetService.getData$();
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     // this.todoService.initialise();
   }
 

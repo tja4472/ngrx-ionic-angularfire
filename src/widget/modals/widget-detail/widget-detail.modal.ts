@@ -69,7 +69,7 @@ export class WidgetDetailModal {
 */
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     console.log('###%s:ngOnInit>', this.CLASS_NAME);
     // console.log('this.todo.isNew()>', this.todo.isNew());
     /*

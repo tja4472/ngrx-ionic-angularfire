@@ -8,5 +8,5 @@ export type ErrorInput = any;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Error {
-  @Input() error: ErrorInput;
+  @Input() public error: ErrorInput;
 }

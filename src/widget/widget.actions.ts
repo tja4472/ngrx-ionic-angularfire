@@ -22,51 +22,51 @@ export enum WidgetActionTypes {
 }
 //
 export class DeleteItem implements Action {
-  readonly type = WidgetActionTypes.A_DELETE_ITEM;
+  public readonly type = WidgetActionTypes.A_DELETE_ITEM;
 
   constructor(public payload: { id: string }) {}
 }
 
 export class AListenForData implements Action {
-  readonly type = WidgetActionTypes.A_LISTEN_FOR_DATA;
+  public readonly type = WidgetActionTypes.A_LISTEN_FOR_DATA;
 }
 
 export class ALoadSuccess implements Action {
-  readonly type = WidgetActionTypes.A_LOAD_SUCCESS;
+  public readonly type = WidgetActionTypes.A_LOAD_SUCCESS;
 
   constructor(public payload: { widgets: IWidget[] }) {}
 }
 
 export class AUnlistenForData implements Action {
-  readonly type = WidgetActionTypes.A_UNLISTEN_FOR_DATA;
+  public readonly type = WidgetActionTypes.A_UNLISTEN_FOR_DATA;
 }
 
 export class AUpsertItem implements Action {
-  readonly type = WidgetActionTypes.A_UPSERT_ITEM;
+  public readonly type = WidgetActionTypes.A_UPSERT_ITEM;
 
   constructor(public payload: { item: IWidget }) {}
 }
 //
 export class LoadWidgets implements Action {
-  readonly type = WidgetActionTypes.LOAD_WIDGETS;
+  public readonly type = WidgetActionTypes.LOAD_WIDGETS;
 
   constructor(public payload: { widgets: IWidget[] }) {}
 }
 
 export class AddWidget implements Action {
-  readonly type = WidgetActionTypes.ADD_WIDGET;
+  public readonly type = WidgetActionTypes.ADD_WIDGET;
 
   constructor(public payload: { widget: IWidget }) {}
 }
 
 export class AddWidgets implements Action {
-  readonly type = WidgetActionTypes.ADD_WIDGETS;
+  public readonly type = WidgetActionTypes.ADD_WIDGETS;
 
   constructor(public payload: { widgets: IWidget[] }) {}
 }
 
 export class UpdateWidget implements Action {
-  readonly type = WidgetActionTypes.UPDATE_WIDGET;
+  public readonly type = WidgetActionTypes.UPDATE_WIDGET;
 
   constructor(public payload: { widget: { id: string; changes: IWidget } }) {}
 }
@@ -86,19 +86,19 @@ export class UpdateWidgets implements Action {
 */
 
 export class DeleteWidget implements Action {
-  readonly type = WidgetActionTypes.DELETE_WIDGET;
+  public readonly type = WidgetActionTypes.DELETE_WIDGET;
 
   constructor(public payload: { id: string }) {}
 }
 
 export class DeleteWidgets implements Action {
-  readonly type = WidgetActionTypes.DELETE_WIDGETS;
+  public readonly type = WidgetActionTypes.DELETE_WIDGETS;
 
   constructor(public payload: { ids: string[] }) {}
 }
 
 export class ClearWidgets implements Action {
-  readonly type = WidgetActionTypes.CLEAR_WIDGETS;
+  public readonly type = WidgetActionTypes.CLEAR_WIDGETS;
 }
 
 export type WidgetActions =

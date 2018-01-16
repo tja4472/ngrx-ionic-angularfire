@@ -12,10 +12,10 @@ import * as fromRoot from '../../reducers';
 })
 export class SignupPage {
   // signup: { username?: string, password?: string } = {};
-  submitted = false;
+  public submitted = false;
   public loginForm: FormGroup;
 
-  loginState$: any;
+  public loginState$: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,7 +40,7 @@ export class SignupPage {
   }
 */
 
-  logForm() {
+  public logForm() {
     console.log(this.loginForm.value);
     console.log('loginForm>', this.loginForm);
 

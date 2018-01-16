@@ -18,10 +18,10 @@ import * as fromRoot from '../../reducers';
   templateUrl: 'home.page.html',
 })
 export class HomePage implements OnInit {
-  posts$: Observable<PostsInput>;
-  isFetching$: Observable<IsFetchingInput>;
+  public posts$: Observable<PostsInput>;
+  public isFetching$: Observable<IsFetchingInput>;
 
-  effectsSubscription: Subscription;
+  public effectsSubscription: Subscription;
 
   constructor(
     // private textItemEffects: TextItemEffects,
@@ -33,14 +33,14 @@ export class HomePage implements OnInit {
     // this.effectsSubscription = textItemEffects.loadCollection$.subscribe(store);
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.store.dispatch(new textItemActions.LoadCollectionAction());
     // this.isFetching$ = Observable.of(false);
     // this.posts$ = this.af.database.list('/textItems')
     // .do(v => {console.log('posts>', v)});
   }
 
-  doSearch(ev: any) {
+  public doSearch(ev: any) {
     //
     // set val to the value of the ev target
     console.log('doSearch');
@@ -54,12 +54,12 @@ export class HomePage implements OnInit {
     }
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     console.log('ionViewDidLoad');
     // this.effectsSubscription.unsubscribe();
   }
 
-  ionViewDidUnload() {
+  public ionViewDidUnload() {
     console.log('ionViewDidUnload');
     // this.effectsSubscription.unsubscribe();
   }

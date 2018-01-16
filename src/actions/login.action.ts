@@ -35,13 +35,13 @@ export const RESTORE_AUTHENTICATION = '[Login] Restore Authentication';
 */
 
 export class AnonymousAuthentication implements Action {
-  readonly type = LoginActionTypes.AnonymousAuthentication;
+  public readonly type = LoginActionTypes.AnonymousAuthentication;
 
   constructor() {}
 }
 
 export class AnonymousAuthenticationFailure implements Action {
-  readonly type = LoginActionTypes.AnonymousAuthenticationFailure;
+  public readonly type = LoginActionTypes.AnonymousAuthenticationFailure;
 
   constructor(public payload: any) {} // error
 }
@@ -55,7 +55,7 @@ export class AnonymousAuthenticationSuccessAction implements Action {
 */
 
 export class CreateUser implements Action {
-  readonly type = LoginActionTypes.CreateUser;
+  public readonly type = LoginActionTypes.CreateUser;
 
   constructor(
     public payload: {
@@ -66,7 +66,7 @@ export class CreateUser implements Action {
 }
 
 export class CreateUserFailure implements Action {
-  readonly type = LoginActionTypes.CreateUserFailure;
+  public readonly type = LoginActionTypes.CreateUserFailure;
 
   constructor(public payload: any) {} // error
 }
@@ -80,7 +80,7 @@ export class CreateUserSuccessAction implements Action {
 */
 
 export class EmailAuthentication implements Action {
-  readonly type = LoginActionTypes.EmailAuthentication;
+  public readonly type = LoginActionTypes.EmailAuthentication;
 
   constructor(
     public payload: {
@@ -91,7 +91,7 @@ export class EmailAuthentication implements Action {
 }
 
 export class EmailAuthenticationFailure implements Action {
-  readonly type = LoginActionTypes.EmailAuthenticationFailure;
+  public readonly type = LoginActionTypes.EmailAuthenticationFailure;
 
   constructor(public payload: any) {} // error
 }
@@ -105,13 +105,13 @@ export class EmailAuthenticationSuccessAction implements Action {
 */
 
 export class GoogleAuthentication implements Action {
-  readonly type = LoginActionTypes.GoogleAuthentication;
+  public readonly type = LoginActionTypes.GoogleAuthentication;
 
   constructor() {}
 }
 
 export class GoogleAuthenticationFailure implements Action {
-  readonly type = LoginActionTypes.GoogleAuthenticationFailure;
+  public readonly type = LoginActionTypes.GoogleAuthenticationFailure;
 
   constructor(public payload: any) {} // error
 }
@@ -125,13 +125,13 @@ export class GoogleAuthenticationSuccessAction implements Action {
 */
 
 export class Logout implements Action {
-  readonly type = LoginActionTypes.Logout;
+  public readonly type = LoginActionTypes.Logout;
 
   constructor() {}
 }
 
 export class RestoreAuthentication implements Action {
-  readonly type = LoginActionTypes.RestoreAuthentication;
+  public readonly type = LoginActionTypes.RestoreAuthentication;
 
   constructor(
     public payload: {

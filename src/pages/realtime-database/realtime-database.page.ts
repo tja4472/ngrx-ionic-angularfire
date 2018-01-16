@@ -23,7 +23,7 @@ export class RealtimeDatabasePage implements OnInit {
     // this.effectsSubscription = textItemEffects.loadCollection$.subscribe(store);
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     //
   }
 

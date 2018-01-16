@@ -35,7 +35,7 @@ export class TextItemEffects {
 
   // tslint:disable-next-line:member-ordering
   @Effect()
-  loadCollection$ = this.actions$
+  public loadCollection$ = this.actions$
     .ofType(TextItemActionTypes.LoadCollection)
     // This will cause the effect to run once immediately on startup
     // .startWith(new LoadCollectionAction())

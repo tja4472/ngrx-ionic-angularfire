@@ -24,7 +24,7 @@ export class WidgetEffects {
 
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
-  deleteItem$ = this.actions$
+  public deleteItem$ = this.actions$
     .ofType(WidgetActionTypes.A_DELETE_ITEM)
     .map((action: DeleteItem) => action.payload)
     .do((payload) => {
@@ -34,7 +34,7 @@ export class WidgetEffects {
 
   // tslint:disable-next-line:member-ordering
   @Effect()
-  listenForData$ = this.actions$
+  public listenForData$ = this.actions$
     .ofType(
       WidgetActionTypes.A_LISTEN_FOR_DATA,
       WidgetActionTypes.A_UNLISTEN_FOR_DATA,
@@ -58,7 +58,7 @@ export class WidgetEffects {
 
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
-  upsertItem$ = this.actions$
+  public upsertItem$ = this.actions$
     .ofType(WidgetActionTypes.A_UPSERT_ITEM)
     .map((action: AUpsertItem) => action.payload)
     .do((payload) => {

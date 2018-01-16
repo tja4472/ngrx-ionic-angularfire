@@ -10,13 +10,13 @@ export enum TextItemActionTypes {
 }
 
 export class LoadCollectionAction implements Action {
-  readonly type = TextItemActionTypes.LoadCollection;
+  public readonly type = TextItemActionTypes.LoadCollection;
 
   constructor() {}
 }
 
 export class LoadCollectionSuccessAction implements Action {
-  readonly type = TextItemActionTypes.LoadCollectionSuccess;
+  public readonly type = TextItemActionTypes.LoadCollectionSuccess;
 
   constructor(public payload: ITextItem[]) {}
 }

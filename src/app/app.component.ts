@@ -50,7 +50,7 @@ export class MyApp {
     public afAuth: AngularFireAuth,
     public platform: Platform,
     public statusBar: StatusBar,
-    private store: Store<FromRoot.IState>
+    private store: Store<FromRoot.IState>,
   ) {
     //
     console.log('MyApp:constructor');
@@ -88,7 +88,7 @@ export class MyApp {
             displayName: authState.displayName,
             email: authState.email,
             isAnonymous: authState.isAnonymous,
-          })
+          }),
         );
       } else {
         this.rootPage = Page1;

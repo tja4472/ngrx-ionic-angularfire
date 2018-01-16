@@ -38,7 +38,7 @@ export class WidgetService {
 
   public update(item: IWidget) {
     this.store.dispatch(
-      new UpdateWidget({ widget: { id: item.id, changes: item } })
+      new UpdateWidget({ widget: { id: item.id, changes: item } }),
     );
   }
 

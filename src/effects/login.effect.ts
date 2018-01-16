@@ -46,7 +46,7 @@ export class LoginEffects {
   constructor(
     private actions$: Actions,
     private state$: Store<IState>,
-    public af: AngularFireAuth
+    public af: AngularFireAuth,
   ) {}
 
   // https://gitter.im/ngrx/store?at=57f1bf01b0ff456d3adca786
@@ -64,12 +64,12 @@ export class LoginEffects {
               displayName: user.auth.displayName,
               email: user.auth.email,
               isAnonymous: user.auth.isAnonymous,
-            })
-          )
+            }),
+          ),
         )
         .catch((error) =>
-          this.state$.dispatch(new AnonymousAuthenticationFailure(error))
-        )
+          this.state$.dispatch(new AnonymousAuthenticationFailure(error)),
+        ),
     );
 
   // tslint:disable-next-line:member-ordering
@@ -87,8 +87,8 @@ export class LoginEffects {
               displayName: user.auth.displayName,
               email: user.auth.email,
               isAnonymous: user.auth.isAnonymous,
-            })
-          )
+            }),
+          ),
         )
         .catch((error) => this.state$.dispatch(new CreateUserFailure(error)));
     });

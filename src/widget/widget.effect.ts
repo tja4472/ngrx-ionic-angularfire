@@ -20,7 +20,7 @@ export class WidgetEffects {
   constructor(
     private actions$: Actions,
     private state$: Store<FromRootReducer.IState>,
-    private dataService: WidgetDataService
+    private dataService: WidgetDataService,
   ) {}
 
   // tslint:disable-next-line:member-ordering
@@ -38,7 +38,7 @@ export class WidgetEffects {
   listenForData$ = this.actions$
     .ofType(
       WidgetActionTypes.A_LISTEN_FOR_DATA,
-      WidgetActionTypes.A_UNLISTEN_FOR_DATA
+      WidgetActionTypes.A_UNLISTEN_FOR_DATA,
     )
     .do(() => {
       console.log('Effect:listenForData$:A');

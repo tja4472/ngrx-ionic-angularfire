@@ -30,7 +30,7 @@ export class TextItemEffects {
   constructor(
     private actions$: Actions,
     private state$: Store<IState>,
-    public afDb: AngularFireDatabase
+    public afDb: AngularFireDatabase,
   ) {}
 
   // tslint:disable-next-line:member-ordering
@@ -51,7 +51,7 @@ export class TextItemEffects {
       console.log('Effect:loadCollection$:B', x);
     })
     .map(
-      (textItems: ITextItem[]) => new LoadCollectionSuccessAction(textItems)
+      (textItems: ITextItem[]) => new LoadCollectionSuccessAction(textItems),
     );
 }
 

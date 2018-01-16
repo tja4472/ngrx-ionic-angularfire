@@ -61,7 +61,7 @@ export class CreateUser implements Action {
     public payload: {
       userName: string;
       password: string;
-    }
+    },
   ) {}
 }
 
@@ -86,7 +86,7 @@ export class EmailAuthentication implements Action {
     public payload: {
       userName: string;
       password: string;
-    }
+    },
   ) {}
 }
 
@@ -138,7 +138,7 @@ export class RestoreAuthentication implements Action {
       isAnonymous: boolean;
       displayName: string | null;
       email: string | null;
-    }
+    },
   ) {}
 }
 

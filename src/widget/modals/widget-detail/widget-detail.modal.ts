@@ -31,7 +31,7 @@ export class WidgetDetailModal {
   constructor(
     public formBuilder: FormBuilder,
     public navParams: NavParams,
-    public viewController: ViewController
+    public viewController: ViewController,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
 
@@ -52,7 +52,7 @@ export class WidgetDetailModal {
     // navParams passes by reference.
     const navParamsTodo: Readonly<IWidget> = Object.assign(
       {},
-      navParams.get('item')
+      navParams.get('item'),
     );
     // a.description = 'GGGGGGGGGGGG';
     console.log('navParamsTodo>', navParamsTodo);

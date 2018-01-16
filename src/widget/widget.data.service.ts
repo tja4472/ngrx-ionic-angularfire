@@ -54,7 +54,7 @@ export class WidgetDataService {
       return this.itemsCollection.valueChanges().map((items) =>
         items.map((item) => {
           return this.fromFirestoreDoc(item);
-        })
+        }),
       );
     } else {
       return Observable.from<IWidget[]>([]);
@@ -78,7 +78,7 @@ export class WidgetDataService {
   private init(): void {
     this.itemsCollection = this.afs.collection<IFirestoreDoc>(
       DATA_COLLECTION,
-      (ref) => ref.orderBy('name', 'asc')
+      (ref) => ref.orderBy('name', 'asc'),
     );
   }
 

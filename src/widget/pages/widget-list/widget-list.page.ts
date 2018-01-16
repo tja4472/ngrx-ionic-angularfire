@@ -22,7 +22,7 @@ export class WidgetListPage {
 
   constructor(
     public modalCtrl: ModalController,
-    private widgetService: WidgetService
+    private widgetService: WidgetService,
   ) {
     this.viewData$ = widgetService.getData$();
   }

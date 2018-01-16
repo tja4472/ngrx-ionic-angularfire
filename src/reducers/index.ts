@@ -46,58 +46,58 @@ export const getCollectionState = (state: IState) => state.collection;
 
 export const getCollectionLoaded = createSelector(
   getCollectionState,
-  fromCollection.getLoaded
+  fromCollection.getLoaded,
 );
 export const getCollectionLoading = createSelector(
   getCollectionState,
-  fromCollection.getLoading
+  fromCollection.getLoading,
 );
 export const getCollectionTextItems = createSelector(
   getCollectionState,
-  fromCollection.getTextItems
+  fromCollection.getTextItems,
 );
 //
 export const getLoginState = (state: IState) => state.login;
 
 export const getLoginDisplayName = createSelector(
   getLoginState,
-  fromLogin.getDisplayName
+  fromLogin.getDisplayName,
 );
 export const getLoginError = createSelector(getLoginState, fromLogin.getError);
 export const getLoginIsAuthenticated = createSelector(
   getLoginState,
-  fromLogin.getIsAuthenticated
+  fromLogin.getIsAuthenticated,
 );
 export const getLoginIsAuthenticating = createSelector(
   getLoginState,
-  fromLogin.getIsAuthenticating
+  fromLogin.getIsAuthenticating,
 );
 //
 export const getWidgetState = (state: IState) => state.widget;
 
 export const selectWidgetIds = createSelector(
   getWidgetState,
-  fromWidget.selectWidgetIds
+  fromWidget.selectWidgetIds,
 );
 export const selectWidgetEntities = createSelector(
   getWidgetState,
-  fromWidget.selectWidgetEntities
+  fromWidget.selectWidgetEntities,
 );
 export const selectAllWidgets = createSelector(
   getWidgetState,
-  fromWidget.selectAllWidgets
+  fromWidget.selectAllWidgets,
 );
 export const selectWidgetTotal = createSelector(
   getWidgetState,
-  fromWidget.selectWidgetTotal
+  fromWidget.selectWidgetTotal,
 );
 export const selectCurrentWidgetId = createSelector(
   getWidgetState,
-  fromWidget.getSelectedWidgetId
+  fromWidget.getSelectedWidgetId,
 );
 
 export const selectCurrentWidget = createSelector(
   selectWidgetEntities,
   selectCurrentWidgetId,
-  (widgetEntities, widgetId) => widgetEntities[widgetId]
+  (widgetEntities, widgetId) => widgetEntities[widgetId],
 );

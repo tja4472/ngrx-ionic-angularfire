@@ -22,7 +22,7 @@ export class LoginPage {
   constructor(
     private formBuilder: FormBuilder,
     private nav: NavController,
-    private store: Store<fromRoot.IState>
+    private store: Store<fromRoot.IState>,
   ) {
     //
     this.loginState$ = this.store.select(fromRoot.getLoginState);
@@ -54,7 +54,7 @@ export class LoginPage {
         new loginActions.EmailAuthentication({
           userName: this.loginForm.value.username,
           password: this.loginForm.value.password,
-        })
+        }),
       );
     }
   }
@@ -67,7 +67,7 @@ export class LoginPage {
         new loginActions.EmailAuthentication({
           userName: this.loginForm.value.username,
           password: this.loginForm.value.password,
-        })
+        }),
       );
     }
   }

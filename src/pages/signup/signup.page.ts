@@ -20,7 +20,7 @@ export class SignupPage {
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<fromRoot.IState>
+    private store: Store<fromRoot.IState>,
   ) {
     //
     this.loginState$ = this.store.select(fromRoot.getLoginState);
@@ -52,7 +52,7 @@ export class SignupPage {
         new loginActions.CreateUser({
           userName: this.loginForm.value.username,
           password: this.loginForm.value.password,
-        })
+        }),
       );
     }
   }

@@ -20,7 +20,7 @@ import {
   templateUrl: 'gizmo-list.page.html',
 })
 export class GizmoListPage {
-  public viewData$: Observable<IGizmo[]>;
+  public viewData$: Observable<ReadonlyArray<IGizmo>>;
   public viewIsLoaded$: Observable<boolean>;
   public viewIsLoading$: Observable<boolean>;
   constructor(

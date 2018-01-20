@@ -24,7 +24,7 @@ functional programming patterns, so mixing it Object Oriented paradigms is not
 recommended.
 */
 export interface IGizmo {
-  description: string;
-  id: string;
-  name: string;
+  readonly description: string;
+  readonly id: string;
+  readonly name: string;
 }

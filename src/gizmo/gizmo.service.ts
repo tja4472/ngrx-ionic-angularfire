@@ -19,7 +19,7 @@ export class GizmoService {
     this.ListenForData();
   }
 
-  public getData$(): Observable<IGizmo[]> {
+  public getData$(): Observable<ReadonlyArray<IGizmo>> {
     return this.store.select(FromRootReducer.selectAllGizmos);
   }
 

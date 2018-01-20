@@ -5,18 +5,35 @@ import { IGizmo } from './gizmo.model';
 
 export interface IState extends EntityState<IGizmo> {
   // additional entities state properties
+  loaded: boolean;
+  loading: boolean;
   selectedGizmoId: string;
 }
 
-export const adapter: EntityAdapter<IGizmo> = createEntityAdapter<IGizmo>();
+export function sortByName(a: IGizmo, b: IGizmo): number {
+  return a.name.localeCompare(b.name);
+}
+
+export const adapter: EntityAdapter<IGizmo> = createEntityAdapter<IGizmo>({
+  sortComparer: sortByName,
+});
 
 export const initialState: IState = adapter.getInitialState({
   // additional entity state properties
+  loaded: false,
+  loading: false,
   selectedGizmoId: '',
 });
 
 export function reducer(state = initialState, action: GizmoActions): IState {
   switch (action.type) {
+    case GizmoActionTypes.A_LISTEN_FOR_DATA: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+
     case GizmoActionTypes.ADD_GIZMO: {
       return adapter.addOne(action.payload.gizmo, state);
     }
@@ -32,11 +49,11 @@ export function reducer(state = initialState, action: GizmoActions): IState {
     case GizmoActionTypes.UPDATE_GIZMO: {
       return adapter.updateOne(action.payload.gizmo, state);
     }
-
+*/
     case GizmoActionTypes.UPDATE_GIZMOS: {
       return adapter.updateMany(action.payload.gizmos, state);
     }
-*/
+
     case GizmoActionTypes.DELETE_GIZMO: {
       return adapter.removeOne(action.payload.id, state);
     }
@@ -46,7 +63,12 @@ export function reducer(state = initialState, action: GizmoActions): IState {
     }
 
     case GizmoActionTypes.A_LOAD_SUCCESS: {
-      return adapter.addAll(action.payload.gizmos, state);
+      // return adapter.addAll(action.payload.gizmos, state);
+      return {
+        ...adapter.addMany(action.payload.gizmos, state),
+        loaded: true,
+        loading: false,
+      };
     }
 
     case GizmoActionTypes.LOAD_GIZMOS: {
@@ -78,3 +100,6 @@ export const {
   // select the total gizmo count
   selectTotal: selectGizmoTotal,
 } = adapter.getSelectors();
+
+export const getLoaded = (state: IState) => state.loaded;
+export const getLoading = (state: IState) => state.loading;

@@ -6,7 +6,10 @@ import { IGizmo } from './gizmo.model';
 export enum GizmoActionTypes {
   //
   A_DELETE_ITEM = '[Gizmo] Delete Item',
+  A_LISTEN_FOR_ADDED_ITEMS = '[Gizmo] Listen For Added Items',
   A_LISTEN_FOR_DATA = '[Gizmo] Listen For Data',
+  A_LISTEN_FOR_MODIFIED_ITEMS = '[Gizmo] Listen For Modified Items',
+  A_LISTEN_FOR_REMOVED_ITEMS = '[Gizmo] Listen For Removed Items',
   A_LOAD_SUCCESS = '[Gizmo] Load Success',
   A_UNLISTEN_FOR_DATA = '[Gizmo] Unlisten For Data',
   A_UPSERT_ITEM = '[Gizmo] Upsert item',
@@ -27,8 +30,20 @@ export class DeleteItem implements Action {
   constructor(public payload: { id: string }) {}
 }
 
+export class AListenForAddedItems implements Action {
+  public readonly type = GizmoActionTypes.A_LISTEN_FOR_ADDED_ITEMS;
+}
+
 export class AListenForData implements Action {
   public readonly type = GizmoActionTypes.A_LISTEN_FOR_DATA;
+}
+
+export class AListenForModifiedItems implements Action {
+  public readonly type = GizmoActionTypes.A_LISTEN_FOR_MODIFIED_ITEMS;
+}
+
+export class AListenForRemovedItems implements Action {
+  public readonly type = GizmoActionTypes.A_LISTEN_FOR_REMOVED_ITEMS;
 }
 
 export class ALoadSuccess implements Action {
@@ -44,7 +59,12 @@ export class AUnlistenForData implements Action {
 export class AUpsertItem implements Action {
   public readonly type = GizmoActionTypes.A_UPSERT_ITEM;
 
-  constructor(public payload: { item: IGizmo }) {}
+  constructor(
+    public payload: {
+      item: IGizmo;
+      userId: string;
+    },
+  ) {}
 }
 //
 export class LoadGizmos implements Action {
@@ -69,6 +89,14 @@ export class UpdateGizmo implements Action {
   public readonly type = GizmoActionTypes.UPDATE_GIZMO;
 
   constructor(public payload: { gizmo: { id: string; changes: IGizmo } }) {}
+}
+
+export class UpdateGizmos implements Action {
+  public readonly type = GizmoActionTypes.UPDATE_GIZMOS;
+
+  constructor(
+    public payload: { gizmos: Array<{ id: string; changes: IGizmo }> },
+  ) {}
 }
 
 /* ngrx v5
@@ -102,11 +130,13 @@ export class ClearGizmos implements Action {
 }
 
 export type GizmoActions =
+  | AListenForData
   | ALoadSuccess
   | LoadGizmos
   | AddGizmo
   | AddGizmos
   | UpdateGizmo
+  | UpdateGizmos
   // ngrx v5 | UpdateGizmo
   // ngrx v5 | UpdateGizmos
   | DeleteGizmo

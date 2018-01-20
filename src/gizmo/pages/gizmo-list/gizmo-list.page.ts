@@ -21,12 +21,15 @@ import {
 })
 export class GizmoListPage {
   public viewData$: Observable<IGizmo[]>;
-
+  public viewIsLoaded$: Observable<boolean>;
+  public viewIsLoading$: Observable<boolean>;
   constructor(
     public modalCtrl: ModalController,
     private gizmoService: GizmoService,
   ) {
     this.viewData$ = gizmoService.getData$();
+    this.viewIsLoaded$ = gizmoService.isLoaded();
+    this.viewIsLoading$ = gizmoService.isLoading();
   }
 
   public ionViewDidLoad() {

@@ -42,14 +42,30 @@ export class GizmoService {
     );
   }
 
+  /*
+  Best practice is to provide the user as part of the payload as mentioned
+  instead of selecting it from the state in the effect. This keeps the Effect
+  pure and easier to test. You can also write a selector that composes the two
+  pieces of data together for your action.
+  https://github.com/ngrx/platform/issues/496#issuecomment-337781385
+  */
   public upsert(item: IGizmo) {
-    this.store.dispatch(new AUpsertItem({ item }));
-    /*
-    if (item.id === '') {
-      this.add(item);
-    } else {
-      this.update(item);
-    }
-    */
+    // ????????????????????????????? UserId  in item????
+    this.store
+      .select(FromRootReducer.getLoginState)
+      .take(1)
+      .subscribe((loginState) => {
+        const userId = 'dummyId';
+        this.store.dispatch(new AUpsertItem({ item, userId }));
+        console.log('ssssssssssss:loginState>', loginState);
+      });
+  }
+
+  public isLoaded(): Observable<boolean> {
+    return this.store.select(FromRootReducer.getGizmoLoaded);
+  }
+
+  public isLoading(): Observable<boolean> {
+    return this.store.select(FromRootReducer.getGizmoLoading);
   }
 }

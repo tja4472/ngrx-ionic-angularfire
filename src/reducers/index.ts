@@ -78,6 +78,15 @@ export const getLoginIsAuthenticating = createSelector(
 //
 export const getGizmoState = (state: IState) => state.gizmo;
 
+export const getGizmoLoaded = createSelector(
+  getGizmoState,
+  fromGizmo.getLoaded,
+);
+export const getGizmoLoading = createSelector(
+  getGizmoState,
+  fromGizmo.getLoading,
+);
+
 export const selectGizmoIds = createSelector(
   getGizmoState,
   fromGizmo.selectGizmoIds,

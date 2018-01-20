@@ -26,7 +26,7 @@ export class GizmoDataService {
   constructor(public readonly afs: AngularFirestore) {
     console.log('GizmoDataService:constructor');
     this.init();
-
+    /*
     this.itemsCollection.snapshotChanges().subscribe((x) => {
       console.log('snapshotChanges>', x);
     });
@@ -37,6 +37,12 @@ export class GizmoDataService {
 
     this.itemsCollection.stateChanges(['added']).subscribe((x) => {
       console.log('stateChanges-added>', x);
+      console.log(
+        'stateChanges-added:x[0].payload.doc.data()>',
+        x[0].payload.doc.data(),
+      );
+      const b: IFirestoreDoc = x[0].payload.doc.data() as IFirestoreDoc;
+      console.log('stateChanges-added:b>', b);
     });
 
     this.itemsCollection.stateChanges(['modified']).subscribe((x) => {
@@ -46,6 +52,62 @@ export class GizmoDataService {
     this.itemsCollection.stateChanges(['removed']).subscribe((x) => {
       console.log('stateChanges-removed>', x);
     });
+    */
+  }
+
+  public ListenForChanges$() {
+    //
+    return this.itemsCollection.stateChanges().map((actions) =>
+      actions.map((a) => {
+        const data = a.payload.doc.data() as IFirestoreDoc;
+        return {
+          item: this.fromFirestoreDoc(data),
+          type: a.type,
+        };
+      }),
+    );
+  }
+
+  public ListenForAdded$(): Observable<IGizmo[]> {
+    //
+    if (this.isSignedIn) {
+      return this.itemsCollection.stateChanges(['added']).map((actions) =>
+        actions.map((a) => {
+          const data = a.payload.doc.data() as IFirestoreDoc;
+          return this.fromFirestoreDoc(data);
+        }),
+      );
+    } else {
+      return Observable.from<IGizmo[]>([]);
+    }
+  }
+
+  public ListenForModified$(): Observable<IGizmo[]> {
+    //
+    if (this.isSignedIn) {
+      return this.itemsCollection.stateChanges(['modified']).map((actions) =>
+        actions.map((a) => {
+          const data = a.payload.doc.data() as IFirestoreDoc;
+          return this.fromFirestoreDoc(data);
+        }),
+      );
+    } else {
+      return Observable.from<IGizmo[]>([]);
+    }
+  }
+
+  public ListenForRemoved$(): Observable<IGizmo[]> {
+    //
+    if (this.isSignedIn) {
+      return this.itemsCollection.stateChanges(['removed']).map((actions) =>
+        actions.map((a) => {
+          const data = a.payload.doc.data() as IFirestoreDoc;
+          return this.fromFirestoreDoc(data);
+        }),
+      );
+    } else {
+      return Observable.from<IGizmo[]>([]);
+    }
   }
 
   public getData$(): Observable<IGizmo[]> {
@@ -65,7 +127,7 @@ export class GizmoDataService {
     this.itemsCollection.doc(id).delete();
   }
 
-  public upsertItem(item: IGizmo): void {
+  public upsertItem(item: IGizmo, userId: string): void {
     //
     const doc = this.toFirestoreDoc(item);
     if (item.id === '') {
@@ -78,7 +140,7 @@ export class GizmoDataService {
   private init(): void {
     this.itemsCollection = this.afs.collection<IFirestoreDoc>(
       DATA_COLLECTION,
-      (ref) => ref.orderBy('name', 'asc'),
+      // (ref) => ref.orderBy('name', 'asc'),
     );
   }
 
@@ -86,8 +148,8 @@ export class GizmoDataService {
     //
 
     const result: IFirestoreDoc = {
-      id: item.id,
       description: item.description,
+      id: item.id,
       name: item.name,
     };
 

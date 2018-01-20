@@ -1,21 +1,21 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 import { WidgetActions, WidgetActionTypes } from './widget.actions';
-import { IWidget } from './widget.model';
+import { Widget } from './widget.model';
 
-export interface IState extends EntityState<IWidget> {
+export interface State extends EntityState<Widget> {
   // additional entities state properties
   selectedWidgetId: string;
 }
 
-export const adapter: EntityAdapter<IWidget> = createEntityAdapter<IWidget>();
+export const adapter: EntityAdapter<Widget> = createEntityAdapter<Widget>();
 
-export const initialState: IState = adapter.getInitialState({
+export const initialState: State = adapter.getInitialState({
   // additional entity state properties
   selectedWidgetId: '',
 });
 
-export function reducer(state = initialState, action: WidgetActions): IState {
+export function reducer(state = initialState, action: WidgetActions): State {
   switch (action.type) {
     case WidgetActionTypes.ADD_WIDGET: {
       return adapter.addOne(action.payload.widget, state);
@@ -63,7 +63,7 @@ export function reducer(state = initialState, action: WidgetActions): IState {
   }
 }
 
-export const getSelectedWidgetId = (state: IState) => state.selectedWidgetId;
+export const getSelectedWidgetId = (state: State) => state.selectedWidgetId;
 
 export const {
   // select the array of widget ids

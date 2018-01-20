@@ -1,20 +1,20 @@
 import { LoginActions, LoginActionTypes } from '../actions/login.action';
 
-export interface IState {
+export interface State {
   displayName: string;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   error: any;
 }
 
-const initialState: IState = {
+const initialState: State = {
   displayName: '',
   error: null,
   isAuthenticated: false,
   isAuthenticating: false,
 };
 
-export function reducer(state = initialState, action: LoginActions): IState {
+export function reducer(state = initialState, action: LoginActions): State {
   switch (action.type) {
     case LoginActionTypes.GoogleAuthentication: {
       return {
@@ -115,7 +115,7 @@ function makeDisplayName(user: {
   return '';
 }
 
-export const getDisplayName = (state: IState) => state.displayName;
-export const getError = (state: IState) => state.error;
-export const getIsAuthenticated = (state: IState) => state.isAuthenticated;
-export const getIsAuthenticating = (state: IState) => state.isAuthenticating;
+export const getDisplayName = (state: State) => state.displayName;
+export const getError = (state: State) => state.error;
+export const getIsAuthenticated = (state: State) => state.isAuthenticated;
+export const getIsAuthenticating = (state: State) => state.isAuthenticating;

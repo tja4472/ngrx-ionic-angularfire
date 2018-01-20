@@ -25,7 +25,7 @@ import { WidgetListPage } from '../widget/pages/widget-list/widget-list.page';
 //
 // Do not import from 'firebase' as you'd lose the tree shaking benefits
 // Add the RxJS Observable operators we need in this app.
-export interface IPageInterface {
+export interface PageInterface {
   title: string;
   component: any;
   // icon: string;
@@ -42,7 +42,7 @@ export class MyApp {
 
   // rootPageAA: any = Page1;
   public rootPage: any;
-  public pages: IPageInterface[];
+  public pages: PageInterface[];
 
   public loginState$: any;
   // private subscription;
@@ -51,7 +51,7 @@ export class MyApp {
     public afAuth: AngularFireAuth,
     public platform: Platform,
     public statusBar: StatusBar,
-    private store: Store<FromRoot.IState>,
+    private store: Store<FromRoot.State>,
   ) {
     //
     console.log('MyApp:constructor');
@@ -129,7 +129,7 @@ export class MyApp {
     */
   }
 
-  public openPage(page: IPageInterface) {
+  public openPage(page: PageInterface) {
     console.log('openPage');
 
     // Reset the content nav to have just this page

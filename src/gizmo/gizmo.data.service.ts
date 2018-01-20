@@ -6,12 +6,12 @@ import {
   AngularFirestoreCollection,
 } from 'angularfire2/firestore';
 
-import { IGizmo } from './gizmo.model';
+import { Gizmo } from './gizmo.model';
 
 const DATA_COLLECTION = 'gizmos';
 // const USERS_COLLECTION = 'users';
 
-interface IFirestoreDoc {
+interface FirestoreDoc {
   id: string;
   description: string;
   name: string;
@@ -19,7 +19,7 @@ interface IFirestoreDoc {
 
 @Injectable()
 export class GizmoDataService {
-  private itemsCollection: AngularFirestoreCollection<IFirestoreDoc>;
+  private itemsCollection: AngularFirestoreCollection<FirestoreDoc>;
 
   private isSignedIn: boolean = true;
 
@@ -59,7 +59,7 @@ export class GizmoDataService {
     //
     return this.itemsCollection.stateChanges().map((actions) =>
       actions.map((a) => {
-        const data = a.payload.doc.data() as IFirestoreDoc;
+        const data = a.payload.doc.data() as FirestoreDoc;
         return {
           item: this.fromFirestoreDoc(data),
           type: a.type,
@@ -68,49 +68,49 @@ export class GizmoDataService {
     );
   }
 
-  public ListenForAdded$(): Observable<IGizmo[]> {
+  public ListenForAdded$(): Observable<Gizmo[]> {
     //
     if (this.isSignedIn) {
       return this.itemsCollection.stateChanges(['added']).map((actions) =>
         actions.map((a) => {
-          const data = a.payload.doc.data() as IFirestoreDoc;
+          const data = a.payload.doc.data() as FirestoreDoc;
           return this.fromFirestoreDoc(data);
         }),
       );
     } else {
-      return Observable.from<IGizmo[]>([]);
+      return Observable.from<Gizmo[]>([]);
     }
   }
 
-  public ListenForModified$(): Observable<IGizmo[]> {
+  public ListenForModified$(): Observable<Gizmo[]> {
     //
     if (this.isSignedIn) {
       return this.itemsCollection.stateChanges(['modified']).map((actions) =>
         actions.map((a) => {
-          const data = a.payload.doc.data() as IFirestoreDoc;
+          const data = a.payload.doc.data() as FirestoreDoc;
           return this.fromFirestoreDoc(data);
         }),
       );
     } else {
-      return Observable.from<IGizmo[]>([]);
+      return Observable.from<Gizmo[]>([]);
     }
   }
 
-  public ListenForRemoved$(): Observable<IGizmo[]> {
+  public ListenForRemoved$(): Observable<Gizmo[]> {
     //
     if (this.isSignedIn) {
       return this.itemsCollection.stateChanges(['removed']).map((actions) =>
         actions.map((a) => {
-          const data = a.payload.doc.data() as IFirestoreDoc;
+          const data = a.payload.doc.data() as FirestoreDoc;
           return this.fromFirestoreDoc(data);
         }),
       );
     } else {
-      return Observable.from<IGizmo[]>([]);
+      return Observable.from<Gizmo[]>([]);
     }
   }
 
-  public getData$(): Observable<IGizmo[]> {
+  public getData$(): Observable<Gizmo[]> {
     //
     if (this.isSignedIn) {
       return this.itemsCollection.valueChanges().map((items) =>
@@ -119,7 +119,7 @@ export class GizmoDataService {
         }),
       );
     } else {
-      return Observable.from<IGizmo[]>([]);
+      return Observable.from<Gizmo[]>([]);
     }
   }
 
@@ -127,7 +127,7 @@ export class GizmoDataService {
     this.itemsCollection.doc(id).delete();
   }
 
-  public upsertItem(item: IGizmo, userId: string): void {
+  public upsertItem(item: Gizmo, userId: string): void {
     //
     const doc = this.toFirestoreDoc(item);
     if (item.id === '') {
@@ -138,16 +138,16 @@ export class GizmoDataService {
   }
 
   private init(): void {
-    this.itemsCollection = this.afs.collection<IFirestoreDoc>(
+    this.itemsCollection = this.afs.collection<FirestoreDoc>(
       DATA_COLLECTION,
       // (ref) => ref.orderBy('name', 'asc'),
     );
   }
 
-  private toFirestoreDoc(item: IGizmo): IFirestoreDoc {
+  private toFirestoreDoc(item: Gizmo): FirestoreDoc {
     //
 
-    const result: IFirestoreDoc = {
+    const result: FirestoreDoc = {
       description: item.description,
       id: item.id,
       name: item.name,
@@ -157,11 +157,11 @@ export class GizmoDataService {
     return result;
   }
 
-  private fromFirestoreDoc(x: IFirestoreDoc): IGizmo {
+  private fromFirestoreDoc(x: FirestoreDoc): Gizmo {
     //
     // console.log('TodoDataService:fromFirebaseTodo>', x);
 
-    const result: IGizmo = { ...x };
+    const result: Gizmo = { ...x };
     /*
     const result: IGizmo = {
       id: x.id,

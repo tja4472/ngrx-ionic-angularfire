@@ -11,15 +11,15 @@ import {
   DeleteItem,
   UpdateWidget,
 } from './widget.actions';
-import { IWidget } from './widget.model';
+import { Widget } from './widget.model';
 
 @Injectable()
 export class WidgetService {
-  constructor(private store: Store<FromRootReducer.IState>) {
+  constructor(private store: Store<FromRootReducer.State>) {
     this.ListenForData();
   }
 
-  public getData$(): Observable<IWidget[]> {
+  public getData$(): Observable<Widget[]> {
     return this.store.select(FromRootReducer.selectAllWidgets);
   }
 
@@ -27,22 +27,21 @@ export class WidgetService {
     this.store.dispatch(new AListenForData());
   }
 
-  public add(item: IWidget) {
-    item.id = new Date().toString();
+  public add(item: Widget) {
     this.store.dispatch(new AddWidget({ widget: item }));
   }
 
-  public deleteItem(item: IWidget) {
+  public deleteItem(item: Widget) {
     this.store.dispatch(new DeleteItem({ id: item.id }));
   }
 
-  public update(item: IWidget) {
+  public update(item: Widget) {
     this.store.dispatch(
       new UpdateWidget({ widget: { id: item.id, changes: item } }),
     );
   }
 
-  public upsert(item: IWidget) {
+  public upsert(item: Widget) {
     this.store.dispatch(new AUpsertItem({ item }));
     /*
     if (item.id === '') {

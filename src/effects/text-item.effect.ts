@@ -22,14 +22,14 @@ import {
   LoadCollectionSuccessAction,
   TextItemActionTypes,
 } from '../actions/text-item.action';
-import { ITextItem } from '../models';
-import { IState } from '../reducers';
+import { TextItem } from '../models';
+import { State } from '../reducers';
 
 @Injectable()
 export class TextItemEffects {
   constructor(
     private actions$: Actions,
-    private state$: Store<IState>,
+    private state$: Store<State>,
     public afDb: AngularFireDatabase,
   ) {}
 
@@ -44,14 +44,14 @@ export class TextItemEffects {
     })
     .withLatestFrom(this.state$)
     // tslint:disable-next-line:no-unused-variable
-    .filter(([action, state]) => (state as IState).login.isAuthenticated)
+    .filter(([action, state]) => (state as State).login.isAuthenticated)
     // Watch database node and get TextItems.
     .switchMap(() => this.afDb.list('/textItems').valueChanges())
     .do((x) => {
       console.log('Effect:loadCollection$:B', x);
     })
     .map(
-      (textItems: ITextItem[]) => new LoadCollectionSuccessAction(textItems),
+      (textItems: TextItem[]) => new LoadCollectionSuccessAction(textItems),
     );
 }
 

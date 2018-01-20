@@ -4,11 +4,11 @@ import { ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import {
-  IModalInput,
-  IModalResult,
+  ModalInput,
+  ModalResult,
   WidgetDetailModal,
 } from '../../modals/widget-detail/widget-detail.modal';
-import { IWidget } from '../../widget.model';
+import { Widget } from '../../widget.model';
 import { WidgetService } from '../../widget.service';
 
 // import { Store } from '@ngrx/store';
@@ -20,7 +20,7 @@ import { WidgetService } from '../../widget.service';
   templateUrl: 'widget-list.page.html',
 })
 export class WidgetListPage {
-  public viewData$: Observable<IWidget[]>;
+  public viewData$: Observable<Widget[]>;
 
   constructor(
     public modalCtrl: ModalController,
@@ -38,7 +38,7 @@ export class WidgetListPage {
     this.showModal();
   }
 
-  public viewDelete(item: IWidget): void {
+  public viewDelete(item: Widget): void {
     console.log('viewDelete>', item);
     this.widgetService.deleteItem(item);
   }
@@ -48,13 +48,13 @@ export class WidgetListPage {
     this.showModal(item);
   }
 
-  private showModal(item?: IWidget) {
+  private showModal(item?: Widget) {
     //
-    const modalInput: IModalInput = { item };
+    const modalInput: ModalInput = { item };
 
     const modal = this.modalCtrl.create(WidgetDetailModal, modalInput);
 
-    modal.onDidDismiss((data: IModalResult) => {
+    modal.onDidDismiss((data: ModalResult) => {
       console.log('onDidDismiss>', data);
 
       if (data.save && data.item) {

@@ -1,7 +1,7 @@
 // tslint:disable:max-classes-per-file
 import { Action } from '@ngrx/store';
 // ngrx v5 import { Update } from '@ngrx/entity';
-import { IGizmo } from './gizmo.model';
+import { Gizmo } from './gizmo.model';
 
 export enum GizmoActionTypes {
   //
@@ -56,7 +56,7 @@ export class DatabaseUpsertItem implements Action {
 
   constructor(
     public payload: {
-      item: IGizmo;
+      item: Gizmo;
       userId: string;
     },
   ) {}
@@ -65,30 +65,30 @@ export class DatabaseUpsertItem implements Action {
 export class LoadGizmos implements Action {
   public readonly type = GizmoActionTypes.LOAD_GIZMOS;
 
-  constructor(public payload: { gizmos: IGizmo[] }) {}
+  constructor(public payload: { gizmos: Gizmo[] }) {}
 }
 
 export class AddGizmo implements Action {
   public readonly type = GizmoActionTypes.ADD_GIZMO;
 
-  constructor(public payload: { gizmo: IGizmo }) {}
+  constructor(public payload: { gizmo: Gizmo }) {}
 }
 
 export class AddGizmos implements Action {
   public readonly type = GizmoActionTypes.ADD_GIZMOS;
 
-  constructor(public payload: { gizmos: IGizmo[] }) {}
+  constructor(public payload: { gizmos: Gizmo[] }) {}
 }
 
 export class UpdateGizmo implements Action {
   public readonly type = GizmoActionTypes.UPDATE_GIZMO;
 
-  constructor(public payload: { gizmo: { id: string; changes: IGizmo } }) {}
+  constructor(public payload: { gizmo: { id: string; changes: Gizmo } }) {}
 }
 export class StoreAddItems implements Action {
   public readonly type = GizmoActionTypes.STORE_ADD_ITEMS;
 
-  constructor(public payload: { gizmos: IGizmo[] }) {}
+  constructor(public payload: { gizmos: Gizmo[] }) {}
 }
 
 export class StoreDeleteItems implements Action {
@@ -101,7 +101,7 @@ export class StoreUpdateItems implements Action {
   public readonly type = GizmoActionTypes.STORE_UPDATE_ITEMS;
 
   constructor(
-    public payload: { gizmos: Array<{ id: string; changes: IGizmo }> },
+    public payload: { gizmos: Array<{ id: string; changes: Gizmo }> },
   ) {}
 }
 

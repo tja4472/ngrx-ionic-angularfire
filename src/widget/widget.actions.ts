@@ -1,7 +1,7 @@
 // tslint:disable:max-classes-per-file
 import { Action } from '@ngrx/store';
 // ngrx v5 import { Update } from '@ngrx/entity';
-import { IWidget } from './widget.model';
+import { Widget } from './widget.model';
 
 export enum WidgetActionTypes {
   //
@@ -34,7 +34,7 @@ export class AListenForData implements Action {
 export class ALoadSuccess implements Action {
   public readonly type = WidgetActionTypes.A_LOAD_SUCCESS;
 
-  constructor(public payload: { widgets: IWidget[] }) {}
+  constructor(public payload: { widgets: Widget[] }) {}
 }
 
 export class AUnlistenForData implements Action {
@@ -44,31 +44,31 @@ export class AUnlistenForData implements Action {
 export class AUpsertItem implements Action {
   public readonly type = WidgetActionTypes.A_UPSERT_ITEM;
 
-  constructor(public payload: { item: IWidget }) {}
+  constructor(public payload: { item: Widget }) {}
 }
 //
 export class LoadWidgets implements Action {
   public readonly type = WidgetActionTypes.LOAD_WIDGETS;
 
-  constructor(public payload: { widgets: IWidget[] }) {}
+  constructor(public payload: { widgets: Widget[] }) {}
 }
 
 export class AddWidget implements Action {
   public readonly type = WidgetActionTypes.ADD_WIDGET;
 
-  constructor(public payload: { widget: IWidget }) {}
+  constructor(public payload: { widget: Widget }) {}
 }
 
 export class AddWidgets implements Action {
   public readonly type = WidgetActionTypes.ADD_WIDGETS;
 
-  constructor(public payload: { widgets: IWidget[] }) {}
+  constructor(public payload: { widgets: Widget[] }) {}
 }
 
 export class UpdateWidget implements Action {
   public readonly type = WidgetActionTypes.UPDATE_WIDGET;
 
-  constructor(public payload: { widget: { id: string; changes: IWidget } }) {}
+  constructor(public payload: { widget: { id: string; changes: Widget } }) {}
 }
 
 /* ngrx v5

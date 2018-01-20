@@ -3,12 +3,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
-import { IGizmo } from '../../gizmo.model';
+import { Gizmo } from '../../gizmo.model';
 import { GizmoService } from '../../gizmo.service';
 import {
   GizmoDetailModal,
-  IModalInput,
-  IModalResult,
+  ModalInput,
+  ModalResult,
 } from '../../modals/gizmo-detail/gizmo-detail.modal';
 
 // import { Store } from '@ngrx/store';
@@ -20,7 +20,7 @@ import {
   templateUrl: 'gizmo-list.page.html',
 })
 export class GizmoListPage {
-  public viewData$: Observable<ReadonlyArray<IGizmo>>;
+  public viewData$: Observable<ReadonlyArray<Gizmo>>;
   public viewIsLoaded$: Observable<boolean>;
   public viewIsLoading$: Observable<boolean>;
   constructor(
@@ -41,7 +41,7 @@ export class GizmoListPage {
     this.showModal();
   }
 
-  public viewDelete(item: IGizmo): void {
+  public viewDelete(item: Gizmo): void {
     console.log('viewDelete>', item);
     this.gizmoService.deleteItem(item);
   }
@@ -51,13 +51,13 @@ export class GizmoListPage {
     this.showModal(item);
   }
 
-  private showModal(item?: IGizmo) {
+  private showModal(item?: Gizmo) {
     //
-    const modalInput: IModalInput = { item };
+    const modalInput: ModalInput = { item };
 
     const modal = this.modalCtrl.create(GizmoDetailModal, modalInput);
 
-    modal.onDidDismiss((data: IModalResult) => {
+    modal.onDidDismiss((data: ModalResult) => {
       console.log('onDidDismiss>', data);
 
       if (data.save && data.item) {

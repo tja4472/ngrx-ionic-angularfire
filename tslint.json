@@ -3,6 +3,9 @@
     "tslint:recommended"
   ],  
   "rules": {
+    // "tslint:recommended" overrides
+    // ------------------------------
+    "interface-name": [true, "never-prefix"],
     "no-console": [false],
     "quotemark": [true, "single"]
   },

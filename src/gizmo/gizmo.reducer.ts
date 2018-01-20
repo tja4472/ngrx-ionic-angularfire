@@ -1,31 +1,31 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 
 import { GizmoActions, GizmoActionTypes } from './gizmo.actions';
-import { IGizmo } from './gizmo.model';
+import { Gizmo } from './gizmo.model';
 
-export interface IState extends EntityState<IGizmo> {
+export interface State extends EntityState<Gizmo> {
   // additional entities state properties
   loaded: boolean;
   loading: boolean;
   selectedGizmoId: string;
 }
 
-export function sortByName(a: IGizmo, b: IGizmo): number {
+export function sortByName(a: Gizmo, b: Gizmo): number {
   return a.name.localeCompare(b.name);
 }
 
-export const adapter: EntityAdapter<IGizmo> = createEntityAdapter<IGizmo>({
+export const adapter: EntityAdapter<Gizmo> = createEntityAdapter<Gizmo>({
   sortComparer: sortByName,
 });
 
-export const initialState: IState = adapter.getInitialState({
+export const initialState: State = adapter.getInitialState({
   // additional entity state properties
   loaded: false,
   loading: false,
   selectedGizmoId: '',
 });
 
-export function reducer(state = initialState, action: GizmoActions): IState {
+export function reducer(state = initialState, action: GizmoActions): State {
   switch (action.type) {
     case GizmoActionTypes.A_LISTEN_FOR_DATA: {
       return {
@@ -80,7 +80,7 @@ export function reducer(state = initialState, action: GizmoActions): IState {
   }
 }
 
-export const getSelectedGizmoId = (state: IState) => state.selectedGizmoId;
+export const getSelectedGizmoId = (state: State) => state.selectedGizmoId;
 
 export const {
   // select the array of gizmo ids
@@ -96,5 +96,5 @@ export const {
   selectTotal: selectGizmoTotal,
 } = adapter.getSelectors();
 
-export const getLoaded = (state: IState) => state.loaded;
-export const getLoading = (state: IState) => state.loading;
+export const getLoaded = (state: State) => state.loaded;
+export const getLoading = (state: State) => state.loading;

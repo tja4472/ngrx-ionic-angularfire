@@ -15,7 +15,7 @@ export class RealtimeDatabasePage implements OnInit {
 
   constructor(
     // private textItemEffects: TextItemEffects,
-    private store: Store<fromRoot.IState>,
+    private store: Store<fromRoot.State>,
   ) {
     this.isFetching$ = store.select(fromRoot.getCollectionLoading);
     this.textItem$ = store.select(fromRoot.getCollectionTextItems);

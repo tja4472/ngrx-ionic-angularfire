@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
-import { ITextItem } from '../../models';
+import { TextItem } from '../../models';
 
 export type IsFetchingInput = boolean;
-export type PostsInput = ITextItem[];
+export type PostsInput = TextItem[];
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,

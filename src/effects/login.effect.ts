@@ -28,7 +28,7 @@ import {
   LoginActionTypes,
   RestoreAuthentication,
 } from '../actions/login.action';
-import { IState } from '../reducers';
+import { State } from '../reducers';
 
 // error TS4029: https://github.com/Microsoft/TypeScript/issues/5938
 // tslint:disable-next-line:no-unused-variable
@@ -43,7 +43,7 @@ import { IState } from '../reducers';
 export class LoginEffects {
   constructor(
     private actions$: Actions,
-    private state$: Store<IState>,
+    private state$: Store<State>,
     public af: AngularFireAuth,
   ) {}
 

@@ -6,12 +6,12 @@ import {
   AngularFirestoreCollection,
 } from 'angularfire2/firestore';
 
-import { IWidget } from './widget.model';
+import { Widget } from './widget.model';
 
 const DATA_COLLECTION = 'widgets';
 // const USERS_COLLECTION = 'users';
 
-interface IFirestoreDoc {
+interface FirestoreDoc {
   id: string;
   description: string;
   name: string;
@@ -19,7 +19,7 @@ interface IFirestoreDoc {
 
 @Injectable()
 export class WidgetDataService {
-  private itemsCollection: AngularFirestoreCollection<IFirestoreDoc>;
+  private itemsCollection: AngularFirestoreCollection<FirestoreDoc>;
 
   private isSignedIn: boolean = true;
 
@@ -48,7 +48,7 @@ export class WidgetDataService {
     });
   }
 
-  public getData$(): Observable<IWidget[]> {
+  public getData$(): Observable<Widget[]> {
     //
     if (this.isSignedIn) {
       return this.itemsCollection.valueChanges().map((items) =>
@@ -57,7 +57,7 @@ export class WidgetDataService {
         }),
       );
     } else {
-      return Observable.from<IWidget[]>([]);
+      return Observable.from<Widget[]>([]);
     }
   }
 
@@ -65,7 +65,7 @@ export class WidgetDataService {
     this.itemsCollection.doc(id).delete();
   }
 
-  public upsertItem(item: IWidget): void {
+  public upsertItem(item: Widget): void {
     //
     const doc = this.toFirestoreDoc(item);
     if (item.id === '') {
@@ -76,16 +76,16 @@ export class WidgetDataService {
   }
 
   private init(): void {
-    this.itemsCollection = this.afs.collection<IFirestoreDoc>(
+    this.itemsCollection = this.afs.collection<FirestoreDoc>(
       DATA_COLLECTION,
       (ref) => ref.orderBy('name', 'asc'),
     );
   }
 
-  private toFirestoreDoc(item: IWidget): IFirestoreDoc {
+  private toFirestoreDoc(item: Widget): FirestoreDoc {
     //
 
-    const result: IFirestoreDoc = {
+    const result: FirestoreDoc = {
       description: item.description,
       id: item.id,
       name: item.name,
@@ -95,11 +95,11 @@ export class WidgetDataService {
     return result;
   }
 
-  private fromFirestoreDoc(x: IFirestoreDoc): IWidget {
+  private fromFirestoreDoc(x: FirestoreDoc): Widget {
     //
     // console.log('TodoDataService:fromFirebaseTodo>', x);
 
-    const result: IWidget = { ...x };
+    const result: Widget = { ...x };
     /*
     const result: IWidget = {
       id: x.id,

@@ -3,15 +3,15 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { NavParams, ViewController } from 'ionic-angular';
 
-import { IGizmo } from '../../gizmo.model';
+import { Gizmo } from '../../gizmo.model';
 
-export interface IModalInput {
-  item?: IGizmo;
+export interface ModalInput {
+  item?: Gizmo;
 }
 
-export interface IModalResult {
+export interface ModalResult {
   save: boolean;
-  item?: IGizmo;
+  item?: Gizmo;
 }
 
 @Component({
@@ -28,7 +28,7 @@ export class GizmoDetailModal {
 
   private readonly CLASS_NAME = 'GizmoDetailModal';
 
-  private formItem: IGizmo;
+  private formItem: Gizmo;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -41,7 +41,7 @@ export class GizmoDetailModal {
     console.log('navParams.data>', navParams.data);
     console.log('navParams.get("item")>', navParams.get('item'));
 
-    const paramItem: IGizmo = navParams.get('item');
+    const paramItem: Gizmo = navParams.get('item');
 
     if (paramItem === undefined) {
       // new item.
@@ -52,7 +52,7 @@ export class GizmoDetailModal {
     }
 
     // navParams passes by reference.
-    const navParamsTodo: Readonly<IGizmo> = Object.assign(
+    const navParamsTodo: Readonly<Gizmo> = Object.assign(
       {},
       navParams.get('item'),
     );
@@ -85,7 +85,7 @@ export class GizmoDetailModal {
 
   public viewCancel() {
     console.log('viewCancel>');
-    const result: IModalResult = { save: false };
+    const result: ModalResult = { save: false };
 
     this.viewController.dismiss(result);
   }
@@ -100,8 +100,8 @@ export class GizmoDetailModal {
     console.log('this.todoForm.value>', this.viewForm.value);
     console.log('this.formItem>', this.formItem);
 
-    const editedItem: IGizmo = { ...this.formItem, ...this.viewForm.value };
-    const result: IModalResult = { save: true, item: editedItem };
+    const editedItem: Gizmo = { ...this.formItem, ...this.viewForm.value };
+    const result: ModalResult = { save: true, item: editedItem };
     this.viewController.dismiss(result);
   }
 }

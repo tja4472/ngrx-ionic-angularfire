@@ -11,15 +11,15 @@ import {
   DatabaseUpsertItem,
   UpdateGizmo,
 } from './gizmo.actions';
-import { IGizmo } from './gizmo.model';
+import { Gizmo } from './gizmo.model';
 
 @Injectable()
 export class GizmoService {
-  constructor(private store: Store<FromRootReducer.IState>) {
+  constructor(private store: Store<FromRootReducer.State>) {
     this.ListenForData();
   }
 
-  public getData$(): Observable<ReadonlyArray<IGizmo>> {
+  public getData$(): Observable<ReadonlyArray<Gizmo>> {
     return this.store.select(FromRootReducer.selectAllGizmos);
   }
 
@@ -27,12 +27,11 @@ export class GizmoService {
     this.store.dispatch(new AListenForData());
   }
 
-  public add(item: IGizmo) {
-    item.id = new Date().toString();
+  public add(item: Gizmo) {
     this.store.dispatch(new AddGizmo({ gizmo: item }));
   }
 
-  public deleteItem(item: IGizmo) {
+  public deleteItem(item: Gizmo) {
     this.store
       .select(FromRootReducer.getLoginState)
       .take(1)
@@ -42,7 +41,7 @@ export class GizmoService {
       });
   }
 
-  public update(item: IGizmo) {
+  public update(item: Gizmo) {
     this.store.dispatch(
       new UpdateGizmo({ gizmo: { id: item.id, changes: item } }),
     );
@@ -55,7 +54,7 @@ export class GizmoService {
   pieces of data together for your action.
   https://github.com/ngrx/platform/issues/496#issuecomment-337781385
   */
-  public upsert(item: IGizmo) {
+  public upsert(item: Gizmo) {
     //
     this.store
       .select(FromRootReducer.getLoginState)

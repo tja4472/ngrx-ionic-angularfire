@@ -3,15 +3,15 @@ import { FormBuilder, Validators } from '@angular/forms';
 
 import { NavParams, ViewController } from 'ionic-angular';
 
-import { IWidget } from '../../widget.model';
+import { Widget } from '../../widget.model';
 
-export interface IModalInput {
-  item?: IWidget;
+export interface ModalInput {
+  item?: Widget;
 }
 
-export interface IModalResult {
+export interface ModalResult {
   save: boolean;
-  item?: IWidget;
+  item?: Widget;
 }
 
 @Component({
@@ -28,7 +28,7 @@ export class WidgetDetailModal {
 
   private readonly CLASS_NAME = 'WidgetDetailModal';
 
-  private formItem: IWidget;
+  private formItem: Widget;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -41,7 +41,7 @@ export class WidgetDetailModal {
     console.log('navParams.data>', navParams.data);
     console.log('navParams.get("item")>', navParams.get('item'));
 
-    const paramItem: IWidget = navParams.get('item');
+    const paramItem: Widget = navParams.get('item');
 
     if (paramItem === undefined) {
       // new item.
@@ -52,7 +52,7 @@ export class WidgetDetailModal {
     }
 
     // navParams passes by reference.
-    const navParamsTodo: Readonly<IWidget> = Object.assign(
+    const navParamsTodo: Readonly<Widget> = Object.assign(
       {},
       navParams.get('item'),
     );
@@ -85,7 +85,7 @@ export class WidgetDetailModal {
 
   public viewCancel() {
     console.log('viewCancel>');
-    const result: IModalResult = { save: false };
+    const result: ModalResult = { save: false };
 
     this.viewController.dismiss(result);
   }
@@ -100,8 +100,8 @@ export class WidgetDetailModal {
     console.log('this.todoForm.value>', this.viewForm.value);
     console.log('this.formItem>', this.formItem);
 
-    const editedItem: IWidget = { ...this.formItem, ...this.viewForm.value };
-    const result: IModalResult = { save: true, item: editedItem };
+    const editedItem: Widget = { ...this.formItem, ...this.viewForm.value };
+    const result: ModalResult = { save: true, item: editedItem };
     this.viewController.dismiss(result);
   }
 }

@@ -1,1 +1,1 @@
-export { ITextItem } from './textItem';
+export { TextItem } from './textItem';

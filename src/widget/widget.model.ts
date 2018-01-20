@@ -23,8 +23,8 @@ use Object and Primitives) ngrx (and rxjs in general) are relying heavily on
 functional programming patterns, so mixing it Object Oriented paradigms is not
 recommended.
 */
-export interface IWidget {
-  description: string;
-  id: string;
-  name: string;
+export interface Widget {
+  readonly description: string;
+  readonly id: string;
+  readonly name: string;
 }

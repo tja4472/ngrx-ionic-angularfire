@@ -22,7 +22,7 @@ export class LoginPage {
   constructor(
     private formBuilder: FormBuilder,
     private nav: NavController,
-    private store: Store<fromRoot.IState>,
+    private store: Store<fromRoot.State>,
   ) {
     //
     this.loginState$ = this.store.select(fromRoot.getLoginState);

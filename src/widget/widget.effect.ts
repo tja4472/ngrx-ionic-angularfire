@@ -12,13 +12,13 @@ import {
   WidgetActionTypes,
 } from './widget.actions';
 import { WidgetDataService } from './widget.data.service';
-import { IWidget } from './widget.model';
+import { Widget } from './widget.model';
 
 @Injectable()
 export class WidgetEffects {
   constructor(
     private actions$: Actions,
-    private state$: Store<FromRootReducer.IState>,
+    private state$: Store<FromRootReducer.State>,
     private dataService: WidgetDataService,
   ) {}
 
@@ -54,7 +54,7 @@ export class WidgetEffects {
     .do((x) => {
       console.log('Effect:listenForData$:B', x);
     })
-    .map((items: IWidget[]) => new ALoadSuccess({ widgets: items }));
+    .map((items: Widget[]) => new ALoadSuccess({ widgets: items }));
 
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })

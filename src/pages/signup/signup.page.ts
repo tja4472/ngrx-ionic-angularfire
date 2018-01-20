@@ -19,7 +19,7 @@ export class SignupPage {
 
   constructor(
     private formBuilder: FormBuilder,
-    private store: Store<fromRoot.IState>,
+    private store: Store<fromRoot.State>,
   ) {
     //
     this.loginState$ = this.store.select(fromRoot.getLoginState);

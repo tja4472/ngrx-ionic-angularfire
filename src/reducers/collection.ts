@@ -2,21 +2,21 @@ import {
   TextItemActions,
   TextItemActionTypes,
 } from '../actions/text-item.action';
-import { ITextItem } from '../models';
+import { TextItem } from '../models';
 
-export interface IState {
+export interface State {
   loaded: boolean;
   loading: boolean;
-  textItems: ITextItem[];
+  textItems: TextItem[];
 }
 
-const initialState: IState = {
+const initialState: State = {
   loaded: false,
   loading: false,
   textItems: [],
 };
 
-export function reducer(state = initialState, action: TextItemActions): IState {
+export function reducer(state = initialState, action: TextItemActions): State {
   switch (action.type) {
     case TextItemActionTypes.LoadCollection: {
       return {
@@ -26,7 +26,7 @@ export function reducer(state = initialState, action: TextItemActions): IState {
     }
 
     case TextItemActionTypes.LoadCollectionSuccess: {
-      const books: ITextItem[] = action.payload;
+      const books: TextItem[] = action.payload;
 
       return {
         loaded: true,
@@ -41,6 +41,6 @@ export function reducer(state = initialState, action: TextItemActions): IState {
   }
 }
 
-export const getLoaded = (state: IState) => state.loaded;
-export const getLoading = (state: IState) => state.loading;
-export const getTextItems = (state: IState) => state.textItems;
+export const getLoaded = (state: State) => state.loaded;
+export const getLoading = (state: State) => state.loading;
+export const getTextItems = (state: State) => state.textItems;

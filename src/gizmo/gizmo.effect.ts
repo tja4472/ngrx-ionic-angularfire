@@ -17,13 +17,13 @@ import {
   StoreUpdateItems,
 } from './gizmo.actions';
 import { GizmoDataService } from './gizmo.data.service';
-import { IGizmo } from './gizmo.model';
+import { Gizmo } from './gizmo.model';
 
 @Injectable()
 export class GizmoEffects {
   constructor(
     private actions$: Actions,
-    private state$: Store<FromRootReducer.IState>,
+    private state$: Store<FromRootReducer.State>,
     private dataService: GizmoDataService,
   ) {}
 
@@ -57,7 +57,7 @@ export class GizmoEffects {
     .do((x) => {
       console.log('Effect:listenForAddedItems$:B', x);
     })
-    .map((items: IGizmo[]) => new StoreAddItems({ gizmos: items }));
+    .map((items: Gizmo[]) => new StoreAddItems({ gizmos: items }));
 
   // tslint:disable-next-line:member-ordering
   @Effect()
@@ -79,7 +79,7 @@ export class GizmoEffects {
     .do((x) => {
       console.log('Effect:listenForRemovedItems$:B', x);
     })
-    .map((items: IGizmo[]) => items.map((a) => a.id))
+    .map((items: Gizmo[]) => items.map((a) => a.id))
     .map((ids) => new StoreDeleteItems({ ids }));
 
   // tslint:disable-next-line:member-ordering
@@ -144,7 +144,7 @@ export class GizmoEffects {
         return this.dataService.ListenForModified$();
       }
     })
-    .do((x: IGizmo[]) => {
+    .do((x: Gizmo[]) => {
       console.log('Effect:listenForModifiedItems$:B', x);
       const y: any = x.map((a) => {
         return {
@@ -156,7 +156,7 @@ export class GizmoEffects {
     })
     // payload: { gizmos: Array<{ id: string; changes: IGizmo }> }
     // .map((items: IGizmo[]) => new ALoadSuccess({ gizmos: items }
-    .map((items: IGizmo[]) => {
+    .map((items: Gizmo[]) => {
       return items.map((item) => {
         return {
           changes: item,

@@ -45,30 +45,25 @@ export function reducer(state = initialState, action: GizmoActions): IState {
     case GizmoActionTypes.UPDATE_GIZMO: {
       return adapter.updateOne(action.payload.gizmo, state);
     }
-    /* ngrx v5
-    case GizmoActionTypes.UPDATE_GIZMO: {
-      return adapter.updateOne(action.payload.gizmo, state);
-    }
-*/
-    case GizmoActionTypes.UPDATE_GIZMOS: {
-      return adapter.updateMany(action.payload.gizmos, state);
-    }
 
-    case GizmoActionTypes.DELETE_GIZMO: {
-      return adapter.removeOne(action.payload.id, state);
-    }
-
-    case GizmoActionTypes.DELETE_GIZMOS: {
-      return adapter.removeMany(action.payload.ids, state);
-    }
-
-    case GizmoActionTypes.A_LOAD_SUCCESS: {
-      // return adapter.addAll(action.payload.gizmos, state);
+    case GizmoActionTypes.STORE_ADD_ITEMS: {
       return {
         ...adapter.addMany(action.payload.gizmos, state),
         loaded: true,
         loading: false,
       };
+    }
+
+    case GizmoActionTypes.STORE_DELETE_ITEMS: {
+      return adapter.removeMany(action.payload.ids, state);
+    }
+
+    case GizmoActionTypes.STORE_UPDATE_ITEMS: {
+      return adapter.updateMany(action.payload.gizmos, state);
+    }
+
+    case GizmoActionTypes.DELETE_GIZMO: {
+      return adapter.removeOne(action.payload.id, state);
     }
 
     case GizmoActionTypes.LOAD_GIZMOS: {

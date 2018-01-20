@@ -9,12 +9,12 @@ import {
   AListenForAddedItems,
   AListenForModifiedItems,
   AListenForRemovedItems,
-  ALoadSuccess,
-  AUpsertItem,
-  DeleteGizmos,
-  DeleteItem,
+  DatabaseDeleteItem,
+  DatabaseUpsertItem,
   GizmoActionTypes,
-  UpdateGizmos,
+  StoreAddItems,
+  StoreDeleteItems,
+  StoreUpdateItems,
 } from './gizmo.actions';
 import { GizmoDataService } from './gizmo.data.service';
 import { IGizmo } from './gizmo.model';
@@ -30,8 +30,8 @@ export class GizmoEffects {
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
   public deleteItem$ = this.actions$
-    .ofType(GizmoActionTypes.A_DELETE_ITEM)
-    .map((action: DeleteItem) => action.payload)
+    .ofType(GizmoActionTypes.DATABASE_DELETE_ITEM)
+    .map((action: DatabaseDeleteItem) => action.payload)
     .do((payload) => {
       console.log('Effect:deleteItem$:A', payload);
       this.dataService.deleteItem(payload.id);
@@ -57,7 +57,7 @@ export class GizmoEffects {
     .do((x) => {
       console.log('Effect:listenForAddedItems$:B', x);
     })
-    .map((items: IGizmo[]) => new ALoadSuccess({ gizmos: items }));
+    .map((items: IGizmo[]) => new StoreAddItems({ gizmos: items }));
 
   // tslint:disable-next-line:member-ordering
   @Effect()
@@ -80,7 +80,7 @@ export class GizmoEffects {
       console.log('Effect:listenForRemovedItems$:B', x);
     })
     .map((items: IGizmo[]) => items.map((a) => a.id))
-    .map((ids) => new DeleteGizmos({ ids }));
+    .map((ids) => new StoreDeleteItems({ ids }));
 
   // tslint:disable-next-line:member-ordering
   @Effect()
@@ -165,15 +165,14 @@ export class GizmoEffects {
       });
     })
     .do((x) => console.log('YYYY>', x))
-    .map((qq) => new UpdateGizmos({ gizmos: qq }));
+    .map((qq) => new StoreUpdateItems({ gizmos: qq }));
 
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
-  public upsertItem$ = this.actions$
-    .ofType(GizmoActionTypes.A_UPSERT_ITEM)
-    .map((action: AUpsertItem) => action.payload)
+  public databaseUpsertItem$ = this.actions$
+    .ofType(GizmoActionTypes.DATABASE_UPSERT_ITEM)
+    .map((action: DatabaseUpsertItem) => action.payload)
     .do((payload) => {
-      console.log('Effect:upsertItem$:A', payload);
       this.dataService.upsertItem(payload.item, payload.userId);
     });
 }

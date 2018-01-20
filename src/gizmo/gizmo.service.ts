@@ -7,8 +7,8 @@ import * as FromRootReducer from '../reducers/index';
 import {
   AddGizmo,
   AListenForData,
-  AUpsertItem,
-  DeleteItem,
+  DatabaseDeleteItem,
+  DatabaseUpsertItem,
   UpdateGizmo,
 } from './gizmo.actions';
 import { IGizmo } from './gizmo.model';
@@ -33,7 +33,13 @@ export class GizmoService {
   }
 
   public deleteItem(item: IGizmo) {
-    this.store.dispatch(new DeleteItem({ id: item.id }));
+    this.store
+      .select(FromRootReducer.getLoginState)
+      .take(1)
+      .subscribe((loginState) => {
+        const userId = 'dummyId';
+        this.store.dispatch(new DatabaseDeleteItem({ id: item.id, userId }));
+      });
   }
 
   public update(item: IGizmo) {
@@ -50,14 +56,13 @@ export class GizmoService {
   https://github.com/ngrx/platform/issues/496#issuecomment-337781385
   */
   public upsert(item: IGizmo) {
-    // ????????????????????????????? UserId  in item????
+    //
     this.store
       .select(FromRootReducer.getLoginState)
       .take(1)
       .subscribe((loginState) => {
         const userId = 'dummyId';
-        this.store.dispatch(new AUpsertItem({ item, userId }));
-        console.log('ssssssssssss:loginState>', loginState);
+        this.store.dispatch(new DatabaseUpsertItem({ item, userId }));
       });
   }
 

@@ -6,9 +6,9 @@ export type IsFetchingInput = boolean;
 export type PostsInput = ITextItem[];
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'example-list',
   templateUrl: 'example-list.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExampleList {
   @Input() public posts: PostsInput;

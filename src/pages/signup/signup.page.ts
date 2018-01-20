@@ -25,8 +25,8 @@ export class SignupPage {
     this.loginState$ = this.store.select(fromRoot.getLoginState);
 
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
       password: ['', Validators.required],
+      username: ['', Validators.required],
     });
   }
 
@@ -49,8 +49,8 @@ export class SignupPage {
     if (this.loginForm.valid) {
       this.store.dispatch(
         new loginActions.CreateUser({
-          userName: this.loginForm.value.username,
           password: this.loginForm.value.password,
+          userName: this.loginForm.value.username,
         }),
       );
     }

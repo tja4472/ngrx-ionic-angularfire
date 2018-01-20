@@ -19,8 +19,8 @@ export interface IState {
 
 export const reducers: ActionReducerMap<IState> = {
   collection: fromCollection.reducer,
-  login: fromLogin.reducer,
   gizmo: fromGizmo.reducer,
+  login: fromLogin.reducer,
   widget: fromWidget.reducer,
 };
 

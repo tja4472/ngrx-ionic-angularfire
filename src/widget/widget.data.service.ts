@@ -86,8 +86,8 @@ export class WidgetDataService {
     //
 
     const result: IFirestoreDoc = {
-      id: item.id,
       description: item.description,
+      id: item.id,
       name: item.name,
     };
 

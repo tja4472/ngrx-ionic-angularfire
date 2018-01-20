@@ -68,6 +68,7 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
       GizmoEffects,
     ]),
   ],
+  // tslint:disable-next-line:object-literal-sort-keys
   bootstrap: [IonicApp],
   entryComponents: [
     GizmoDetailModal,

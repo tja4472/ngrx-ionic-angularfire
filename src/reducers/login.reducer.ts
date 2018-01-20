@@ -9,9 +9,9 @@ export interface IState {
 
 const initialState: IState = {
   displayName: '',
+  error: null,
   isAuthenticated: false,
   isAuthenticating: false,
-  error: null,
 };
 
 export function reducer(state = initialState, action: LoginActions): IState {

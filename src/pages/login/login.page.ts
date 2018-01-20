@@ -28,8 +28,8 @@ export class LoginPage {
     this.loginState$ = this.store.select(fromRoot.getLoginState);
 
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
       password: ['', Validators.required],
+      username: ['', Validators.required],
     });
   }
 
@@ -52,8 +52,8 @@ export class LoginPage {
     if (this.loginForm.valid) {
       this.store.dispatch(
         new loginActions.EmailAuthentication({
-          userName: this.loginForm.value.username,
           password: this.loginForm.value.password,
+          userName: this.loginForm.value.username,
         }),
       );
     }
@@ -65,8 +65,8 @@ export class LoginPage {
     if (this.loginForm.valid) {
       this.store.dispatch(
         new loginActions.EmailAuthentication({
-          userName: this.loginForm.value.username,
           password: this.loginForm.value.password,
+          userName: this.loginForm.value.username,
         }),
       );
     }

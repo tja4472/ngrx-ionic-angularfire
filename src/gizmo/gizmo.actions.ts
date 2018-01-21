@@ -76,7 +76,13 @@ export class StoreUpdateItems implements Action {
 }
 
 export type GizmoActions =
+  | DatabaseDeleteItem
+  | DatabaseListenForAddedItems
+  | DatabaseListenForModifiedItems
+  | DatabaseListenForRemovedItems
   | DatabaseStartListeningForData
+  | DatabaseStopListeningForData
+  | DatabaseUpsertItem
   | StoreAddItems
   | StoreUpdateItems
   | StoreDeleteItems;

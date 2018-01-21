@@ -23,7 +23,7 @@ export class GizmoDetailModal {
   public viewForm: any;
 
   public get viewCanSave(): boolean {
-    return !this.viewForm.valid;
+    return !(this.viewForm.dirty && this.viewForm.valid);
   }
 
   private readonly CLASS_NAME = 'GizmoDetailModal';

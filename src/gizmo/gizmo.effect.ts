@@ -6,10 +6,10 @@ import { empty } from 'rxjs/observable/empty';
 
 import * as FromRootReducer from '../reducers';
 import {
-  AListenForAddedItems,
-  AListenForModifiedItems,
-  AListenForRemovedItems,
   DatabaseDeleteItem,
+  DatabaseListenForAddedItems,
+  DatabaseListenForModifiedItems,
+  DatabaseListenForRemovedItems,
   DatabaseUpsertItem,
   GizmoActionTypes,
   StoreAddItems,
@@ -40,35 +40,26 @@ export class GizmoEffects {
   // tslint:disable-next-line:member-ordering
   @Effect()
   public listenForAddedItems$ = this.actions$
-    .ofType(GizmoActionTypes.A_LISTEN_FOR_ADDED_ITEMS)
-    .do(() => {
-      console.log('Effect:listenForAddedItems$:A');
-    })
+    .ofType(GizmoActionTypes.DATABASE_LISTEN_FOR_ADDED_ITEMS)
     .switchMap((action) => {
-      console.log('Effect:listenForAddedItems$:action>', action);
-      if (action.type === GizmoActionTypes.A_UNLISTEN_FOR_DATA) {
-        console.log('TodoAction.UNLISTEN_FOR_DATA');
+      if (action.type === GizmoActionTypes.DATABASE_STOP_LISTENING_FOR_DATA) {
         return empty();
       } else {
-        // return this.dataService.getData$();
         return this.dataService.ListenForAdded$();
       }
-    })
-    .do((x) => {
-      console.log('Effect:listenForAddedItems$:B', x);
     })
     .map((items: Gizmo[]) => new StoreAddItems({ gizmos: items }));
 
   // tslint:disable-next-line:member-ordering
   @Effect()
   public listenForRemovedItems$ = this.actions$
-    .ofType(GizmoActionTypes.A_LISTEN_FOR_REMOVED_ITEMS)
+    .ofType(GizmoActionTypes.DATABASE_LISTEN_FOR_REMOVED_ITEMS)
     .do(() => {
       console.log('Effect:listenForRemovedItems$:A');
     })
     .switchMap((action) => {
       console.log('Effect:listenForRemovedItems$:action>', action);
-      if (action.type === GizmoActionTypes.A_UNLISTEN_FOR_DATA) {
+      if (action.type === GizmoActionTypes.DATABASE_STOP_LISTENING_FOR_DATA) {
         console.log('TodoAction.UNLISTEN_FOR_DATA');
         return empty();
       } else {
@@ -86,8 +77,8 @@ export class GizmoEffects {
   @Effect()
   public listenForData$ = this.actions$
     .ofType(
-      GizmoActionTypes.A_LISTEN_FOR_DATA,
-      GizmoActionTypes.A_UNLISTEN_FOR_DATA,
+      GizmoActionTypes.DATABASE_START_LISTENING_FOR_DATA,
+      GizmoActionTypes.DATABASE_STOP_LISTENING_FOR_DATA,
     )
     .do(() => {
       console.log('Effect:listenForData$:A');
@@ -95,9 +86,9 @@ export class GizmoEffects {
     .switchMap((action) => {
       console.log('Effect:listenForData$:action>', action);
       return [
-        new AListenForAddedItems(),
-        new AListenForModifiedItems(),
-        new AListenForRemovedItems(),
+        new DatabaseListenForAddedItems(),
+        new DatabaseListenForModifiedItems(),
+        new DatabaseListenForRemovedItems(),
       ];
     });
   /*
@@ -130,13 +121,13 @@ export class GizmoEffects {
   // tslint:disable-next-line:member-ordering
   @Effect()
   public listenForModifiedItems$ = this.actions$
-    .ofType(GizmoActionTypes.A_LISTEN_FOR_MODIFIED_ITEMS)
+    .ofType(GizmoActionTypes.DATABASE_LISTEN_FOR_MODIFIED_ITEMS)
     .do(() => {
       console.log('Effect:listenForModifiedItems$:A');
     })
     .switchMap((action) => {
       console.log('Effect:listenForModifiedItems$:action>', action);
-      if (action.type === GizmoActionTypes.A_UNLISTEN_FOR_DATA) {
+      if (action.type === GizmoActionTypes.DATABASE_STOP_LISTENING_FOR_DATA) {
         console.log('TodoAction.UNLISTEN_FOR_DATA');
         return empty();
       } else {

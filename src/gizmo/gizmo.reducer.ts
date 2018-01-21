@@ -27,13 +27,13 @@ export const initialState: State = adapter.getInitialState({
 
 export function reducer(state = initialState, action: GizmoActions): State {
   switch (action.type) {
-    case GizmoActionTypes.A_LISTEN_FOR_DATA: {
+    case GizmoActionTypes.DATABASE_START_LISTENING_FOR_DATA: {
       return {
         ...state,
         loading: true,
       };
     }
-
+    /*
     case GizmoActionTypes.ADD_GIZMO: {
       return adapter.addOne(action.payload.gizmo, state);
     }
@@ -45,7 +45,7 @@ export function reducer(state = initialState, action: GizmoActions): State {
     case GizmoActionTypes.UPDATE_GIZMO: {
       return adapter.updateOne(action.payload.gizmo, state);
     }
-
+*/
     case GizmoActionTypes.STORE_ADD_ITEMS: {
       return {
         ...adapter.addMany(action.payload.gizmos, state),
@@ -61,7 +61,7 @@ export function reducer(state = initialState, action: GizmoActions): State {
     case GizmoActionTypes.STORE_UPDATE_ITEMS: {
       return adapter.updateMany(action.payload.gizmos, state);
     }
-
+    /*
     case GizmoActionTypes.DELETE_GIZMO: {
       return adapter.removeOne(action.payload.id, state);
     }
@@ -73,7 +73,7 @@ export function reducer(state = initialState, action: GizmoActions): State {
     case GizmoActionTypes.CLEAR_GIZMOS: {
       return adapter.removeAll({ ...state, selectedGizmoId: '' });
     }
-
+*/
     default: {
       return state;
     }

@@ -50,9 +50,7 @@ export class TextItemEffects {
     .do((x) => {
       console.log('Effect:loadCollection$:B', x);
     })
-    .map(
-      (textItems: TextItem[]) => new LoadCollectionSuccessAction(textItems),
-    );
+    .map((textItems: TextItem[]) => new LoadCollectionSuccessAction(textItems));
 }
 
 //   .withLatestFrom(this.store.select('masterGain'))

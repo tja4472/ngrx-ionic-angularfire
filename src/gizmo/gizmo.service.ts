@@ -5,11 +5,11 @@ import { Observable } from 'rxjs/Observable';
 
 import * as FromRootReducer from '../reducers/index';
 import {
-  AddGizmo,
-  AListenForData,
+  // AddGizmo,
   DatabaseDeleteItem,
+  DatabaseStartListeningForData,
   DatabaseUpsertItem,
-  UpdateGizmo,
+  // UpdateGizmo,
 } from './gizmo.actions';
 import { Gizmo } from './gizmo.model';
 
@@ -24,13 +24,13 @@ export class GizmoService {
   }
 
   public ListenForData(): void {
-    this.store.dispatch(new AListenForData());
+    this.store.dispatch(new DatabaseStartListeningForData());
   }
-
+  /*
   public add(item: Gizmo) {
     this.store.dispatch(new AddGizmo({ gizmo: item }));
   }
-
+*/
   public deleteItem(item: Gizmo) {
     this.store
       .select(FromRootReducer.getLoginState)
@@ -40,13 +40,13 @@ export class GizmoService {
         this.store.dispatch(new DatabaseDeleteItem({ id: item.id, userId }));
       });
   }
-
+  /*
   public update(item: Gizmo) {
     this.store.dispatch(
       new UpdateGizmo({ gizmo: { id: item.id, changes: item } }),
     );
   }
-
+*/
   /*
   Best practice is to provide the user as part of the payload as mentioned
   instead of selecting it from the state in the effect. This keeps the Effect

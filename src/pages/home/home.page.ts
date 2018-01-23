@@ -27,6 +27,8 @@ export class HomePage implements OnInit {
     // private textItemEffects: TextItemEffects,
     private store: Store<fromRoot.State>,
   ) {
+    //
+    console.log('HomePage:constructor');
     this.isFetching$ = store.select(fromRoot.getCollectionLoading);
     this.posts$ = store.select(fromRoot.getCollectionTextItems);
 

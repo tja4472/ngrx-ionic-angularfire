@@ -2,6 +2,7 @@ import { LoginActions, LoginActionTypes } from '../actions/login.action';
 
 export interface State {
   displayName: string;
+  hasChecked: boolean;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   error: any;
@@ -10,6 +11,7 @@ export interface State {
 const initialState: State = {
   displayName: '',
   error: null,
+  hasChecked: false,
   isAuthenticated: false,
   isAuthenticating: false,
 };
@@ -31,12 +33,13 @@ export function reducer(state = initialState, action: LoginActions): State {
       return {
         ...state,
         displayName: makeDisplayName(action.payload),
+        hasChecked: true,
         isAuthenticated: true,
         isAuthenticating: false,
       };
     }
 
-    case LoginActionTypes.Logout: {
+    case LoginActionTypes.LOGOUT: {
       return {
         ...state,
         displayName: '',

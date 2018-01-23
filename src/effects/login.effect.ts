@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/of';
@@ -13,19 +14,25 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/switchMapTo';
 import 'rxjs/add/operator/toArray';
 import 'rxjs/add/operator/withLatestFrom';
+import { empty } from 'rxjs/observable/empty';
 
 import { Injectable } from '@angular/core';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import {
   AnonymousAuthenticationFailure,
   CreateUser,
   CreateUserFailure,
+  EmailAuthentication,
+  EmailAuthenticationFailure,
   LoginActionTypes,
+  Logout,
+  LogoutFailure,
+  LogoutSuccess,
   RestoreAuthentication,
 } from '../actions/login.action';
 import { State } from '../reducers';
@@ -39,13 +46,59 @@ import { State } from '../reducers';
 // import { TextItem } from '../models';
 //
 // Do not import from 'firebase' as you'd lose the tree shaking benefits
+
+// AuthEffects
+
 @Injectable()
 export class LoginEffects {
   constructor(
     private actions$: Actions,
     private state$: Store<State>,
-    public af: AngularFireAuth,
+    public auth$: AngularFireAuth,
   ) {}
+
+  // tslint:disable-next-line:member-ordering
+  @Effect({ dispatch: false })
+  public checkAuth$ = this.actions$
+    .ofType(ROOT_EFFECTS_INIT)
+    // .ofType('@ngrx/effects/init')
+    // .ofType('@ngrx/store/init')
+    .do(() => console.log('checkAuth$'))
+    .switchMap(() => this.auth$.authState)
+    .map((firebaseUser) => {
+      console.log('firebaseUser>', firebaseUser);
+      if (firebaseUser) {
+        console.log('firebaseUser.displayName>', firebaseUser.displayName);
+        console.log('firebaseUser.email>', firebaseUser.email);
+        return this.state$.dispatch(
+          new RestoreAuthentication({
+            displayName: firebaseUser.displayName,
+            email: firebaseUser.email,
+            isAnonymous: firebaseUser.isAnonymous,
+          }),
+        );
+      } else {
+        console.log('BAD');
+        this.state$.dispatch(new Logout());
+      }
+    });
+
+  /*
+      @Effect() checkAuth$ = this.action$.ofType(actions.CHECK_AUTH)
+        .do((action) => console.log(`Received ${action.type}`))
+        .switchMap(() => this.auth$.authState)
+        .map((_result) => {
+            debugger
+            if (_result) {
+                console.log("in auth subscribe", _result)
+                return { type: actions.CHECK_AUTH_SUCCESS, payload: _result }
+            } else {
+                console.log("in auth subscribe - no user", _result)
+                return { type: actions.CHECK_AUTH_NO_USER, payload: null }
+            }
+
+        }).catch((res: any) => Observable.of({ type: actions.CHECK_AUTH_FAILED, payload: res }))
+  */
 
   // https://gitter.im/ngrx/store?at=57f1bf01b0ff456d3adca786
   // But this link gives typescript promise errors.
@@ -54,7 +107,7 @@ export class LoginEffects {
   public anonymousAuthentication$ = this.actions$
     .ofType(LoginActionTypes.AnonymousAuthentication)
     .map(() =>
-      this.af.auth
+      this.auth$.auth
         .signInAnonymously()
         .then((user) =>
           this.state$.dispatch(
@@ -77,7 +130,7 @@ export class LoginEffects {
     // .do(x => console.log('login.effect:createUser>', x))
     .map((action: CreateUser) => action.payload)
     .map((payload) => {
-      this.af.auth
+      this.auth$.auth
         .createUserWithEmailAndPassword(payload.userName, payload.password)
         .then((user) =>
           this.state$.dispatch(
@@ -90,6 +143,45 @@ export class LoginEffects {
         )
         .catch((error) => this.state$.dispatch(new CreateUserFailure(error)));
     });
+
+  // tslint:disable-next-line:member-ordering
+  @Effect()
+  public logout$ = this.actions$
+    .ofType(LoginActionTypes.LOGOUT)
+    .switchMap(() => this.auth$.auth.signOut())
+    .map((res: any) => new LogoutSuccess())
+    .catch((error: any) => Observable.of(new LogoutFailure(error)));
+
+  /***** Working *****/
+  // tslint:disable-next-line:member-ordering
+  @Effect({ dispatch: false })
+  public emailAuthentication$ = this.actions$
+    .ofType(LoginActionTypes.EmailAuthentication)
+    .map((action: EmailAuthentication) => action.payload)
+    .switchMap((payload) =>
+      this.auth$.auth
+        .signInWithEmailAndPassword(payload.userName, payload.password)
+        .catch((error: any) =>
+          this.state$.dispatch(new EmailAuthenticationFailure(error)),
+        ),
+    );
+
+  /***** Working
+  // tslint:disable-next-line:member-ordering
+  @Effect({ dispatch: false })
+  public emailAuthentication$ = this.actions$
+    .ofType(LoginActionTypes.EmailAuthentication)
+    .map((action: EmailAuthentication) => action.payload)
+    .switchMap((payload) => {
+      console.log('signInWithEmailAndPassword>');
+      this.auth$.auth
+        .signInWithEmailAndPassword(payload.userName, payload.password)
+        .catch((error: any) =>
+          this.state$.dispatch(new EmailAuthenticationFailure(error)),
+        );
+      return empty();
+    });
+  *****/
 
   /**************************
   @Effect({ dispatch: false }) emailAuthentication$ = this.actions$

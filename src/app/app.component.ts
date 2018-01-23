@@ -58,7 +58,7 @@ export class MyApp {
     this.initializeApp();
 
     this.loginState$ = this.store.select(FromRoot.getLoginState);
-
+    // this.rootPage = Page1;
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Page One', component: Page1 },
@@ -71,6 +71,23 @@ export class MyApp {
       { title: 'Page Signup', component: SignupPage },
       { title: 'Logout', component: Page1 },
     ];
+
+    this.store
+      .select(FromRoot.getLoginState)
+      // Ignore setting of initial state
+      .skip(1)
+      .subscribe((loginState) => {
+        console.log('loginState>', loginState);
+        const userId = 'dummyId';
+
+        if (loginState.isAuthenticated) {
+          this.rootPage = HomePage;
+        } else {
+          this.rootPage = Page1;
+        }
+      });
+
+    /*
     // Subscribe to the auth object to check for the login status
     // of the user.
     afAuth.authState.take(1).subscribe((authState: firebase.User) => {
@@ -84,7 +101,6 @@ export class MyApp {
       // this.rootPage = HomePage;
       if (authenticated) {
         this.rootPage = HomePage;
-
         this.store.dispatch(
           new LoginActions.RestoreAuthentication({
             displayName: authState.displayName,
@@ -92,10 +108,12 @@ export class MyApp {
             isAnonymous: authState.isAnonymous,
           }),
         );
+
       } else {
         this.rootPage = Page1;
       }
     });
+*/
   }
 
   public initializeApp() {
@@ -141,7 +159,7 @@ export class MyApp {
       setTimeout(() => {
         // this.userData.logout();
         this.store.dispatch(new LoginActions.Logout());
-        this.afAuth.auth.signOut();
+        // this.afAuth.auth.signOut();
       }, 1000);
     }
   }

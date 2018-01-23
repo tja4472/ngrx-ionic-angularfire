@@ -1,5 +1,4 @@
 // tslint:disable:max-classes-per-file
-// tslint:disable:no-empty
 import { Action } from '@ngrx/store';
 
 export enum LoginActionTypes {
@@ -14,7 +13,9 @@ export enum LoginActionTypes {
   EmailAuthenticationFailure = '[Login] Email Authentication Failure',
   GoogleAuthentication = '[Login] Google Authentication',
   GoogleAuthenticationFailure = '[Login] Google Authentication Failure',
-  Logout = '[Login] Logout',
+  LOGOUT = '[Login] Logout',
+  LOGOUT_FAILURE = '[Login] Logout Failure',
+  LOGOUT_SUCCESS = '[Login] Logout Success',
   RestoreAuthentication = '[Login] Restore Authentication',
 }
 
@@ -36,8 +37,6 @@ export const RESTORE_AUTHENTICATION = '[Login] Restore Authentication';
 
 export class AnonymousAuthentication implements Action {
   public readonly type = LoginActionTypes.AnonymousAuthentication;
-
-  constructor() {}
 }
 
 export class AnonymousAuthenticationFailure implements Action {
@@ -106,8 +105,6 @@ export class EmailAuthenticationSuccessAction implements Action {
 
 export class GoogleAuthentication implements Action {
   public readonly type = LoginActionTypes.GoogleAuthentication;
-
-  constructor() {}
 }
 
 export class GoogleAuthenticationFailure implements Action {
@@ -125,9 +122,17 @@ export class GoogleAuthenticationSuccessAction implements Action {
 */
 
 export class Logout implements Action {
-  public readonly type = LoginActionTypes.Logout;
+  public readonly type = LoginActionTypes.LOGOUT;
+}
 
-  constructor() {}
+export class LogoutFailure implements Action {
+  public readonly type = LoginActionTypes.LOGOUT_FAILURE;
+
+  constructor(public payload: any) {}
+}
+
+export class LogoutSuccess implements Action {
+  public readonly type = LoginActionTypes.LOGOUT_SUCCESS;
 }
 
 export class RestoreAuthentication implements Action {
@@ -156,4 +161,6 @@ export type LoginActions =
   | GoogleAuthenticationFailure
   // GoogleAuthenticationSuccessAction |
   | Logout
+  | LogoutFailure
+  | LogoutSuccess
   | RestoreAuthentication;

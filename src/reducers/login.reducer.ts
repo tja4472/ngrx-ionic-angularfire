@@ -29,7 +29,7 @@ export function reducer(state = initialState, action: LoginActions): State {
     // case loginAction.ActionTypes.CREATE_USER_SUCCESS:
     // case loginAction.ActionTypes.EMAIL_AUTHENTICATION_SUCCESS:
     // case loginAction.ActionTypes.GOOGLE_AUTHENTICATION_SUCCESS:
-    case LoginActionTypes.RestoreAuthentication: {
+    case LoginActionTypes.CHECK_AUTH_SUCCESS: {
       return {
         ...state,
         displayName: makeDisplayName(action.payload),
@@ -39,6 +39,16 @@ export function reducer(state = initialState, action: LoginActions): State {
       };
     }
 
+    case LoginActionTypes.CHECK_AUTH_NO_USER: {
+      return {
+        ...state,
+        displayName: '',
+        hasChecked: true,
+        isAuthenticated: false,
+        isAuthenticating: false,
+      };
+    }
+    /*
     case LoginActionTypes.LOGOUT: {
       return {
         ...state,
@@ -47,10 +57,10 @@ export function reducer(state = initialState, action: LoginActions): State {
         isAuthenticating: false,
       };
     }
-
+*/
     case LoginActionTypes.AnonymousAuthentication:
     case LoginActionTypes.CreateUser:
-    case LoginActionTypes.EmailAuthentication: {
+    case LoginActionTypes.EMAIL_AUTHENTICATION: {
       return {
         ...state,
         error: null,
@@ -58,9 +68,17 @@ export function reducer(state = initialState, action: LoginActions): State {
       };
     }
 
+    case LoginActionTypes.EMAIL_AUTHENTICATION_FAILURE: {
+      return {
+        ...state,
+        error: action.payload.error,
+        isAuthenticating: false,
+      };
+    }
+
     case LoginActionTypes.AnonymousAuthenticationFailure:
-    case LoginActionTypes.CreateUserFailure:
-    case LoginActionTypes.EmailAuthenticationFailure: {
+    case LoginActionTypes.CreateUserFailure: {
+      // case LoginActionTypes.EMAIL_AUTHENTICATION_FAILURE: {
       return {
         ...state,
         error: action.payload,

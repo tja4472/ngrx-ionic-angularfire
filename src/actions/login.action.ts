@@ -9,31 +9,18 @@ export enum LoginActionTypes {
   // BeginAuthenticationFailure = '[Login] Begin Authentication Failure',
   CreateUser = '[Login] Create User',
   CreateUserFailure = '[Login] Create User Failure',
-  EmailAuthentication = '[Login] Email Authentication',
-  EmailAuthenticationFailure = '[Login] Email Authentication Failure',
+  EMAIL_AUTHENTICATION = '[Login] Email Authentication',
+  EMAIL_AUTHENTICATION_FAILURE = '[Login] Email Authentication Failure',
+  EMAIL_AUTHENTICATION_SUCCESS = '[Login] Email Authentication Success',
   GoogleAuthentication = '[Login] Google Authentication',
   GoogleAuthenticationFailure = '[Login] Google Authentication Failure',
-  LOGOUT = '[Login] Logout',
-  LOGOUT_FAILURE = '[Login] Logout Failure',
-  LOGOUT_SUCCESS = '[Login] Logout Success',
-  RestoreAuthentication = '[Login] Restore Authentication',
+  CHECK_AUTH_FAILURE = '[Login] Check Auth Failure',
+  CHECK_AUTH_NO_USER = '[Login] Check Auth No User',
+  CHECK_AUTH_SUCCESS = '[Login] Check Auth Success',
+  SIGN_OUT = '[Login] Sign Out',
+  SIGN_OUT_FAILURE = '[Login] Sign Out Failure',
+  SIGN_OUT_SUCCESS = '[Login] Sign Out Success',
 }
-
-/*
-export const ANONYMOUS_AUTHENTICATION = '[Login] Anonymous Authentication';
-export const ANONYMOUS_AUTHENTICATION_FAILURE =
-  '[Login] Anonymous Authentication Failure';
-export const CREATE_USER = '[Login] Create User';
-export const CREATE_USER_FAILURE = '[Login] Create User Failure';
-export const EMAIL_AUTHENTICATION = '[Login] Email Authentication';
-export const EMAIL_AUTHENTICATION_FAILURE =
-  '[Login] Email Authentication Failure';
-export const GOOGLE_AUTHENTICATION = '[Login] Google Authentication';
-export const GOOGLE_AUTHENTICATION_FAILURE =
-  '[Login] Google Authentication Failure';
-export const LOGOUT = '[Login] Logout';
-export const RESTORE_AUTHENTICATION = '[Login] Restore Authentication';
-*/
 
 export class AnonymousAuthentication implements Action {
   public readonly type = LoginActionTypes.AnonymousAuthentication;
@@ -79,7 +66,7 @@ export class CreateUserSuccessAction implements Action {
 */
 
 export class EmailAuthentication implements Action {
-  public readonly type = LoginActionTypes.EmailAuthentication;
+  public readonly type = LoginActionTypes.EMAIL_AUTHENTICATION;
 
   constructor(
     public payload: {
@@ -90,18 +77,14 @@ export class EmailAuthentication implements Action {
 }
 
 export class EmailAuthenticationFailure implements Action {
-  public readonly type = LoginActionTypes.EmailAuthenticationFailure;
+  public readonly type = LoginActionTypes.EMAIL_AUTHENTICATION_FAILURE;
 
-  constructor(public payload: any) {} // error
+  constructor(public payload: { error: any }) {}
 }
 
-/*
-export class EmailAuthenticationSuccessAction implements Action {
-    type = ActionTypes.EMAIL_AUTHENTICATION_SUCCESS;
-
-    constructor(public payload: FirebaseAuthState) { }
+export class EmailAuthenticationSuccess implements Action {
+  public readonly type = LoginActionTypes.EMAIL_AUTHENTICATION_SUCCESS;
 }
-*/
 
 export class GoogleAuthentication implements Action {
   public readonly type = LoginActionTypes.GoogleAuthentication;
@@ -121,22 +104,32 @@ export class GoogleAuthenticationSuccessAction implements Action {
 }
 */
 
-export class Logout implements Action {
-  public readonly type = LoginActionTypes.LOGOUT;
+export class SignOut implements Action {
+  public readonly type = LoginActionTypes.SIGN_OUT;
 }
 
-export class LogoutFailure implements Action {
-  public readonly type = LoginActionTypes.LOGOUT_FAILURE;
+export class SignOutFailure implements Action {
+  public readonly type = LoginActionTypes.SIGN_OUT_FAILURE;
 
   constructor(public payload: any) {}
 }
 
-export class LogoutSuccess implements Action {
-  public readonly type = LoginActionTypes.LOGOUT_SUCCESS;
+export class SignOutSuccess implements Action {
+  public readonly type = LoginActionTypes.SIGN_OUT_SUCCESS;
 }
 
-export class RestoreAuthentication implements Action {
-  public readonly type = LoginActionTypes.RestoreAuthentication;
+export class CheckAuthFailure implements Action {
+  public readonly type = LoginActionTypes.CHECK_AUTH_FAILURE;
+
+  constructor(public payload: any) {}
+}
+
+export class CheckAuthNoUser implements Action {
+  public readonly type = LoginActionTypes.CHECK_AUTH_NO_USER;
+}
+
+export class CheckAuthSuccess implements Action {
+  public readonly type = LoginActionTypes.CHECK_AUTH_SUCCESS;
 
   constructor(
     public payload: {
@@ -151,16 +144,17 @@ export type LoginActions =
   | AnonymousAuthentication
   | AnonymousAuthenticationFailure
   // AnonymousAuthenticationSuccessAction |
+  | CheckAuthNoUser
+  | CheckAuthSuccess
   | CreateUser
   | CreateUserFailure
   // CreateUserSuccessAction |
   | EmailAuthentication
   | EmailAuthenticationFailure
-  // EmailAuthenticationSuccessAction |
+  | EmailAuthenticationSuccess
   | GoogleAuthentication
   | GoogleAuthenticationFailure
   // GoogleAuthenticationSuccessAction |
-  | Logout
-  | LogoutFailure
-  | LogoutSuccess
-  | RestoreAuthentication;
+  | SignOut
+  | SignOutFailure
+  | SignOutSuccess;

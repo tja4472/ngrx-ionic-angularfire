@@ -34,6 +34,7 @@ import { WidgetDataService } from '../widget/widget.data.service';
 import { WidgetEffects } from '../widget/widget.effect';
 import { WidgetService } from '../widget/widget.service';
 import { MyApp } from './app.component';
+import { AuthService } from './auth/auth.service';
 import { MyFirebaseAppConfig } from './my-firebase-app-config';
 
 @NgModule({
@@ -84,6 +85,7 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
     SignupPage,
   ],
   providers: [
+    AuthService,
     StatusBar,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     GizmoDataService,

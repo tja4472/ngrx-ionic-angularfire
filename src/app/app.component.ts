@@ -152,15 +152,17 @@ export class MyApp {
 
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    // this.nav.setRoot(page.component);
 
     if (page.title === 'Logout') {
       // Give the menu time to close before changing to logged out
       setTimeout(() => {
         // this.userData.logout();
-        this.store.dispatch(new LoginActions.Logout());
+        this.store.dispatch(new LoginActions.SignOut());
         // this.afAuth.auth.signOut();
       }, 1000);
+    } else {
+      this.nav.setRoot(page.component);
     }
   }
 }

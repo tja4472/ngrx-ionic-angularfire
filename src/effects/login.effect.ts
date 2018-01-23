@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/of';
@@ -14,95 +13,54 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/switchMapTo';
 import 'rxjs/add/operator/toArray';
 import 'rxjs/add/operator/withLatestFrom';
-import { empty } from 'rxjs/observable/empty';
 
 import { Injectable } from '@angular/core';
-
-import { AngularFireAuth } from 'angularfire2/auth';
-
 import { Actions, Effect, ROOT_EFFECTS_INIT } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 import {
-  AnonymousAuthenticationFailure,
-  CreateUser,
-  CreateUserFailure,
+  CheckAuthFailure,
+  CheckAuthNoUser,
+  CheckAuthSuccess,
   EmailAuthentication,
   EmailAuthenticationFailure,
+  EmailAuthenticationSuccess,
   LoginActionTypes,
-  Logout,
-  LogoutFailure,
-  LogoutSuccess,
-  RestoreAuthentication,
+  SignOutFailure,
+  SignOutSuccess,
 } from '../actions/login.action';
-import { State } from '../reducers';
-
-// error TS4029: https://github.com/Microsoft/TypeScript/issues/5938
-// tslint:disable-next-line:no-unused-variable
-// import { LoadCollectionSuccessAction, TextItemActionTypes } from '../actions/textitem.action';
-
-// import * as loginActions from '../actions/login.action';
-
-// import { TextItem } from '../models';
-//
-// Do not import from 'firebase' as you'd lose the tree shaking benefits
-
-// AuthEffects
+import { AuthService } from '../app/auth/auth.service';
 
 @Injectable()
 export class LoginEffects {
   constructor(
-    private actions$: Actions,
-    private state$: Store<State>,
-    public auth$: AngularFireAuth,
+    private readonly actions$: Actions,
+    private readonly authService: AuthService,
   ) {}
 
   // tslint:disable-next-line:member-ordering
-  @Effect({ dispatch: false })
-  public checkAuth$ = this.actions$
-    .ofType(ROOT_EFFECTS_INIT)
-    // .ofType('@ngrx/effects/init')
-    // .ofType('@ngrx/store/init')
-    .do(() => console.log('checkAuth$'))
-    .switchMap(() => this.auth$.authState)
-    .map((firebaseUser) => {
-      console.log('firebaseUser>', firebaseUser);
-      if (firebaseUser) {
-        console.log('firebaseUser.displayName>', firebaseUser.displayName);
-        console.log('firebaseUser.email>', firebaseUser.email);
-        return this.state$.dispatch(
-          new RestoreAuthentication({
+  @Effect()
+  public checkAuth$ = this.actions$.ofType(ROOT_EFFECTS_INIT).switchMap(() =>
+    this.authService
+      .authState$()
+      .map((firebaseUser) => {
+        if (firebaseUser) {
+          return new CheckAuthSuccess({
             displayName: firebaseUser.displayName,
             email: firebaseUser.email,
             isAnonymous: firebaseUser.isAnonymous,
-          }),
-        );
-      } else {
-        console.log('BAD');
-        this.state$.dispatch(new Logout());
-      }
-    });
-
-  /*
-      @Effect() checkAuth$ = this.action$.ofType(actions.CHECK_AUTH)
-        .do((action) => console.log(`Received ${action.type}`))
-        .switchMap(() => this.auth$.authState)
-        .map((_result) => {
-            debugger
-            if (_result) {
-                console.log("in auth subscribe", _result)
-                return { type: actions.CHECK_AUTH_SUCCESS, payload: _result }
-            } else {
-                console.log("in auth subscribe - no user", _result)
-                return { type: actions.CHECK_AUTH_NO_USER, payload: null }
-            }
-
-        }).catch((res: any) => Observable.of({ type: actions.CHECK_AUTH_FAILED, payload: res }))
-  */
+          });
+        } else {
+          return new CheckAuthNoUser();
+        }
+      })
+      .catch((error: any) => Observable.of(new CheckAuthFailure(error))),
+  );
 
   // https://gitter.im/ngrx/store?at=57f1bf01b0ff456d3adca786
   // But this link gives typescript promise errors.
   // tslint:disable-next-line:member-ordering
+  /*
   @Effect({ dispatch: false })
   public anonymousAuthentication$ = this.actions$
     .ofType(LoginActionTypes.AnonymousAuthentication)
@@ -111,7 +69,7 @@ export class LoginEffects {
         .signInAnonymously()
         .then((user) =>
           this.state$.dispatch(
-            new RestoreAuthentication({
+            new CheckAuthSuccess({
               displayName: user.auth.displayName,
               email: user.auth.email,
               isAnonymous: user.auth.isAnonymous,
@@ -122,7 +80,8 @@ export class LoginEffects {
           this.state$.dispatch(new AnonymousAuthenticationFailure(error)),
         ),
     );
-
+*/
+  /*
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
   public createUser$ = this.actions$
@@ -134,7 +93,7 @@ export class LoginEffects {
         .createUserWithEmailAndPassword(payload.userName, payload.password)
         .then((user) =>
           this.state$.dispatch(
-            new RestoreAuthentication({
+            new CheckAuthSuccess({
               displayName: user.auth.displayName,
               email: user.auth.email,
               isAnonymous: user.auth.isAnonymous,
@@ -143,7 +102,8 @@ export class LoginEffects {
         )
         .catch((error) => this.state$.dispatch(new CreateUserFailure(error)));
     });
-
+*/
+  /*
   // tslint:disable-next-line:member-ordering
   @Effect()
   public logout$ = this.actions$
@@ -151,9 +111,36 @@ export class LoginEffects {
     .switchMap(() => this.auth$.auth.signOut())
     .map((res: any) => new LogoutSuccess())
     .catch((error: any) => Observable.of(new LogoutFailure(error)));
+*/
+
+  // tslint:disable-next-line:member-ordering
+  @Effect()
+  public signOut$ = this.actions$
+    .ofType(LoginActionTypes.SIGN_OUT)
+    .switchMap(() =>
+      this.authService
+        .signOut()
+        .map((res: any) => new SignOutSuccess())
+        .catch((error: any) => Observable.of(new SignOutFailure(error))),
+    );
+
+  // tslint:disable-next-line:member-ordering
+  @Effect()
+  public emailAuthentication$ = this.actions$
+    .ofType(LoginActionTypes.EMAIL_AUTHENTICATION)
+    .map((action: EmailAuthentication) => action.payload)
+    .switchMap((payload) =>
+      this.authService
+        .signInWithEmailAndPassword(payload.userName, payload.password)
+        .map(() => new EmailAuthenticationSuccess())
+        .catch((error: any) =>
+          Observable.of(new EmailAuthenticationFailure({ error })),
+        ),
+    );
 
   /***** Working *****/
   // tslint:disable-next-line:member-ordering
+  /*
   @Effect({ dispatch: false })
   public emailAuthentication$ = this.actions$
     .ofType(LoginActionTypes.EmailAuthentication)
@@ -165,7 +152,7 @@ export class LoginEffects {
           this.state$.dispatch(new EmailAuthenticationFailure(error)),
         ),
     );
-
+  */
   /***** Working
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
@@ -182,44 +169,4 @@ export class LoginEffects {
       return empty();
     });
   *****/
-
-  /**************************
-  @Effect({ dispatch: false }) emailAuthentication$ = this.actions$
-    .ofType(LoginActions.ActionTypes.EMAIL_AUTHENTICATION)
-    // .do(x => console.log('login.effect:emailAuthentication>', x))
-    .map((action: LoginActions.EmailAuthenticationAction) => action.payload)
-    .map(payload => {
-      this.af.auth.login(
-        { email: payload.userName, password: payload.password },
-        {
-          provider: AuthProviders.Password,
-          method: AuthMethods.Password
-        })
-        .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
-          displayName: user.auth.displayName,
-          email: user.auth.email,
-          isAnonymous: user.auth.isAnonymous,
-        })))
-        .catch(error => this.state$.dispatch(new LoginActions.EmailAuthenticationFailureAction(error)))
-    });
-
-  @Effect({ dispatch: false }) authorizeWithGoogle$ = this.actions$
-    .ofType(LoginActions.ActionTypes.GOOGLE_AUTHENTICATION)
-    // .do(x => console.log('login.effect:authorizeWithGoogle>', x))
-    // .map((action: LoginActions.GoogleAuthenticationAction) => action.payload)
-    .map(() => {
-      this.af.auth.login(
-        {
-          provider: AuthProviders.Google,
-          method: AuthMethods.Popup
-        })
-        .then(user => this.state$.dispatch(new LoginActions.RestoreAuthenticationAction({
-          displayName: user.auth.displayName,
-          email: user.auth.email,
-          isAnonymous: user.auth.isAnonymous,
-        })))
-        .catch(error => this.state$.dispatch(new LoginActions.GoogleAuthenticationFailureAction(error)))
-    });
-
-******************/
 }

@@ -1,22 +1,7 @@
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/switchMapTo';
-import 'rxjs/add/operator/toArray';
-import 'rxjs/add/operator/withLatestFrom';
-
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ROOT_EFFECTS_INIT } from '@ngrx/effects';
-import { Observable } from 'rxjs';
+import { Actions, Effect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
+import { of } from 'rxjs/observable/of';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import {
   AuthActionTypes,
@@ -40,21 +25,24 @@ export class AuthEffects {
 
   // tslint:disable-next-line:member-ordering
   @Effect()
-  public checkAuth$ = this.actions$.ofType(ROOT_EFFECTS_INIT).switchMap(() =>
-    this.authService
-      .authState$()
-      .map((firebaseUser) => {
-        if (firebaseUser) {
-          return new CheckAuthSuccess({
-            displayName: firebaseUser.displayName,
-            email: firebaseUser.email,
-            isAnonymous: firebaseUser.isAnonymous,
-          });
-        } else {
-          return new CheckAuthNoUser();
-        }
-      })
-      .catch((error: any) => Observable.of(new CheckAuthFailure(error))),
+  public checkAuth$ = this.actions$.pipe(
+    ofType(ROOT_EFFECTS_INIT),
+    switchMap(() =>
+      this.authService.authState$().pipe(
+        map((firebaseUser) => {
+          if (firebaseUser) {
+            return new CheckAuthSuccess({
+              displayName: firebaseUser.displayName,
+              email: firebaseUser.email,
+              isAnonymous: firebaseUser.isAnonymous,
+            });
+          } else {
+            return new CheckAuthNoUser();
+          }
+        }),
+        catchError((error: any) => of(new CheckAuthFailure(error))),
+      ),
+    ),
   );
 
   // tslint:disable-next-line:member-ordering
@@ -64,8 +52,10 @@ export class AuthEffects {
     .switchMap(() =>
       this.authService
         .signOut()
-        .map((res: any) => new SignOutSuccess())
-        .catch((error: any) => Observable.of(new SignOutFailure(error))),
+        .pipe(
+          map((res: any) => new SignOutSuccess()),
+          catchError((error: any) => of(new SignOutFailure(error))),
+        ),
     );
 
   // tslint:disable-next-line:member-ordering
@@ -76,9 +66,11 @@ export class AuthEffects {
     .switchMap((payload) =>
       this.authService
         .signInWithEmailAndPassword(payload.userName, payload.password)
-        .map(() => new EmailAuthenticationSuccess())
-        .catch((error: any) =>
-          Observable.of(new EmailAuthenticationFailure({ error })),
+        .pipe(
+          map(() => new EmailAuthenticationSuccess()),
+          catchError((error: any) =>
+            of(new EmailAuthenticationFailure({ error })),
+          ),
         ),
     );
 }

@@ -1,6 +1,8 @@
 <ion-header>
   <ion-navbar>
-    <button menuToggle ion-button icon-only>
+    <button menuToggle
+            ion-button
+            icon-only>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Login</ion-title>
@@ -9,10 +11,13 @@
 
 <ion-content>
   <ion-list>
-    <form [formGroup]="loginForm" novalidate>
+    <form [formGroup]="loginForm"
+          novalidate>
       <ion-item>
-        <ion-label floating color="primary">Username</ion-label>
-        <ion-input type="text" formControlName="username">
+        <ion-label floating
+                   color="primary">Username</ion-label>
+        <ion-input type="text"
+                   formControlName="username">
         </ion-input>
       </ion-item>
 
@@ -26,12 +31,14 @@
       </p>
 -->
       <ion-item>
-        <ion-label floating color="primary">Password</ion-label>
-        <ion-input type="password" formControlName="password">
+        <ion-label floating
+                   color="primary">Password</ion-label>
+        <ion-input type="password"
+                   formControlName="password">
         </ion-input>
       </ion-item>
 
-      <p *ngIf="loginForm.controls.password.hasError('required')">This field is required!</p>      
+      <p *ngIf="loginForm.controls.password.hasError('required')">This field is required!</p>
       <!--      
       <p [hidden]="password.valid || submitted == false" danger padding-left>
         Password is required
@@ -42,20 +49,16 @@
           <!--
             <button (click)="onLogin(loginForm)" type="submit" primary block>Login</button>
 -->
-          <button ion-button (click)="onLogin()" color="primary" block>Login</button>
+          <button ion-button
+                  (click)="onLogin()"
+                  color="primary"
+                  block>Login</button>
         </ion-col>
         <ion-col>
-          <button ion-button (click)="onSignup()" color="light" block>Signup</button>
-        </ion-col>
-      </ion-row>
-      <ion-row responsive-sm>
-        <ion-col>
-          <button ion-button color="secondary" (click)="signInAnonymously()">Login Anonymously</button>
-        </ion-col>
-      </ion-row>
-      <ion-row responsive-sm>
-        <ion-col>
-          <button ion-button color="secondary" (click)="signInWithGoogle()">Login with Google</button>
+          <button ion-button
+                  (click)="onSignup()"
+                  color="light"
+                  block>Signup</button>
         </ion-col>
       </ion-row>
     </form>

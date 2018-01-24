@@ -75,12 +75,4 @@ export class LoginPage {
   public onSignup() {
     this.nav.push(SignupPage);
   }
-
-  public signInAnonymously() {
-    this.store.dispatch(new loginActions.AnonymousAuthentication());
-  }
-
-  public signInWithGoogle() {
-    this.store.dispatch(new loginActions.GoogleAuthentication());
-  }
 }

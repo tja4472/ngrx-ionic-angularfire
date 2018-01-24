@@ -18,17 +18,6 @@ const initialState: State = {
 
 export function reducer(state = initialState, action: LoginActions): State {
   switch (action.type) {
-    case LoginActionTypes.GoogleAuthentication: {
-      return {
-        ...state,
-        isAuthenticating: true,
-      };
-    }
-
-    // case loginAction.ActionTypes.ANONYMOUS_AUTHENTICATION_SUCCESS:
-    // case loginAction.ActionTypes.CREATE_USER_SUCCESS:
-    // case loginAction.ActionTypes.EMAIL_AUTHENTICATION_SUCCESS:
-    // case loginAction.ActionTypes.GOOGLE_AUTHENTICATION_SUCCESS:
     case LoginActionTypes.CHECK_AUTH_SUCCESS: {
       return {
         ...state,
@@ -48,17 +37,6 @@ export function reducer(state = initialState, action: LoginActions): State {
         isAuthenticating: false,
       };
     }
-    /*
-    case LoginActionTypes.LOGOUT: {
-      return {
-        ...state,
-        displayName: '',
-        isAuthenticated: false,
-        isAuthenticating: false,
-      };
-    }
-*/
-    case LoginActionTypes.AnonymousAuthentication:
     case LoginActionTypes.CreateUser:
     case LoginActionTypes.EMAIL_AUTHENTICATION: {
       return {
@@ -76,9 +54,7 @@ export function reducer(state = initialState, action: LoginActions): State {
       };
     }
 
-    case LoginActionTypes.AnonymousAuthenticationFailure:
     case LoginActionTypes.CreateUserFailure: {
-      // case LoginActionTypes.EMAIL_AUTHENTICATION_FAILURE: {
       return {
         ...state,
         error: action.payload,
@@ -86,31 +62,6 @@ export function reducer(state = initialState, action: LoginActions): State {
       };
     }
 
-    /*
-                case LoginActions.ANONYMOUS_AUTHENTICATION_SUCCESS: {
-                    let user: FirebaseAuthState = action.payload;
-
-                    return Object.assign({}, state, {
-                        error: null,
-                        displayName: 'Anonymous',
-                        isAuthenticated: true,
-                        isAuthenticating: false
-                    });
-                }
-        */
-    /*
-                case LoginActions.CREATE_USER_SUCCESS:
-                case LoginActions.EMAIL_AUTHENTICATION_SUCCESS: {
-                    let user: FirebaseAuthState = action.payload;
-
-                    return Object.assign({}, state, {
-                        error: null,
-                        displayName: user.auth.email,
-                        isAuthenticated: true,
-                        isAuthenticating: false
-                    });
-                }
-        */
     default: {
       return state;
     }

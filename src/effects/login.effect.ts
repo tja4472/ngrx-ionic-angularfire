@@ -57,62 +57,6 @@ export class LoginEffects {
       .catch((error: any) => Observable.of(new CheckAuthFailure(error))),
   );
 
-  // https://gitter.im/ngrx/store?at=57f1bf01b0ff456d3adca786
-  // But this link gives typescript promise errors.
-  // tslint:disable-next-line:member-ordering
-  /*
-  @Effect({ dispatch: false })
-  public anonymousAuthentication$ = this.actions$
-    .ofType(LoginActionTypes.AnonymousAuthentication)
-    .map(() =>
-      this.auth$.auth
-        .signInAnonymously()
-        .then((user) =>
-          this.state$.dispatch(
-            new CheckAuthSuccess({
-              displayName: user.auth.displayName,
-              email: user.auth.email,
-              isAnonymous: user.auth.isAnonymous,
-            }),
-          ),
-        )
-        .catch((error) =>
-          this.state$.dispatch(new AnonymousAuthenticationFailure(error)),
-        ),
-    );
-*/
-  /*
-  // tslint:disable-next-line:member-ordering
-  @Effect({ dispatch: false })
-  public createUser$ = this.actions$
-    .ofType(LoginActionTypes.CreateUser)
-    // .do(x => console.log('login.effect:createUser>', x))
-    .map((action: CreateUser) => action.payload)
-    .map((payload) => {
-      this.auth$.auth
-        .createUserWithEmailAndPassword(payload.userName, payload.password)
-        .then((user) =>
-          this.state$.dispatch(
-            new CheckAuthSuccess({
-              displayName: user.auth.displayName,
-              email: user.auth.email,
-              isAnonymous: user.auth.isAnonymous,
-            }),
-          ),
-        )
-        .catch((error) => this.state$.dispatch(new CreateUserFailure(error)));
-    });
-*/
-  /*
-  // tslint:disable-next-line:member-ordering
-  @Effect()
-  public logout$ = this.actions$
-    .ofType(LoginActionTypes.LOGOUT)
-    .switchMap(() => this.auth$.auth.signOut())
-    .map((res: any) => new LogoutSuccess())
-    .catch((error: any) => Observable.of(new LogoutFailure(error)));
-*/
-
   // tslint:disable-next-line:member-ordering
   @Effect()
   public signOut$ = this.actions$
@@ -137,36 +81,4 @@ export class LoginEffects {
           Observable.of(new EmailAuthenticationFailure({ error })),
         ),
     );
-
-  /***** Working *****/
-  // tslint:disable-next-line:member-ordering
-  /*
-  @Effect({ dispatch: false })
-  public emailAuthentication$ = this.actions$
-    .ofType(LoginActionTypes.EmailAuthentication)
-    .map((action: EmailAuthentication) => action.payload)
-    .switchMap((payload) =>
-      this.auth$.auth
-        .signInWithEmailAndPassword(payload.userName, payload.password)
-        .catch((error: any) =>
-          this.state$.dispatch(new EmailAuthenticationFailure(error)),
-        ),
-    );
-  */
-  /***** Working
-  // tslint:disable-next-line:member-ordering
-  @Effect({ dispatch: false })
-  public emailAuthentication$ = this.actions$
-    .ofType(LoginActionTypes.EmailAuthentication)
-    .map((action: EmailAuthentication) => action.payload)
-    .switchMap((payload) => {
-      console.log('signInWithEmailAndPassword>');
-      this.auth$.auth
-        .signInWithEmailAndPassword(payload.userName, payload.password)
-        .catch((error: any) =>
-          this.state$.dispatch(new EmailAuthenticationFailure(error)),
-        );
-      return empty();
-    });
-  *****/
 }

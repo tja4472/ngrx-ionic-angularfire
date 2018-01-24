@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
 
-import * as loginActions from '../../actions/login.action';
+import * as authActions from '../../app/auth/auth.action';
 import * as fromRoot from '../../reducers';
 
 @Component({
@@ -22,7 +22,7 @@ export class SignupPage {
     private store: Store<fromRoot.State>,
   ) {
     //
-    this.loginState$ = this.store.select(fromRoot.getLoginState);
+    this.loginState$ = this.store.select(fromRoot.getAuthState);
 
     this.loginForm = this.formBuilder.group({
       password: ['', Validators.required],
@@ -48,7 +48,7 @@ export class SignupPage {
 
     if (this.loginForm.valid) {
       this.store.dispatch(
-        new loginActions.CreateUser({
+        new authActions.CreateUser({
           password: this.loginForm.value.password,
           userName: this.loginForm.value.username,
         }),
@@ -61,7 +61,7 @@ export class SignupPage {
 
     if (form.valid) {
       this.store.dispatch(
-        this.loginActions.createUser(
+        this.authActions.createUser(
           this.signup.username,
           this.signup.password));
     }

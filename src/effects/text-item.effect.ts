@@ -44,7 +44,7 @@ export class TextItemEffects {
     })
     .withLatestFrom(this.state$)
     // tslint:disable-next-line:no-unused-variable
-    .filter(([action, state]) => (state as State).login.isAuthenticated)
+    .filter(([action, state]) => (state as State).auth.isAuthenticated)
     // Watch database node and get TextItems.
     .switchMap(() => this.afDb.list('/textItems').valueChanges())
     .do((x) => {

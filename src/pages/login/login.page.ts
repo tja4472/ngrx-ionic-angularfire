@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { NavController } from 'ionic-angular';
 
-import * as loginActions from '../../actions/login.action';
+import * as authActions from '../../app/auth/auth.action';
 import * as fromRoot from '../../reducers';
 import { SignupPage } from '../signup/signup.page';
 
@@ -25,7 +25,7 @@ export class LoginPage {
     private store: Store<fromRoot.State>,
   ) {
     //
-    this.loginState$ = this.store.select(fromRoot.getLoginState);
+    this.loginState$ = this.store.select(fromRoot.getAuthState);
 
     this.loginForm = this.formBuilder.group({
       password: ['', Validators.required],
@@ -51,7 +51,7 @@ export class LoginPage {
 
     if (this.loginForm.valid) {
       this.store.dispatch(
-        new loginActions.EmailAuthentication({
+        new authActions.EmailAuthentication({
           password: this.loginForm.value.password,
           userName: this.loginForm.value.username,
         }),
@@ -64,7 +64,7 @@ export class LoginPage {
 
     if (this.loginForm.valid) {
       this.store.dispatch(
-        new loginActions.EmailAuthentication({
+        new authActions.EmailAuthentication({
           password: this.loginForm.value.password,
           userName: this.loginForm.value.username,
         }),

@@ -1,26 +1,22 @@
-// import { createSelector } from 'reselect';
-// import { ActionReducer } from '@ngrx/store';
-// import { compose } from '@ngrx/core/compose';
-// import { storeLogger } from 'ngrx-store-logger';
 import { ActionReducerMap, createSelector, MetaReducer } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 
+import * as fromAuth from '../app/auth/auth.reducer';
 import * as fromGizmo from '../gizmo/gizmo.reducer';
 import * as fromWidget from '../widget/widget.reducer';
 import * as fromCollection from './collection';
-import * as fromLogin from './login.reducer';
 
 export interface State {
   collection: fromCollection.State;
-  login: fromLogin.State;
+  auth: fromAuth.State;
   gizmo: fromGizmo.State;
   widget: fromWidget.State;
 }
 
 export const reducers: ActionReducerMap<State> = {
+  auth: fromAuth.reducer,
   collection: fromCollection.reducer,
   gizmo: fromGizmo.reducer,
-  login: fromLogin.reducer,
   widget: fromWidget.reducer,
 };
 
@@ -60,20 +56,20 @@ export const getCollectionTextItems = createSelector(
   fromCollection.getTextItems,
 );
 //
-export const getLoginState = (state: State) => state.login;
+export const getAuthState = (state: State) => state.auth;
 
-export const getLoginDisplayName = createSelector(
-  getLoginState,
-  fromLogin.getDisplayName,
+export const getAuthDisplayName = createSelector(
+  getAuthState,
+  fromAuth.getDisplayName,
 );
-export const getLoginError = createSelector(getLoginState, fromLogin.getError);
-export const getLoginIsAuthenticated = createSelector(
-  getLoginState,
-  fromLogin.getIsAuthenticated,
+export const getAuthError = createSelector(getAuthState, fromAuth.getError);
+export const getAuthIsAuthenticated = createSelector(
+  getAuthState,
+  fromAuth.getIsAuthenticated,
 );
-export const getLoginIsAuthenticating = createSelector(
-  getLoginState,
-  fromLogin.getIsAuthenticating,
+export const getAuthIsAuthenticating = createSelector(
+  getAuthState,
+  fromAuth.getIsAuthenticating,
 );
 //
 export const getGizmoState = (state: State) => state.gizmo;

@@ -14,7 +14,6 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { Error } from '../components/error/error.component';
 import { ExampleList } from '../components/example-list/example-list.component';
-import { LoginEffects } from '../effects/login.effect';
 import { TextItemEffects } from '../effects/text-item.effect';
 import { GizmoDataService } from '../gizmo/gizmo.data.service';
 import { GizmoEffects } from '../gizmo/gizmo.effect';
@@ -34,6 +33,7 @@ import { WidgetDataService } from '../widget/widget.data.service';
 import { WidgetEffects } from '../widget/widget.effect';
 import { WidgetService } from '../widget/widget.service';
 import { MyApp } from './app.component';
+import { AuthEffects } from './auth/auth.effect';
 import { AuthService } from './auth/auth.service';
 import { MyFirebaseAppConfig } from './my-firebase-app-config';
 
@@ -63,7 +63,7 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
     StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument(),
     EffectsModule.forRoot([
-      LoginEffects,
+      AuthEffects,
       TextItemEffects,
       WidgetEffects,
       GizmoEffects,

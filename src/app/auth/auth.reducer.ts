@@ -1,4 +1,4 @@
-import { LoginActions, LoginActionTypes } from '../actions/login.action';
+import { AuthActions, AuthActionTypes } from './auth.action';
 
 export interface State {
   displayName: string;
@@ -16,9 +16,9 @@ const initialState: State = {
   isAuthenticating: false,
 };
 
-export function reducer(state = initialState, action: LoginActions): State {
+export function reducer(state = initialState, action: AuthActions): State {
   switch (action.type) {
-    case LoginActionTypes.CHECK_AUTH_SUCCESS: {
+    case AuthActionTypes.CHECK_AUTH_SUCCESS: {
       return {
         ...state,
         displayName: makeDisplayName(action.payload),
@@ -28,7 +28,7 @@ export function reducer(state = initialState, action: LoginActions): State {
       };
     }
 
-    case LoginActionTypes.CHECK_AUTH_NO_USER: {
+    case AuthActionTypes.CHECK_AUTH_NO_USER: {
       return {
         ...state,
         displayName: '',
@@ -37,8 +37,8 @@ export function reducer(state = initialState, action: LoginActions): State {
         isAuthenticating: false,
       };
     }
-    case LoginActionTypes.CreateUser:
-    case LoginActionTypes.EMAIL_AUTHENTICATION: {
+    case AuthActionTypes.CreateUser:
+    case AuthActionTypes.EMAIL_AUTHENTICATION: {
       return {
         ...state,
         error: null,
@@ -46,7 +46,7 @@ export function reducer(state = initialState, action: LoginActions): State {
       };
     }
 
-    case LoginActionTypes.EMAIL_AUTHENTICATION_FAILURE: {
+    case AuthActionTypes.EMAIL_AUTHENTICATION_FAILURE: {
       return {
         ...state,
         error: action.payload.error,
@@ -54,7 +54,7 @@ export function reducer(state = initialState, action: LoginActions): State {
       };
     }
 
-    case LoginActionTypes.CreateUserFailure: {
+    case AuthActionTypes.CreateUserFailure: {
       return {
         ...state,
         error: action.payload,

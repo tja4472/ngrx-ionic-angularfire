@@ -19,20 +19,20 @@ import { Actions, Effect, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { Observable } from 'rxjs';
 
 import {
+  AuthActionTypes,
   CheckAuthFailure,
   CheckAuthNoUser,
   CheckAuthSuccess,
   EmailAuthentication,
   EmailAuthenticationFailure,
   EmailAuthenticationSuccess,
-  LoginActionTypes,
   SignOutFailure,
   SignOutSuccess,
-} from '../actions/login.action';
-import { AuthService } from '../app/auth/auth.service';
+} from './auth.action';
+import { AuthService } from './auth.service';
 
 @Injectable()
-export class LoginEffects {
+export class AuthEffects {
   constructor(
     private readonly actions$: Actions,
     private readonly authService: AuthService,
@@ -60,7 +60,7 @@ export class LoginEffects {
   // tslint:disable-next-line:member-ordering
   @Effect()
   public signOut$ = this.actions$
-    .ofType(LoginActionTypes.SIGN_OUT)
+    .ofType(AuthActionTypes.SIGN_OUT)
     .switchMap(() =>
       this.authService
         .signOut()
@@ -71,7 +71,7 @@ export class LoginEffects {
   // tslint:disable-next-line:member-ordering
   @Effect()
   public emailAuthentication$ = this.actions$
-    .ofType(LoginActionTypes.EMAIL_AUTHENTICATION)
+    .ofType(AuthActionTypes.EMAIL_AUTHENTICATION)
     .map((action: EmailAuthentication) => action.payload)
     .switchMap((payload) =>
       this.authService

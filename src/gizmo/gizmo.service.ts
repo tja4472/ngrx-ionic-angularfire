@@ -33,7 +33,7 @@ export class GizmoService {
 */
   public deleteItem(item: Gizmo) {
     this.store
-      .select(FromRootReducer.getLoginState)
+      .select(FromRootReducer.getAuthState)
       .take(1)
       .subscribe((loginState) => {
         const userId = 'dummyId';
@@ -57,7 +57,7 @@ export class GizmoService {
   public upsert(item: Gizmo) {
     //
     this.store
-      .select(FromRootReducer.getLoginState)
+      .select(FromRootReducer.getAuthState)
       .take(1)
       .subscribe((loginState) => {
         const userId = 'dummyId';

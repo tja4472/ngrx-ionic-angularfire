@@ -9,7 +9,6 @@ import { Store } from '@ngrx/store';
 import * as firebase from 'firebase/app';
 import { Nav, Platform } from 'ionic-angular';
 
-import * as LoginActions from '../actions/login.action';
 import { GizmoListPage } from '../gizmo/pages/gizmo-list/gizmo-list.page';
 import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
@@ -19,6 +18,7 @@ import { RealtimeDatabasePage } from '../pages/realtime-database/realtime-databa
 import { SignupPage } from '../pages/signup/signup.page';
 import * as FromRoot from '../reducers';
 import { WidgetListPage } from '../widget/pages/widget-list/widget-list.page';
+import * as AuthActions from './auth/auth.action';
 
 // Should be import * as LoginActions from '../actions/login.action';
 // See: https://gitter.im/ngrx/effects?at=57f3a2cbd45d7f0f52601422
@@ -57,7 +57,7 @@ export class MyApp {
     console.log('MyApp:constructor');
     this.initializeApp();
 
-    this.loginState$ = this.store.select(FromRoot.getLoginState);
+    this.loginState$ = this.store.select(FromRoot.getAuthState);
     // this.rootPage = Page1;
     // used for an example of ngFor and navigation
     this.pages = [
@@ -73,7 +73,7 @@ export class MyApp {
     ];
 
     this.store
-      .select(FromRoot.getLoginState)
+      .select(FromRoot.getAuthState)
       // Ignore setting of initial state
       .skip(1)
       .subscribe((loginState) => {
@@ -158,7 +158,7 @@ export class MyApp {
       // Give the menu time to close before changing to logged out
       setTimeout(() => {
         // this.userData.logout();
-        this.store.dispatch(new LoginActions.SignOut());
+        this.store.dispatch(new AuthActions.SignOut());
         // this.afAuth.auth.signOut();
       }, 1000);
     } else {

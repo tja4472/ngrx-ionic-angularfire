@@ -1,4 +1,5 @@
 // tslint:disable:max-classes-per-file
+import { Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
 import { Gizmo } from './gizmo.model';
@@ -71,7 +72,8 @@ export class StoreUpdateItems implements Action {
   public readonly type = GizmoActionTypes.STORE_UPDATE_ITEMS;
 
   constructor(
-    public payload: { gizmos: Array<{ id: string; changes: Gizmo }> },
+    // public payload: { gizmos: Array<{ id: string; changes: Gizmo }> },
+    public payload: { items: Array<Update<Gizmo>> },
   ) {}
 }
 

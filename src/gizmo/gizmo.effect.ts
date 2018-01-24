@@ -156,7 +156,7 @@ export class GizmoEffects {
       });
     })
     .do((x) => console.log('YYYY>', x))
-    .map((qq) => new StoreUpdateItems({ gizmos: qq }));
+    .map((qq) => new StoreUpdateItems({ items: qq }));
 
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })

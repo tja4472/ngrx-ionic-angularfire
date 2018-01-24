@@ -59,7 +59,7 @@ export function reducer(state = initialState, action: GizmoActions): State {
     }
 
     case GizmoActionTypes.STORE_UPDATE_ITEMS: {
-      return adapter.updateMany(action.payload.gizmos, state);
+      return adapter.updateMany(action.payload.items, state);
     }
     /*
     case GizmoActionTypes.DELETE_GIZMO: {

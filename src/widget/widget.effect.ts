@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { empty } from 'rxjs/observable/empty';
 
@@ -14,6 +14,15 @@ import {
 import { WidgetDataService } from './widget.data.service';
 import { Widget } from './widget.model';
 
+import {
+  catchError,
+  filter,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
+
 @Injectable()
 export class WidgetEffects {
   constructor(
@@ -24,25 +33,26 @@ export class WidgetEffects {
 
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
-  public deleteItem$ = this.actions$
-    .ofType(WidgetActionTypes.DELETE_ITEM)
-    .map((action: DeleteItem) => action.payload)
-    .do((payload) => {
+  public deleteItem$ = this.actions$.pipe(
+    ofType(WidgetActionTypes.DELETE_ITEM),
+    map((action: DeleteItem) => action.payload),
+    tap((payload) => {
       console.log('Effect:deleteItem$:A', payload);
       this.dataService.deleteItem(payload.id);
-    });
+    }),
+  );
 
   // tslint:disable-next-line:member-ordering
   @Effect()
-  public listenForData$ = this.actions$
-    .ofType(
+  public listenForData$ = this.actions$.pipe(
+    ofType(
       WidgetActionTypes.START_LISTENING_FOR_DATA,
       WidgetActionTypes.STOP_LISTENING_FOR_DATA,
-    )
-    .do(() => {
+    ),
+    tap(() => {
       console.log('Effect:listenForData$:A');
-    })
-    .switchMap((action) => {
+    }),
+    switchMap((action) => {
       console.log('Effect:listenForData$:action>', action);
       if (action.type === WidgetActionTypes.STOP_LISTENING_FOR_DATA) {
         console.log('TodoAction.UNLISTEN_FOR_DATA');
@@ -50,19 +60,21 @@ export class WidgetEffects {
       } else {
         return this.dataService.getData$();
       }
-    })
-    .do((x) => {
+    }),
+    tap((x) => {
       console.log('Effect:listenForData$:B', x);
-    })
-    .map((items: Widget[]) => new LoadSuccess({ items }));
+    }),
+    map((items: Widget[]) => new LoadSuccess({ items })),
+  );
 
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
-  public upsertItem$ = this.actions$
-    .ofType(WidgetActionTypes.UPSERT_ITEM)
-    .map((action: UpsertItem) => action.payload)
-    .do((payload) => {
+  public upsertItem$ = this.actions$.pipe(
+    ofType(WidgetActionTypes.UPSERT_ITEM),
+    map((action: UpsertItem) => action.payload),
+    tap((payload) => {
       console.log('Effect:upsertItem$:A', payload);
       this.dataService.upsertItem(payload.item);
-    });
+    }),
+  );
 }

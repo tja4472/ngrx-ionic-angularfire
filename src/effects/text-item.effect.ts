@@ -1,22 +1,18 @@
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mapTo';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/switchMapTo';
-import 'rxjs/add/operator/toArray';
-import 'rxjs/add/operator/withLatestFrom';
-
 import { Injectable } from '@angular/core';
 
 import { AngularFireDatabase } from 'angularfire2/database';
 
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+
+import {
+  catchError,
+  filter,
+  map,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 import {
   LoadCollectionSuccessAction,
@@ -35,22 +31,23 @@ export class TextItemEffects {
 
   // tslint:disable-next-line:member-ordering
   @Effect()
-  public loadCollection$ = this.actions$
-    .ofType(TextItemActionTypes.LoadCollection)
+  public loadCollection$ = this.actions$.pipe(
+    ofType(TextItemActionTypes.LoadCollection),
     // This will cause the effect to run once immediately on startup
     // .startWith(new LoadCollectionAction())
-    .do((x) => {
+    tap((x) => {
       console.log('Effect:loadCollection$:A', x);
-    })
-    .withLatestFrom(this.state$)
+    }),
+    withLatestFrom(this.state$),
     // tslint:disable-next-line:no-unused-variable
-    .filter(([action, state]) => (state as State).auth.isAuthenticated)
+    filter(([action, state]) => (state as State).auth.isAuthenticated),
     // Watch database node and get TextItems.
-    .switchMap(() => this.afDb.list('/textItems').valueChanges())
-    .do((x) => {
+    switchMap(() => this.afDb.list('/textItems').valueChanges()),
+    tap((x) => {
       console.log('Effect:loadCollection$:B', x);
-    })
-    .map((textItems: TextItem[]) => new LoadCollectionSuccessAction(textItems));
+    }),
+    map((textItems: TextItem[]) => new LoadCollectionSuccessAction(textItems)),
+  );
 }
 
 //   .withLatestFrom(this.store.select('masterGain'))

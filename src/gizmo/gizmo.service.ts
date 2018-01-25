@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
-
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { take } from 'rxjs/operators';
 
-import * as FromRootReducer from '../reducers/index';
+import * as FromRootReducer from '../reducers';
 import {
-  // AddGizmo,
   DatabaseDeleteItem,
   DatabaseStartListeningForData,
   DatabaseUpsertItem,
-  // UpdateGizmo,
 } from './gizmo.actions';
 import { Gizmo } from './gizmo.model';
 
@@ -34,7 +32,7 @@ export class GizmoService {
   public deleteItem(item: Gizmo) {
     this.store
       .select(FromRootReducer.getAuthState)
-      .take(1)
+      .pipe(take(1))
       .subscribe((loginState) => {
         const userId = 'dummyId';
         this.store.dispatch(new DatabaseDeleteItem({ id: item.id, userId }));
@@ -58,7 +56,7 @@ export class GizmoService {
     //
     this.store
       .select(FromRootReducer.getAuthState)
-      .take(1)
+      .pipe(take(1))
       .subscribe((loginState) => {
         const userId = 'dummyId';
         this.store.dispatch(new DatabaseUpsertItem({ item, userId }));

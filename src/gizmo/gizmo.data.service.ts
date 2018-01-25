@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-
 import {
   AngularFirestore,
   AngularFirestoreCollection,
 } from 'angularfire2/firestore';
+import { Observable } from 'rxjs/Observable';
+import { from } from 'rxjs/observable/from';
 
 import { Gizmo } from './gizmo.model';
 
@@ -78,7 +78,7 @@ export class GizmoDataService {
         }),
       );
     } else {
-      return Observable.from<Gizmo[]>([]);
+      return from<Gizmo[]>([]);
     }
   }
 
@@ -92,7 +92,7 @@ export class GizmoDataService {
         }),
       );
     } else {
-      return Observable.from<Gizmo[]>([]);
+      return from<Gizmo[]>([]);
     }
   }
 
@@ -106,7 +106,7 @@ export class GizmoDataService {
         }),
       );
     } else {
-      return Observable.from<Gizmo[]>([]);
+      return from<Gizmo[]>([]);
     }
   }
 
@@ -119,7 +119,7 @@ export class GizmoDataService {
         }),
       );
     } else {
-      return Observable.from<Gizmo[]>([]);
+      return from<Gizmo[]>([]);
     }
   }
 

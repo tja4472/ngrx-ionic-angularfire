@@ -1,5 +1,3 @@
-import './rxjs-operators';
-
 import { Component, ViewChild } from '@angular/core';
 
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -20,6 +18,7 @@ import * as FromRoot from '../reducers';
 import { WidgetListPage } from '../widget/pages/widget-list/widget-list.page';
 import * as AuthActions from './auth/auth.action';
 
+import { skip } from 'rxjs/operators';
 // Should be import * as LoginActions from '../actions/login.action';
 // See: https://gitter.im/ngrx/effects?at=57f3a2cbd45d7f0f52601422
 //
@@ -74,8 +73,10 @@ export class MyApp {
 
     this.store
       .select(FromRoot.getAuthState)
-      // Ignore setting of initial state
-      .skip(1)
+      .pipe(
+        // Ignore setting of initial state
+        skip(1),
+      )
       .subscribe((loginState) => {
         console.log('loginState>', loginState);
         const userId = 'dummyId';

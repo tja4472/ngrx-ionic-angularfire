@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { from } from 'rxjs/observable/from';
 
 import {
   AngularFirestore,
@@ -57,7 +58,7 @@ export class WidgetDataService {
         }),
       );
     } else {
-      return Observable.from<Widget[]>([]);
+      return from<Widget[]>([]);
     }
   }
 

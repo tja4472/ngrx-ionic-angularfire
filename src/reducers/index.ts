@@ -112,6 +112,15 @@ export const selectCurrentGizmo = createSelector(
 //
 export const getWidgetState = (state: State) => state.widget;
 
+export const getWidgetLoaded = createSelector(
+  getWidgetState,
+  fromWidget.getLoaded,
+);
+export const getWidgetLoading = createSelector(
+  getWidgetState,
+  fromWidget.getLoading,
+);
+
 export const selectWidgetIds = createSelector(
   getWidgetState,
   fromWidget.selectWidgetIds,

@@ -5,50 +5,39 @@ import { Observable } from 'rxjs/Observable';
 
 import * as FromRootReducer from '../reducers/index';
 import {
-  AddWidget,
-  AListenForData,
-  AUpsertItem,
   DeleteItem,
-  UpdateWidget,
+  StartListeningForData,
+  UpsertItem,
 } from './widget.actions';
 import { Widget } from './widget.model';
 
 @Injectable()
 export class WidgetService {
   constructor(private store: Store<FromRootReducer.State>) {
-    this.ListenForData();
+    this.StartListeningForData();
   }
 
   public getData$(): Observable<Widget[]> {
     return this.store.select(FromRootReducer.selectAllWidgets);
   }
 
-  public ListenForData(): void {
-    this.store.dispatch(new AListenForData());
-  }
-
-  public add(item: Widget) {
-    this.store.dispatch(new AddWidget({ widget: item }));
+  public StartListeningForData(): void {
+    this.store.dispatch(new StartListeningForData());
   }
 
   public deleteItem(item: Widget) {
     this.store.dispatch(new DeleteItem({ id: item.id }));
   }
 
-  public update(item: Widget) {
-    this.store.dispatch(
-      new UpdateWidget({ widget: { id: item.id, changes: item } }),
-    );
+  public upsertItem(item: Widget) {
+    this.store.dispatch(new UpsertItem({ item }));
   }
 
-  public upsert(item: Widget) {
-    this.store.dispatch(new AUpsertItem({ item }));
-    /*
-    if (item.id === '') {
-      this.add(item);
-    } else {
-      this.update(item);
-    }
-    */
+  public isLoaded(): Observable<boolean> {
+    return this.store.select(FromRootReducer.getWidgetLoaded);
+  }
+
+  public isLoading(): Observable<boolean> {
+    return this.store.select(FromRootReducer.getWidgetLoading);
   }
 }

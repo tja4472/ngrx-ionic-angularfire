@@ -21,12 +21,16 @@ import { WidgetService } from '../../widget.service';
 })
 export class WidgetListPage {
   public viewData$: Observable<Widget[]>;
+  public viewIsLoaded$: Observable<boolean>;
+  public viewIsLoading$: Observable<boolean>;
 
   constructor(
     public modalCtrl: ModalController,
     private widgetService: WidgetService,
   ) {
     this.viewData$ = widgetService.getData$();
+    this.viewIsLoaded$ = widgetService.isLoaded();
+    this.viewIsLoading$ = widgetService.isLoading();
   }
 
   public ionViewDidLoad() {
@@ -58,7 +62,7 @@ export class WidgetListPage {
       console.log('onDidDismiss>', data);
 
       if (data.save && data.item) {
-        this.widgetService.upsert(data.item);
+        this.widgetService.upsertItem(data.item);
       }
     });
 

@@ -17,6 +17,12 @@
 </ion-header>
 
 <ion-content padding>
+    <div>
+        IsLoading: {{viewIsLoading$ | async}}
+    </div>
+    <div>
+        IsLoaded: {{viewIsLoaded$ | async}}
+    </div>
     <ion-row>
         <ion-list>
             <ion-item *ngFor="let item of (viewData$ | async)">

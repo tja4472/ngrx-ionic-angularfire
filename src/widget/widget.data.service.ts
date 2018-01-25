@@ -27,26 +27,6 @@ export class WidgetDataService {
   constructor(public readonly afs: AngularFirestore) {
     console.log('WidgetDataService:constructor');
     this.init();
-
-    this.itemsCollection.snapshotChanges().subscribe((x) => {
-      console.log('snapshotChanges>', x);
-    });
-
-    this.itemsCollection.stateChanges().subscribe((x) => {
-      console.log('stateChanges>', x);
-    });
-
-    this.itemsCollection.stateChanges(['added']).subscribe((x) => {
-      console.log('stateChanges-added>', x);
-    });
-
-    this.itemsCollection.stateChanges(['modified']).subscribe((x) => {
-      console.log('stateChanges-modified>', x);
-    });
-
-    this.itemsCollection.stateChanges(['removed']).subscribe((x) => {
-      console.log('stateChanges-removed>', x);
-    });
   }
 
   public getData$(): Observable<Widget[]> {
@@ -85,7 +65,6 @@ export class WidgetDataService {
 
   private toFirestoreDoc(item: Widget): FirestoreDoc {
     //
-
     const result: FirestoreDoc = {
       description: item.description,
       id: item.id,

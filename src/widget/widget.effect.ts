@@ -6,9 +6,9 @@ import { empty } from 'rxjs/observable/empty';
 
 import * as FromRootReducer from '../reducers';
 import {
-  ALoadSuccess,
-  AUpsertItem,
   DeleteItem,
+  LoadSuccess,
+  UpsertItem,
   WidgetActionTypes,
 } from './widget.actions';
 import { WidgetDataService } from './widget.data.service';
@@ -25,7 +25,7 @@ export class WidgetEffects {
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
   public deleteItem$ = this.actions$
-    .ofType(WidgetActionTypes.A_DELETE_ITEM)
+    .ofType(WidgetActionTypes.DELETE_ITEM)
     .map((action: DeleteItem) => action.payload)
     .do((payload) => {
       console.log('Effect:deleteItem$:A', payload);
@@ -36,15 +36,15 @@ export class WidgetEffects {
   @Effect()
   public listenForData$ = this.actions$
     .ofType(
-      WidgetActionTypes.A_LISTEN_FOR_DATA,
-      WidgetActionTypes.A_UNLISTEN_FOR_DATA,
+      WidgetActionTypes.START_LISTENING_FOR_DATA,
+      WidgetActionTypes.STOP_LISTENING_FOR_DATA,
     )
     .do(() => {
       console.log('Effect:listenForData$:A');
     })
     .switchMap((action) => {
       console.log('Effect:listenForData$:action>', action);
-      if (action.type === WidgetActionTypes.A_UNLISTEN_FOR_DATA) {
+      if (action.type === WidgetActionTypes.STOP_LISTENING_FOR_DATA) {
         console.log('TodoAction.UNLISTEN_FOR_DATA');
         return empty();
       } else {
@@ -54,13 +54,13 @@ export class WidgetEffects {
     .do((x) => {
       console.log('Effect:listenForData$:B', x);
     })
-    .map((items: Widget[]) => new ALoadSuccess({ widgets: items }));
+    .map((items: Widget[]) => new LoadSuccess({ items }));
 
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
   public upsertItem$ = this.actions$
-    .ofType(WidgetActionTypes.A_UPSERT_ITEM)
-    .map((action: AUpsertItem) => action.payload)
+    .ofType(WidgetActionTypes.UPSERT_ITEM)
+    .map((action: UpsertItem) => action.payload)
     .do((payload) => {
       console.log('Effect:upsertItem$:A', payload);
       this.dataService.upsertItem(payload.item);

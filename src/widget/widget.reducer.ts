@@ -5,6 +5,8 @@ import { Widget } from './widget.model';
 
 export interface State extends EntityState<Widget> {
   // additional entities state properties
+  loaded: boolean;
+  loading: boolean;
   selectedWidgetId: string;
 }
 
@@ -12,49 +14,15 @@ export const adapter: EntityAdapter<Widget> = createEntityAdapter<Widget>();
 
 export const initialState: State = adapter.getInitialState({
   // additional entity state properties
+  loaded: false,
+  loading: false,
   selectedWidgetId: '',
 });
 
 export function reducer(state = initialState, action: WidgetActions): State {
   switch (action.type) {
-    case WidgetActionTypes.ADD_WIDGET: {
-      return adapter.addOne(action.payload.widget, state);
-    }
-
-    case WidgetActionTypes.ADD_WIDGETS: {
-      return adapter.addMany(action.payload.widgets, state);
-    }
-
-    case WidgetActionTypes.UPDATE_WIDGET: {
-      return adapter.updateOne(action.payload.widget, state);
-    }
-    /* ngrx v5
-    case WidgetActionTypes.UPDATE_WIDGET: {
-      return adapter.updateOne(action.payload.widget, state);
-    }
-
-    case WidgetActionTypes.UPDATE_WIDGETS: {
-      return adapter.updateMany(action.payload.widgets, state);
-    }
-*/
-    case WidgetActionTypes.DELETE_WIDGET: {
-      return adapter.removeOne(action.payload.id, state);
-    }
-
-    case WidgetActionTypes.DELETE_WIDGETS: {
-      return adapter.removeMany(action.payload.ids, state);
-    }
-
-    case WidgetActionTypes.A_LOAD_SUCCESS: {
-      return adapter.addAll(action.payload.widgets, state);
-    }
-
-    case WidgetActionTypes.LOAD_WIDGETS: {
-      return adapter.addAll(action.payload.widgets, state);
-    }
-
-    case WidgetActionTypes.CLEAR_WIDGETS: {
-      return adapter.removeAll({ ...state, selectedWidgetId: '' });
+    case WidgetActionTypes.LOAD_SUCCESS: {
+      return adapter.addAll(action.payload.items, state);
     }
 
     default: {
@@ -78,3 +46,6 @@ export const {
   // select the total widget count
   selectTotal: selectWidgetTotal,
 } = adapter.getSelectors();
+
+export const getLoaded = (state: State) => state.loaded;
+export const getLoading = (state: State) => state.loading;

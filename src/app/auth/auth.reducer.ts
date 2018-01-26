@@ -2,18 +2,22 @@ import { AuthActions, AuthActionTypes } from './auth.action';
 
 export interface State {
   displayName: string;
+  email: string | null;
   hasChecked: boolean;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   error: any;
+  userId: string;
 }
 
 const initialState: State = {
   displayName: '',
+  email: '',
   error: null,
   hasChecked: false,
   isAuthenticated: false,
   isAuthenticating: false,
+  userId: '',
 };
 
 export function reducer(state = initialState, action: AuthActions): State {
@@ -21,20 +25,24 @@ export function reducer(state = initialState, action: AuthActions): State {
     case AuthActionTypes.CHECK_AUTH_SUCCESS: {
       return {
         ...state,
-        displayName: makeDisplayName(action.payload),
+        displayName: makeDisplayName(action.payload.signedInUser),
+        email: action.payload.signedInUser.email,
         hasChecked: true,
         isAuthenticated: true,
         isAuthenticating: false,
+        userId: action.payload.signedInUser.userId,
       };
     }
 
     case AuthActionTypes.CHECK_AUTH_NO_USER: {
       return {
         ...state,
-        displayName: '',
+        displayName: 'Not Signed In',
+        email: '',
         hasChecked: true,
         isAuthenticated: false,
         isAuthenticating: false,
+        userId: '',
       };
     }
     case AuthActionTypes.CreateUser:
@@ -69,13 +77,12 @@ export function reducer(state = initialState, action: AuthActions): State {
 }
 
 function makeDisplayName(user: {
-  isAnonymous: boolean;
   displayName: string | null;
   email: string | null;
+  userId: string;
 }) {
-  if (user.isAnonymous) {
-    return 'Anonymous';
-  }
+  //
+  const defaultDisplayName = '';
 
   if (user.displayName) {
     return user.displayName;
@@ -84,7 +91,7 @@ function makeDisplayName(user: {
   if (user.email) {
     return user.email;
   }
-  return '';
+  return defaultDisplayName;
 }
 
 export const getDisplayName = (state: State) => state.displayName;

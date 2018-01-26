@@ -32,9 +32,11 @@ export class AuthEffects {
         map((firebaseUser) => {
           if (firebaseUser) {
             return new CheckAuthSuccess({
-              displayName: firebaseUser.displayName,
-              email: firebaseUser.email,
-              isAnonymous: firebaseUser.isAnonymous,
+              signedInUser: {
+                displayName: firebaseUser.displayName,
+                email: firebaseUser.email,
+                userId: firebaseUser.uid,
+              },
             });
           } else {
             return new CheckAuthNoUser();

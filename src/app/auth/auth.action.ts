@@ -30,9 +30,11 @@ export class CheckAuthSuccess implements Action {
 
   constructor(
     public payload: {
-      isAnonymous: boolean;
-      displayName: string | null;
-      email: string | null;
+      signedInUser: {
+        displayName: string | null;
+        email: string | null;
+        userId: string;
+      };
     },
   ) {}
 }

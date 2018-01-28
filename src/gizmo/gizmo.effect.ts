@@ -8,9 +8,13 @@ import * as FromRootReducer from '../reducers';
 import {
   DatabaseDeleteItem,
   DatabaseListenForAddedItems,
+  DatabaseListenForDataStart,
+  DatabaseListenForDataStop,
   DatabaseListenForModifiedItems,
   DatabaseListenForRemovedItems,
   DatabaseUpsertItem,
+  DatabaseUpsertItemError,
+  DatabaseUpsertItemSuccess,
   GizmoActionTypes,
   StoreAddItems,
   StoreDeleteItems,
@@ -19,6 +23,7 @@ import {
 import { GizmoDataService } from './gizmo.data.service';
 import { Gizmo } from './gizmo.model';
 
+import { of } from 'rxjs/observable/of';
 import {
   catchError,
   filter,
@@ -39,23 +44,35 @@ export class GizmoEffects {
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
   public deleteItem$ = this.actions$.pipe(
-    ofType(GizmoActionTypes.DATABASE_DELETE_ITEM),
-    map((action: DatabaseDeleteItem) => action.payload),
+    ofType<DatabaseDeleteItem>(GizmoActionTypes.DATABASE_DELETE_ITEM),
+    map((action) => action.payload),
     tap((payload) => {
       console.log('Effect:deleteItem$:A', payload);
-      this.dataService.deleteItem(payload.id);
+      this.dataService.deleteItem(payload.id, payload.userId);
     }),
   );
 
   // tslint:disable-next-line:member-ordering
   @Effect()
   public listenForAddedItems$ = this.actions$.pipe(
-    ofType(GizmoActionTypes.DATABASE_LISTEN_FOR_ADDED_ITEMS),
+    ofType<DatabaseListenForAddedItems | DatabaseListenForDataStop>(
+      GizmoActionTypes.DATABASE_LISTEN_FOR_ADDED_ITEMS,
+      GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP,
+    ),
     switchMap((action) => {
-      if (action.type === GizmoActionTypes.DATABASE_STOP_LISTENING_FOR_DATA) {
-        return empty();
-      } else {
-        return this.dataService.ListenForAdded$();
+      switch (action.type) {
+        case GizmoActionTypes.DATABASE_LISTEN_FOR_ADDED_ITEMS: {
+          return this.dataService.ListenForAdded$(action.payload.userId);
+        }
+
+        case GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP: {
+          console.log('listenForAddedItems.DATABASE_LISTEN_FOR_DATA_STOP');
+          return empty();
+        }
+
+        default: {
+          return empty();
+        }
       }
     }),
     map((items: Gizmo[]) => new StoreAddItems({ gizmos: items })),
@@ -64,18 +81,27 @@ export class GizmoEffects {
   // tslint:disable-next-line:member-ordering
   @Effect()
   public listenForRemovedItems$ = this.actions$.pipe(
-    ofType(GizmoActionTypes.DATABASE_LISTEN_FOR_REMOVED_ITEMS),
+    ofType<DatabaseListenForRemovedItems | DatabaseListenForDataStop>(
+      GizmoActionTypes.DATABASE_LISTEN_FOR_REMOVED_ITEMS,
+      GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP,
+    ),
     tap(() => {
       console.log('Effect:listenForRemovedItems$:A');
     }),
     switchMap((action) => {
-      console.log('Effect:listenForRemovedItems$:action>', action);
-      if (action.type === GizmoActionTypes.DATABASE_STOP_LISTENING_FOR_DATA) {
-        console.log('TodoAction.UNLISTEN_FOR_DATA');
-        return empty();
-      } else {
-        // return this.dataService.getData$();
-        return this.dataService.ListenForRemoved$();
+      switch (action.type) {
+        case GizmoActionTypes.DATABASE_LISTEN_FOR_REMOVED_ITEMS: {
+          return this.dataService.ListenForRemoved$(action.payload.userId);
+        }
+
+        case GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP: {
+          console.log('listenForRemovedItems.DATABASE_LISTEN_FOR_DATA_STOP');
+          return empty();
+        }
+
+        default: {
+          return empty();
+        }
       }
     }),
     tap((x) => {
@@ -88,78 +114,46 @@ export class GizmoEffects {
   // tslint:disable-next-line:member-ordering
   @Effect()
   public listenForData$ = this.actions$.pipe(
-    ofType(
-      GizmoActionTypes.DATABASE_START_LISTENING_FOR_DATA,
-      GizmoActionTypes.DATABASE_STOP_LISTENING_FOR_DATA,
-    ),
+    ofType(GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_START),
     tap(() => {
       console.log('Effect:listenForData$:A');
     }),
-    switchMap((action) => {
+    switchMap((action: DatabaseListenForDataStart) => {
       console.log('Effect:listenForData$:action>', action);
       return [
-        new DatabaseListenForAddedItems(),
-        new DatabaseListenForModifiedItems(),
-        new DatabaseListenForRemovedItems(),
+        new DatabaseListenForAddedItems({ userId: action.payload.userId }),
+        new DatabaseListenForModifiedItems({ userId: action.payload.userId }),
+        new DatabaseListenForRemovedItems({ userId: action.payload.userId }),
       ];
     }),
   );
-  /*
-    .switchMap((action) => {
-      return this.dataService.ListenForChanges$();
-    })
-    .do((x) => {
-      console.log('Effect:listenForData$:B', x);
-    })
-    .mergeMap((a) => {
-      return a;
-    })
-    .do((x) => {
-      console.log('Effect:listenForData$:C', x);
-    });
-    */
-  /*
-    .switchMap((action) => {
-      console.log('Effect:listenForData$:action>', action);
-      return [new AListenForAddedItems(), new AListenForModifiedItems()];
-    });
-  */
-  /*
-    .do((x) => {
-      console.log('Effect:listenForData$:B', x);
-    })
-    .map((items: IGizmo[]) => new ALoadSuccess({ gizmos: items }));
-  */
 
   // tslint:disable-next-line:member-ordering
   @Effect()
   public listenForModifiedItems$ = this.actions$.pipe(
-    ofType(GizmoActionTypes.DATABASE_LISTEN_FOR_MODIFIED_ITEMS),
+    ofType<DatabaseListenForModifiedItems | DatabaseListenForDataStop>(
+      GizmoActionTypes.DATABASE_LISTEN_FOR_MODIFIED_ITEMS,
+      GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP,
+    ),
     tap(() => {
       console.log('Effect:listenForModifiedItems$:A');
     }),
     switchMap((action) => {
-      console.log('Effect:listenForModifiedItems$:action>', action);
-      if (action.type === GizmoActionTypes.DATABASE_STOP_LISTENING_FOR_DATA) {
-        console.log('TodoAction.UNLISTEN_FOR_DATA');
-        return empty();
-      } else {
-        // return this.dataService.getData$();
-        return this.dataService.ListenForModified$();
+      switch (action.type) {
+        case GizmoActionTypes.DATABASE_LISTEN_FOR_MODIFIED_ITEMS: {
+          return this.dataService.ListenForModified$(action.payload.userId);
+        }
+
+        case GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP: {
+          console.log('listenForModifiedItems.DATABASE_LISTEN_FOR_DATA_STOP');
+          return empty();
+        }
+
+        default: {
+          return empty();
+        }
       }
     }),
-    tap((x: Gizmo[]) => {
-      console.log('Effect:listenForModifiedItems$:B', x);
-      const y: any = x.map((a) => {
-        return {
-          changes: a,
-          id: a.id,
-        };
-      });
-      console.log('XXXXXXX:B', y);
-    }),
-    // payload: { gizmos: Array<{ id: string; changes: IGizmo }> }
-    // .map((items: IGizmo[]) => new ALoadSuccess({ gizmos: items }
     map((items: Gizmo[]) => {
       return items.map((item) => {
         return {
@@ -168,17 +162,56 @@ export class GizmoEffects {
         };
       });
     }),
-    tap((x) => console.log('YYYY>', x)),
     map((qq) => new StoreUpdateItems({ items: qq })),
   );
 
+  // tslint:disable-next-line:member-ordering
+  @Effect()
+  public databaseUpsertItem$ = this.actions$.pipe(
+    ofType(GizmoActionTypes.DATABASE_UPSERT_ITEM),
+    map((action: DatabaseUpsertItem) => action.payload),
+    switchMap((payload) => {
+      return this.dataService.upsertItem(payload.item, payload.userId);
+    }),
+    map(() => new DatabaseUpsertItemSuccess()),
+    catchError((error) => {
+      console.log('error', error);
+      console.log('*****ERROR.code>', error.code);
+      console.log('*****ERROR.message>', error.message);
+      console.log('*****ERROR.name>', error.name);
+      return of(
+        new DatabaseUpsertItemError({
+          error: this.handleFirebaseError(error),
+        }),
+      );
+    }),
+  );
+
+  /*
   // tslint:disable-next-line:member-ordering
   @Effect({ dispatch: false })
   public databaseUpsertItem$ = this.actions$.pipe(
     ofType(GizmoActionTypes.DATABASE_UPSERT_ITEM),
     map((action: DatabaseUpsertItem) => action.payload),
-    tap((payload) => {
-      this.dataService.upsertItem(payload.item, payload.userId);
+
+    map((payload) => {
+      return this.dataService
+        .upsertItem(payload.item, payload.userId)
+        .catch((error: { code: string; message: string; name: string }) => {
+          console.log('*****ERROR.code>', error.code);
+          console.log('*****ERROR.message>', error.message);
+          console.log('*****ERROR.name>', error.name);
+        });
     }),
   );
+*/
+
+  private handleFirebaseError(firebaseError: any) {
+    //
+    return {
+      code: firebaseError.code,
+      message: firebaseError.message,
+      name: firebaseError.name,
+    };
+  }
 }

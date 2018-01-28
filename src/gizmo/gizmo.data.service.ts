@@ -9,7 +9,7 @@ import { from } from 'rxjs/observable/from';
 import { Gizmo } from './gizmo.model';
 
 const DATA_COLLECTION = 'gizmos';
-// const USERS_COLLECTION = 'users';
+const USERS_COLLECTION = 'users';
 
 interface FirestoreDoc {
   id: string;
@@ -19,42 +19,16 @@ interface FirestoreDoc {
 
 @Injectable()
 export class GizmoDataService {
-  private itemsCollection: AngularFirestoreCollection<FirestoreDoc>;
+  // private itemsCollection: AngularFirestoreCollection<FirestoreDoc>;
 
-  private isSignedIn: boolean = true;
+  // private isSignedIn: boolean = true;
 
   constructor(public readonly afs: AngularFirestore) {
     console.log('GizmoDataService:constructor');
-    this.init();
-    /*
-    this.itemsCollection.snapshotChanges().subscribe((x) => {
-      console.log('snapshotChanges>', x);
-    });
-
-    this.itemsCollection.stateChanges().subscribe((x) => {
-      console.log('stateChanges>', x);
-    });
-
-    this.itemsCollection.stateChanges(['added']).subscribe((x) => {
-      console.log('stateChanges-added>', x);
-      console.log(
-        'stateChanges-added:x[0].payload.doc.data()>',
-        x[0].payload.doc.data(),
-      );
-      const b: IFirestoreDoc = x[0].payload.doc.data() as IFirestoreDoc;
-      console.log('stateChanges-added:b>', b);
-    });
-
-    this.itemsCollection.stateChanges(['modified']).subscribe((x) => {
-      console.log('stateChanges-modified>', x);
-    });
-
-    this.itemsCollection.stateChanges(['removed']).subscribe((x) => {
-      console.log('stateChanges-removed>', x);
-    });
-    */
+    // this.init();
   }
 
+  /*
   public ListenForChanges$() {
     //
     return this.itemsCollection.stateChanges().map((actions) =>
@@ -67,86 +41,74 @@ export class GizmoDataService {
       }),
     );
   }
-
-  public ListenForAdded$(): Observable<Gizmo[]> {
+  */
+  public ListenForAdded$(userId: string): Observable<Gizmo[]> {
     //
-    if (this.isSignedIn) {
-      return this.itemsCollection.stateChanges(['added']).map((actions) =>
+    return this.firestoreCollection(userId)
+      .stateChanges(['added'])
+      .map((actions) =>
         actions.map((a) => {
           const data = a.payload.doc.data() as FirestoreDoc;
           return this.fromFirestoreDoc(data);
         }),
       );
-    } else {
-      return from<Gizmo[]>([]);
-    }
   }
 
-  public ListenForModified$(): Observable<Gizmo[]> {
+  public ListenForModified$(userId: string): Observable<Gizmo[]> {
     //
-    if (this.isSignedIn) {
-      return this.itemsCollection.stateChanges(['modified']).map((actions) =>
+    return this.firestoreCollection(userId)
+      .stateChanges(['modified'])
+      .map((actions) =>
         actions.map((a) => {
           const data = a.payload.doc.data() as FirestoreDoc;
           return this.fromFirestoreDoc(data);
         }),
       );
-    } else {
-      return from<Gizmo[]>([]);
-    }
   }
 
-  public ListenForRemoved$(): Observable<Gizmo[]> {
+  public ListenForRemoved$(userId: string): Observable<Gizmo[]> {
     //
-    if (this.isSignedIn) {
-      return this.itemsCollection.stateChanges(['removed']).map((actions) =>
+    return this.firestoreCollection(userId)
+      .stateChanges(['removed'])
+      .map((actions) =>
         actions.map((a) => {
           const data = a.payload.doc.data() as FirestoreDoc;
           return this.fromFirestoreDoc(data);
         }),
       );
-    } else {
-      return from<Gizmo[]>([]);
-    }
   }
 
-  public getData$(): Observable<Gizmo[]> {
-    //
-    if (this.isSignedIn) {
-      return this.itemsCollection.valueChanges().map((items) =>
-        items.map((item) => {
-          return this.fromFirestoreDoc(item);
-        }),
-      );
-    } else {
-      return from<Gizmo[]>([]);
-    }
+  public deleteItem(id: string, userId: string): void {
+    this.firestoreCollection(userId)
+      .doc(id)
+      .delete();
   }
 
-  public deleteItem(id: string): void {
-    this.itemsCollection.doc(id).delete();
-  }
-
-  public upsertItem(item: Gizmo, userId: string): void {
+  public upsertItem(item: Gizmo, userId: string): Promise<void> {
     //
     const doc = this.toFirestoreDoc(item);
     if (item.id === '') {
       doc.id = this.afs.createId();
     }
 
-    this.itemsCollection.doc(doc.id).set(doc);
+    return this.firestoreCollection(userId)
+      .doc(doc.id)
+      .set(doc);
   }
 
-  private init(): void {
-    this.itemsCollection = this.afs.collection<FirestoreDoc>(
-      DATA_COLLECTION,
-      // (ref) => ref.orderBy('name', 'asc'),
-    );
+  private firestoreCollection(userId: string) {
+    //
+    /**/
+    return this.afs
+      .collection(USERS_COLLECTION)
+      .doc(userId)
+      .collection<FirestoreDoc>(DATA_COLLECTION);
+    /**/
+    // return this.afs.collection<FirestoreDoc>(DATA_COLLECTION);
   }
 
   private toFirestoreDoc(item: Gizmo): FirestoreDoc {
     //
-
     const result: FirestoreDoc = {
       description: item.description,
       id: item.id,

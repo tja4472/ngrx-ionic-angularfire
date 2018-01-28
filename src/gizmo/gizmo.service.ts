@@ -6,36 +6,48 @@ import { take } from 'rxjs/operators';
 import * as FromRootReducer from '../reducers';
 import {
   DatabaseDeleteItem,
-  DatabaseStartListeningForData,
+  DatabaseListenForDataStart,
+  DatabaseListenForDataStop,
   DatabaseUpsertItem,
 } from './gizmo.actions';
 import { Gizmo } from './gizmo.model';
 
 @Injectable()
 export class GizmoService {
-  constructor(private store: Store<FromRootReducer.State>) {
-    this.ListenForData();
-  }
+  constructor(private store: Store<FromRootReducer.State>) {}
 
   public getData$(): Observable<ReadonlyArray<Gizmo>> {
     return this.store.select(FromRootReducer.selectAllGizmos);
   }
 
-  public ListenForData(): void {
-    this.store.dispatch(new DatabaseStartListeningForData());
+  public ListenForDataStart(): void {
+    // this.store.dispatch(new DatabaseStartListeningForData());
+
+    this.store
+      .select(FromRootReducer.getAuthState)
+      .pipe(take(1))
+      .subscribe((loginState) => {
+        if (loginState.isAuthenticated) {
+          this.store.dispatch(
+            new DatabaseListenForDataStart({ userId: loginState.userId }),
+          );
+        }
+      });
   }
-  /*
-  public add(item: Gizmo) {
-    this.store.dispatch(new AddGizmo({ gizmo: item }));
+
+  public ListenForDataStop(): void {
+    this.store.dispatch(new DatabaseListenForDataStop());
   }
-*/
+
   public deleteItem(item: Gizmo) {
     this.store
       .select(FromRootReducer.getAuthState)
       .pipe(take(1))
       .subscribe((loginState) => {
-        const userId = 'dummyId';
-        this.store.dispatch(new DatabaseDeleteItem({ id: item.id, userId }));
+        // const userId = 'dummyId';
+        this.store.dispatch(
+          new DatabaseDeleteItem({ id: item.id, userId: loginState.userId }),
+        );
       });
   }
   /*
@@ -58,8 +70,10 @@ export class GizmoService {
       .select(FromRootReducer.getAuthState)
       .pipe(take(1))
       .subscribe((loginState) => {
-        const userId = 'dummyId';
-        this.store.dispatch(new DatabaseUpsertItem({ item, userId }));
+        // const userId = 'dummyId';
+        this.store.dispatch(
+          new DatabaseUpsertItem({ item, userId: loginState.userId }),
+        );
       });
   }
 

@@ -25,7 +25,7 @@ export class GizmoListPage {
   public viewIsLoading$: Observable<boolean>;
   constructor(
     public modalCtrl: ModalController,
-    private gizmoService: GizmoService,
+    private readonly gizmoService: GizmoService,
   ) {
     this.viewData$ = gizmoService.getData$();
     this.viewIsLoaded$ = gizmoService.isLoaded();
@@ -33,7 +33,13 @@ export class GizmoListPage {
   }
 
   public ionViewDidLoad() {
-    // this.todoService.initialise();
+    //
+    this.gizmoService.ListenForDataStart();
+  }
+
+  public ionViewWillUnload() {
+    //
+    this.gizmoService.ListenForDataStop();
   }
 
   public viewAdd(): void {

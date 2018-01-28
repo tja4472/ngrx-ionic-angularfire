@@ -27,12 +27,22 @@ export const initialState: State = adapter.getInitialState({
 
 export function reducer(state = initialState, action: GizmoActions): State {
   switch (action.type) {
-    case GizmoActionTypes.DATABASE_START_LISTENING_FOR_DATA: {
+    case GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_START: {
       return {
         ...state,
         loading: true,
       };
     }
+
+    case GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP: {
+      return adapter.removeAll({
+        ...state,
+        loaded: false,
+        loading: false,
+        selectedGizmoId: '',
+      });
+    }
+
     /*
     case GizmoActionTypes.ADD_GIZMO: {
       return adapter.addOne(action.payload.gizmo, state);

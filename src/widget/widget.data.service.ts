@@ -10,7 +10,7 @@ import {
 import { Widget } from './widget.model';
 
 const DATA_COLLECTION = 'widgets';
-// const USERS_COLLECTION = 'users';
+const USERS_COLLECTION = 'users';
 
 interface FirestoreDoc {
   id: string;
@@ -20,47 +20,62 @@ interface FirestoreDoc {
 
 @Injectable()
 export class WidgetDataService {
-  private itemsCollection: AngularFirestoreCollection<FirestoreDoc>;
-
-  private isSignedIn: boolean = true;
-
   constructor(public readonly afs: AngularFirestore) {
-    console.log('WidgetDataService:constructor');
-    this.init();
+    // console.log('WidgetDataService:constructor');
   }
 
-  public getData$(): Observable<Widget[]> {
+  public getData$(userId: string): Observable<Widget[]> {
     //
-    if (this.isSignedIn) {
-      return this.itemsCollection.valueChanges().map((items) =>
+    return this.firestoreCollection(userId)
+      .valueChanges()
+      .map((items) =>
         items.map((item) => {
           return this.fromFirestoreDoc(item);
         }),
       );
-    } else {
-      return from<Widget[]>([]);
-    }
   }
 
-  public deleteItem(id: string): void {
-    this.itemsCollection.doc(id).delete();
+  public deleteItem(id: string, userId: string): void {
+    this.firestoreCollection(userId)
+      .doc(id)
+      .delete();
   }
 
-  public upsertItem(item: Widget): void {
+  public upsertItem(item: Widget, userId: string): Promise<void> {
     //
     const doc = this.toFirestoreDoc(item);
     if (item.id === '') {
       doc.id = this.afs.createId();
     }
 
-    this.itemsCollection.doc(doc.id).set(doc);
+    return this.firestoreCollection(userId)
+      .doc(doc.id)
+      .set(doc);
   }
 
+  /*
   private init(): void {
     this.itemsCollection = this.afs.collection<FirestoreDoc>(
       DATA_COLLECTION,
       (ref) => ref.orderBy('name', 'asc'),
     );
+  }
+  */
+
+  private firestoreCollection(userId: string) {
+    //
+    return this.afs
+      .collection(USERS_COLLECTION)
+      .doc(userId)
+      .collection<FirestoreDoc>(DATA_COLLECTION, (ref) =>
+        ref.orderBy('name', 'asc'),
+      );
+
+    /*
+    return this.afs.collection<FirestoreDoc>(DATA_COLLECTION, (ref) =>
+      ref.orderBy('name', 'asc'),
+    );
+    */
   }
 
   private toFirestoreDoc(item: Widget): FirestoreDoc {
@@ -79,14 +94,15 @@ export class WidgetDataService {
     //
     // console.log('TodoDataService:fromFirebaseTodo>', x);
 
-    const result: Widget = { ...x };
-    /*
-    const result: IWidget = {
-      id: x.id,
+    // This copies extra fields.
+    // const result: Widget = { ...x };
+
+    const result: Widget = {
       description: x.description,
+      id: x.id,
       name: x.name,
     };
-*/
+
     // console.log('TodoDataService:fromFirebaseTodo:result>', result);
 
     return result;

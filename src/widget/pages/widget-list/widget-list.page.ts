@@ -26,7 +26,7 @@ export class WidgetListPage {
 
   constructor(
     public modalCtrl: ModalController,
-    private widgetService: WidgetService,
+    private readonly widgetService: WidgetService,
   ) {
     this.viewData$ = widgetService.getData$();
     this.viewIsLoaded$ = widgetService.isLoaded();
@@ -34,7 +34,13 @@ export class WidgetListPage {
   }
 
   public ionViewDidLoad() {
-    // this.todoService.initialise();
+    //
+    this.widgetService.ListenForDataStart();
+  }
+
+  public ionViewWillUnload() {
+    //
+    this.widgetService.ListenForDataStop();
   }
 
   public viewAdd(): void {

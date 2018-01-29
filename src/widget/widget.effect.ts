@@ -6,14 +6,20 @@ import { empty } from 'rxjs/observable/empty';
 
 import * as FromRootReducer from '../reducers';
 import {
+  DatabaseListenForDataStart,
+  DatabaseListenForDataStop,
   DeleteItem,
   LoadSuccess,
   UpsertItem,
+  UpsertItemError,
+  UpsertItemSuccess,
   WidgetActionTypes,
 } from './widget.actions';
 import { WidgetDataService } from './widget.data.service';
 import { Widget } from './widget.model';
 
+import { fromPromise } from 'rxjs/observable/fromPromise';
+import { of } from 'rxjs/observable/of';
 import {
   catchError,
   filter,
@@ -38,27 +44,30 @@ export class WidgetEffects {
     map((action: DeleteItem) => action.payload),
     tap((payload) => {
       console.log('Effect:deleteItem$:A', payload);
-      this.dataService.deleteItem(payload.id);
+      this.dataService.deleteItem(payload.id, payload.userId);
     }),
   );
 
   // tslint:disable-next-line:member-ordering
   @Effect()
   public listenForData$ = this.actions$.pipe(
-    ofType(
-      WidgetActionTypes.START_LISTENING_FOR_DATA,
-      WidgetActionTypes.STOP_LISTENING_FOR_DATA,
+    ofType<DatabaseListenForDataStart | DatabaseListenForDataStop>(
+      WidgetActionTypes.DATABASE_LISTEN_FOR_DATA_START,
+      WidgetActionTypes.DATABASE_LISTEN_FOR_DATA_STOP,
     ),
     tap(() => {
       console.log('Effect:listenForData$:A');
     }),
     switchMap((action) => {
       console.log('Effect:listenForData$:action>', action);
-      if (action.type === WidgetActionTypes.STOP_LISTENING_FOR_DATA) {
-        console.log('TodoAction.UNLISTEN_FOR_DATA');
-        return empty();
-      } else {
-        return this.dataService.getData$();
+      switch (action.type) {
+        case WidgetActionTypes.DATABASE_LISTEN_FOR_DATA_START: {
+          return this.dataService.getData$(action.payload.userId);
+        }
+
+        default: {
+          return empty();
+        }
       }
     }),
     tap((x) => {
@@ -68,13 +77,32 @@ export class WidgetEffects {
   );
 
   // tslint:disable-next-line:member-ordering
-  @Effect({ dispatch: false })
+  @Effect()
   public upsertItem$ = this.actions$.pipe(
-    ofType(WidgetActionTypes.UPSERT_ITEM),
-    map((action: UpsertItem) => action.payload),
-    tap((payload) => {
-      console.log('Effect:upsertItem$:A', payload);
-      this.dataService.upsertItem(payload.item);
+    ofType<UpsertItem>(WidgetActionTypes.UPSERT_ITEM),
+    map((action) => action.payload),
+    switchMap((payload) => {
+      return fromPromise(
+        this.dataService.upsertItem(payload.item, payload.userId),
+      ).pipe(
+        map(() => new UpsertItemSuccess()),
+        catchError((error) =>
+          of(
+            new UpsertItemError({
+              error: this.handleFirebaseError(error),
+            }),
+          ),
+        ),
+      );
     }),
   );
+
+  private handleFirebaseError(firebaseError: any) {
+    //
+    return {
+      code: firebaseError.code,
+      message: firebaseError.message,
+      name: firebaseError.name,
+    };
+  }
 }

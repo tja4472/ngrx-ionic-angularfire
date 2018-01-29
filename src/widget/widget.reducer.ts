@@ -21,6 +21,15 @@ export const initialState: State = adapter.getInitialState({
 
 export function reducer(state = initialState, action: WidgetActions): State {
   switch (action.type) {
+    case WidgetActionTypes.DATABASE_LISTEN_FOR_DATA_STOP: {
+      return adapter.removeAll({
+        ...state,
+        loaded: false,
+        loading: false,
+        selectedWidgetId: '',
+      });
+    }
+
     case WidgetActionTypes.LOAD_SUCCESS: {
       return adapter.addAll(action.payload.items, state);
     }

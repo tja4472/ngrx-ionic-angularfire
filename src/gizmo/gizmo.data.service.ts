@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-} from 'angularfire2/firestore';
+import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
-import { from } from 'rxjs/observable/from';
 
 import { Gizmo } from './gizmo.model';
 
@@ -15,33 +11,16 @@ interface FirestoreDoc {
   id: string;
   description: string;
   name: string;
+  sysDateCreatedOn?: string;
+  sysDateUpdatedOn?: string;
 }
 
 @Injectable()
 export class GizmoDataService {
-  // private itemsCollection: AngularFirestoreCollection<FirestoreDoc>;
-
-  // private isSignedIn: boolean = true;
-
-  constructor(public readonly afs: AngularFirestore) {
-    console.log('GizmoDataService:constructor');
-    // this.init();
+  constructor(private readonly afs: AngularFirestore) {
+    // console.log('GizmoDataService:constructor');
   }
 
-  /*
-  public ListenForChanges$() {
-    //
-    return this.itemsCollection.stateChanges().map((actions) =>
-      actions.map((a) => {
-        const data = a.payload.doc.data() as FirestoreDoc;
-        return {
-          item: this.fromFirestoreDoc(data),
-          type: a.type,
-        };
-      }),
-    );
-  }
-  */
   public ListenForAdded$(userId: string): Observable<Gizmo[]> {
     //
     return this.firestoreCollection(userId)
@@ -90,20 +69,33 @@ export class GizmoDataService {
     const dateNow = Date().toString();
 
     if (item.id === '') {
-      // Create.
-      doc.id = this.afs.createId();
-      const recordToSet = {
-        ...doc,
-        sysDateCreatedOn: dateNow,
-        sysDateUpdatedOn: dateNow,
-      };
-      return this.firestoreCollection(userId)
-        .doc(recordToSet.id)
-        .set(recordToSet);
+      return this.createItem(item, userId);
+    } else {
+      return this.updateItem(item, userId);
     }
+  }
 
-    // Update.
-    const recordToUpdate = {
+  private createItem(item: Gizmo, userId: string): Promise<void> {
+    //
+    const doc = this.toFirestoreDoc(item);
+    const dateNow = Date().toString();
+    doc.id = this.afs.createId();
+    const recordToSet: FirestoreDoc = {
+      ...doc,
+      sysDateCreatedOn: dateNow,
+      sysDateUpdatedOn: dateNow,
+    };
+
+    return this.firestoreCollection(userId)
+      .doc(recordToSet.id)
+      .set(recordToSet);
+  }
+
+  private updateItem(item: Gizmo, userId: string): Promise<void> {
+    //
+    const doc = this.toFirestoreDoc(item);
+    const dateNow = Date().toString();
+    const recordToUpdate: FirestoreDoc = {
       ...doc,
       sysDateUpdatedOn: dateNow,
     };

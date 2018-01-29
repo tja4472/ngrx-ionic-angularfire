@@ -23,6 +23,7 @@ import {
 import { GizmoDataService } from './gizmo.data.service';
 import { Gizmo } from './gizmo.model';
 
+import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import {
   catchError,
@@ -171,40 +172,20 @@ export class GizmoEffects {
     ofType(GizmoActionTypes.DATABASE_UPSERT_ITEM),
     map((action: DatabaseUpsertItem) => action.payload),
     switchMap((payload) => {
-      return this.dataService.upsertItem(payload.item, payload.userId);
-    }),
-    map(() => new DatabaseUpsertItemSuccess()),
-    catchError((error) => {
-      console.log('error', error);
-      console.log('*****ERROR.code>', error.code);
-      console.log('*****ERROR.message>', error.message);
-      console.log('*****ERROR.name>', error.name);
-      return of(
-        new DatabaseUpsertItemError({
-          error: this.handleFirebaseError(error),
-        }),
+      return fromPromise(
+        this.dataService.upsertItem(payload.item, payload.userId),
+      ).pipe(
+        map(() => new DatabaseUpsertItemSuccess()),
+        catchError((error) =>
+          of(
+            new DatabaseUpsertItemError({
+              error: this.handleFirebaseError(error),
+            }),
+          ),
+        ),
       );
     }),
   );
-
-  /*
-  // tslint:disable-next-line:member-ordering
-  @Effect({ dispatch: false })
-  public databaseUpsertItem$ = this.actions$.pipe(
-    ofType(GizmoActionTypes.DATABASE_UPSERT_ITEM),
-    map((action: DatabaseUpsertItem) => action.payload),
-
-    map((payload) => {
-      return this.dataService
-        .upsertItem(payload.item, payload.userId)
-        .catch((error: { code: string; message: string; name: string }) => {
-          console.log('*****ERROR.code>', error.code);
-          console.log('*****ERROR.message>', error.message);
-          console.log('*****ERROR.name>', error.name);
-        });
-    }),
-  );
-*/
 
   private handleFirebaseError(firebaseError: any) {
     //

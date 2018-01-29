@@ -87,13 +87,30 @@ export class GizmoDataService {
   public upsertItem(item: Gizmo, userId: string): Promise<void> {
     //
     const doc = this.toFirestoreDoc(item);
+    const dateNow = Date().toString();
+
     if (item.id === '') {
+      // Create.
       doc.id = this.afs.createId();
+      const recordToSet = {
+        ...doc,
+        sysDateCreatedOn: dateNow,
+        sysDateUpdatedOn: dateNow,
+      };
+      return this.firestoreCollection(userId)
+        .doc(recordToSet.id)
+        .set(recordToSet);
     }
+
+    // Update.
+    const recordToUpdate = {
+      ...doc,
+      sysDateUpdatedOn: dateNow,
+    };
 
     return this.firestoreCollection(userId)
       .doc(doc.id)
-      .set(doc);
+      .update(recordToUpdate);
   }
 
   private firestoreCollection(userId: string) {
@@ -123,15 +140,16 @@ export class GizmoDataService {
     //
     // console.log('TodoDataService:fromFirebaseTodo>', x);
 
-    const result: Gizmo = { ...x };
-    /*
-    const result: IGizmo = {
-      id: x.id,
+    // This copies extra fields.
+    // const result: Gizmo = { ...x };
+
+    const result: Gizmo = {
       description: x.description,
+      id: x.id,
       name: x.name,
     };
-*/
-    // console.log('TodoDataService:fromFirebaseTodo:result>', result);
+
+    // console.log('fromFirestoreDoc:result>', result);
 
     return result;
   }

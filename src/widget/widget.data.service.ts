@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Observable';
-import { from } from 'rxjs/observable/from';
-
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-} from 'angularfire2/firestore';
 
 import { Widget } from './widget.model';
 
@@ -16,6 +11,8 @@ interface FirestoreDoc {
   id: string;
   description: string;
   name: string;
+  sysDateCreatedOn?: string;
+  sysDateUpdatedOn?: string;
 }
 
 @Injectable()
@@ -44,23 +41,44 @@ export class WidgetDataService {
   public upsertItem(item: Widget, userId: string): Promise<void> {
     //
     const doc = this.toFirestoreDoc(item);
+    const dateNow = Date().toString();
+
     if (item.id === '') {
-      doc.id = this.afs.createId();
+      return this.createItem(item, userId);
+    } else {
+      return this.updateItem(item, userId);
     }
+  }
+
+  private createItem(item: Widget, userId: string): Promise<void> {
+    //
+    const doc = this.toFirestoreDoc(item);
+    const dateNow = Date().toString();
+    doc.id = this.afs.createId();
+    const recordToSet: FirestoreDoc = {
+      ...doc,
+      sysDateCreatedOn: dateNow,
+      sysDateUpdatedOn: dateNow,
+    };
+
+    return this.firestoreCollection(userId)
+      .doc(recordToSet.id)
+      .set(recordToSet);
+  }
+
+  private updateItem(item: Widget, userId: string): Promise<void> {
+    //
+    const doc = this.toFirestoreDoc(item);
+    const dateNow = Date().toString();
+    const recordToUpdate: FirestoreDoc = {
+      ...doc,
+      sysDateUpdatedOn: dateNow,
+    };
 
     return this.firestoreCollection(userId)
       .doc(doc.id)
-      .set(doc);
+      .update(recordToUpdate);
   }
-
-  /*
-  private init(): void {
-    this.itemsCollection = this.afs.collection<FirestoreDoc>(
-      DATA_COLLECTION,
-      (ref) => ref.orderBy('name', 'asc'),
-    );
-  }
-  */
 
   private firestoreCollection(userId: string) {
     //

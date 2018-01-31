@@ -20,6 +20,7 @@ export const MyFirebaseAppConfig: Readonly<FirebaseAppConfig> = {
   apiKey: 'xxxxxx',
   authDomain: 'xxxxxx',
   databaseURL: 'xxxxxx',
+  messagingSenderId: 'xxxxxx',
   projectId: 'xxxxxx',
   storageBucket: 'xxxxxx',
 };
@@ -27,6 +28,14 @@ export const MyFirebaseAppConfig: Readonly<FirebaseAppConfig> = {
 
 ## State
 
+* auth
+  * displayName
+  * email
+  * error
+  * hasChecked
+  * isAuthenticated
+  * isAuthenticating
+  * userId
 * collection
   * loaded
   * loading
@@ -51,11 +60,6 @@ export const MyFirebaseAppConfig: Readonly<FirebaseAppConfig> = {
       * id
       * name
   * selectedGizmoId
-* login
-  * displayName
-  * isAuthenticated
-  * isAuthenticating
-  * error
 * widget
   * ids
     * 0: "aa"

@@ -7,6 +7,7 @@ import { empty } from 'rxjs/observable/empty';
 import * as FromRootReducer from '../reducers';
 import {
   DatabaseListenForDataStart,
+  DatabaseListenForDataStartError,
   DatabaseListenForDataStop,
   DeleteItem,
   LoadSuccess,
@@ -33,7 +34,7 @@ import {
 export class WidgetEffects {
   constructor(
     private actions$: Actions,
-    private state$: Store<FromRootReducer.State>,
+    private store$: Store<FromRootReducer.State>,
     private dataService: WidgetDataService,
   ) {}
 
@@ -49,7 +50,7 @@ export class WidgetEffects {
   );
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
+  @Effect({ dispatch: false })
   public listenForData$ = this.actions$.pipe(
     ofType<DatabaseListenForDataStart | DatabaseListenForDataStop>(
       WidgetActionTypes.DATABASE_LISTEN_FOR_DATA_START,
@@ -62,7 +63,21 @@ export class WidgetEffects {
       console.log('Effect:listenForData$:action>', action);
       switch (action.type) {
         case WidgetActionTypes.DATABASE_LISTEN_FOR_DATA_START: {
-          return this.dataService.getData$(action.payload.userId);
+          return this.dataService.getData$(action.payload.userId).pipe(
+            map((items: Widget[]) => {
+              this.store$.dispatch(new LoadSuccess({ items }));
+            }),
+            catchError((error) => {
+              this.store$.dispatch(
+                new DatabaseListenForDataStartError({
+                  error: this.handleFirebaseError(error),
+                }),
+              );
+              // Pass on to higher level.
+              // throw error;
+              return empty();
+            }),
+          );
         }
 
         default: {
@@ -73,7 +88,6 @@ export class WidgetEffects {
     tap((x) => {
       console.log('Effect:listenForData$:B', x);
     }),
-    map((items: Widget[]) => new LoadSuccess({ items })),
   );
 
   // tslint:disable-next-line:member-ordering

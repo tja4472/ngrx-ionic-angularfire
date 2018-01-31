@@ -8,10 +8,13 @@ import * as FromRootReducer from '../reducers';
 import {
   DatabaseDeleteItem,
   DatabaseListenForAddedItems,
+  DatabaseListenForAddedItemsError,
   DatabaseListenForDataStart,
   DatabaseListenForDataStop,
   DatabaseListenForModifiedItems,
+  DatabaseListenForModifiedItemsError,
   DatabaseListenForRemovedItems,
+  DatabaseListenForRemovedItemsError,
   DatabaseUpsertItem,
   DatabaseUpsertItemError,
   DatabaseUpsertItemSuccess,
@@ -38,7 +41,7 @@ import {
 export class GizmoEffects {
   constructor(
     private actions$: Actions,
-    private state$: Store<FromRootReducer.State>,
+    private store$: Store<FromRootReducer.State>,
     private dataService: GizmoDataService,
   ) {}
 
@@ -54,7 +57,7 @@ export class GizmoEffects {
   );
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
+  @Effect({ dispatch: false })
   public listenForAddedItems$ = this.actions$.pipe(
     ofType<DatabaseListenForAddedItems | DatabaseListenForDataStop>(
       GizmoActionTypes.DATABASE_LISTEN_FOR_ADDED_ITEMS,
@@ -63,7 +66,21 @@ export class GizmoEffects {
     switchMap((action) => {
       switch (action.type) {
         case GizmoActionTypes.DATABASE_LISTEN_FOR_ADDED_ITEMS: {
-          return this.dataService.ListenForAdded$(action.payload.userId);
+          return this.dataService.ListenForAdded$(action.payload.userId).pipe(
+            map((items: Gizmo[]) => {
+              this.store$.dispatch(new StoreAddItems({ gizmos: items }));
+            }),
+            catchError((error) => {
+              this.store$.dispatch(
+                new DatabaseListenForAddedItemsError({
+                  error: this.handleFirebaseError(error),
+                }),
+              );
+              // Pass on to higher level.
+              // throw error;
+              return empty();
+            }),
+          );
         }
 
         case GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP: {
@@ -76,40 +93,6 @@ export class GizmoEffects {
         }
       }
     }),
-    map((items: Gizmo[]) => new StoreAddItems({ gizmos: items })),
-  );
-
-  // tslint:disable-next-line:member-ordering
-  @Effect()
-  public listenForRemovedItems$ = this.actions$.pipe(
-    ofType<DatabaseListenForRemovedItems | DatabaseListenForDataStop>(
-      GizmoActionTypes.DATABASE_LISTEN_FOR_REMOVED_ITEMS,
-      GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP,
-    ),
-    tap(() => {
-      console.log('Effect:listenForRemovedItems$:A');
-    }),
-    switchMap((action) => {
-      switch (action.type) {
-        case GizmoActionTypes.DATABASE_LISTEN_FOR_REMOVED_ITEMS: {
-          return this.dataService.ListenForRemoved$(action.payload.userId);
-        }
-
-        case GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP: {
-          console.log('listenForRemovedItems.DATABASE_LISTEN_FOR_DATA_STOP');
-          return empty();
-        }
-
-        default: {
-          return empty();
-        }
-      }
-    }),
-    tap((x) => {
-      console.log('Effect:listenForRemovedItems$:B', x);
-    }),
-    map((items: Gizmo[]) => items.map((a) => a.id)),
-    map((ids) => new StoreDeleteItems({ ids })),
   );
 
   // tslint:disable-next-line:member-ordering
@@ -130,7 +113,7 @@ export class GizmoEffects {
   );
 
   // tslint:disable-next-line:member-ordering
-  @Effect()
+  @Effect({ dispatch: false })
   public listenForModifiedItems$ = this.actions$.pipe(
     ofType<DatabaseListenForModifiedItems | DatabaseListenForDataStop>(
       GizmoActionTypes.DATABASE_LISTEN_FOR_MODIFIED_ITEMS,
@@ -142,7 +125,32 @@ export class GizmoEffects {
     switchMap((action) => {
       switch (action.type) {
         case GizmoActionTypes.DATABASE_LISTEN_FOR_MODIFIED_ITEMS: {
-          return this.dataService.ListenForModified$(action.payload.userId);
+          // return this.dataService.ListenForModified$(action.payload.userId);
+          return this.dataService
+            .ListenForModified$(action.payload.userId)
+            .pipe(
+              map((items: Gizmo[]) => {
+                return items.map((item) => {
+                  return {
+                    changes: item,
+                    id: item.id,
+                  };
+                });
+              }),
+              map((qq) => {
+                this.store$.dispatch(new StoreUpdateItems({ items: qq }));
+              }),
+              catchError((error) => {
+                this.store$.dispatch(
+                  new DatabaseListenForModifiedItemsError({
+                    error: this.handleFirebaseError(error),
+                  }),
+                );
+                // Pass on to higher level.
+                // throw error;
+                return empty();
+              }),
+            );
         }
 
         case GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP: {
@@ -155,15 +163,55 @@ export class GizmoEffects {
         }
       }
     }),
-    map((items: Gizmo[]) => {
-      return items.map((item) => {
-        return {
-          changes: item,
-          id: item.id,
-        };
-      });
+  );
+
+  // tslint:disable-next-line:member-ordering
+  @Effect({ dispatch: false })
+  public listenForRemovedItems$ = this.actions$.pipe(
+    ofType<DatabaseListenForRemovedItems | DatabaseListenForDataStop>(
+      GizmoActionTypes.DATABASE_LISTEN_FOR_REMOVED_ITEMS,
+      GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP,
+    ),
+    tap(() => {
+      console.log('Effect:listenForRemovedItems$:A');
     }),
-    map((qq) => new StoreUpdateItems({ items: qq })),
+    switchMap((action) => {
+      switch (action.type) {
+        case GizmoActionTypes.DATABASE_LISTEN_FOR_REMOVED_ITEMS: {
+          // return this.dataService.ListenForRemoved$(action.payload.userId);
+          return this.dataService.ListenForRemoved$(action.payload.userId).pipe(
+            map((items: Gizmo[]) => items.map((a) => a.id)),
+            map((ids) => {
+              this.store$.dispatch(new StoreDeleteItems({ ids }));
+            }),
+            catchError((error) => {
+              this.store$.dispatch(
+                new DatabaseListenForRemovedItemsError({
+                  error: this.handleFirebaseError(error),
+                }),
+              );
+              // Pass on to higher level.
+              // throw error;
+              return empty();
+            }),
+          );
+        }
+
+        case GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP: {
+          console.log('listenForRemovedItems.DATABASE_LISTEN_FOR_DATA_STOP');
+          return empty();
+        }
+
+        default: {
+          return empty();
+        }
+      }
+    }),
+    tap((x) => {
+      console.log('Effect:listenForRemovedItems$:B', x);
+    }),
+    // map((items: Gizmo[]) => items.map((a) => a.id)),
+    // map((ids) => new StoreDeleteItems({ ids })),
   );
 
   // tslint:disable-next-line:member-ordering

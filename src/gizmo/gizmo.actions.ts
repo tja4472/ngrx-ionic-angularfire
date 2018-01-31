@@ -8,10 +8,13 @@ export enum GizmoActionTypes {
   //
   DATABASE_DELETE_ITEM = '[Gizmo] (Database) Delete Item',
   DATABASE_LISTEN_FOR_ADDED_ITEMS = '[Gizmo] (Database) Listen For Added Items',
+  DATABASE_LISTEN_FOR_ADDED_ITEMS_ERROR = '[Gizmo] (Database) Listen For Added Items - Error',
   DATABASE_LISTEN_FOR_DATA_START = '[Gizmo] (Database) Listen For Data - Start',
   DATABASE_LISTEN_FOR_DATA_STOP = '[Gizmo] (Database) Listen For Data - Stop',
   DATABASE_LISTEN_FOR_MODIFIED_ITEMS = '[Gizmo] (Database) Listen For Modified Items',
+  DATABASE_LISTEN_FOR_MODIFIED_ITEMS_ERROR = '[Gizmo] (Database) Listen For Modified Items - Error',
   DATABASE_LISTEN_FOR_REMOVED_ITEMS = '[Gizmo] (Database) Listen For Removed Items',
+  DATABASE_LISTEN_FOR_REMOVED_ITEMS_ERROR = '[Gizmo] (Database) Listen For Removed Items - Error',
   DATABASE_UPSERT_ITEM = '[Gizmo] (Database) Upsert Item',
   DATABASE_UPSERT_ITEM_ERROR = '[Gizmo] (Database) Upsert Item - Error ',
   DATABASE_UPSERT_ITEM_SUCCESS = '[Gizmo] (Database) Upsert Item - Success',
@@ -37,6 +40,20 @@ export class DatabaseListenForAddedItems implements Action {
   ) {}
 }
 
+export class DatabaseListenForAddedItemsError implements Action {
+  public readonly type = GizmoActionTypes.DATABASE_LISTEN_FOR_ADDED_ITEMS_ERROR;
+
+  constructor(
+    public payload: {
+      error: {
+        code: string;
+        message: string;
+        name: string;
+      };
+    },
+  ) {}
+}
+
 export class DatabaseListenForDataStart implements Action {
   public readonly type = GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_START;
 
@@ -50,6 +67,7 @@ export class DatabaseListenForDataStart implements Action {
 export class DatabaseListenForDataStop implements Action {
   public readonly type = GizmoActionTypes.DATABASE_LISTEN_FOR_DATA_STOP;
 }
+
 export class DatabaseListenForModifiedItems implements Action {
   public readonly type = GizmoActionTypes.DATABASE_LISTEN_FOR_MODIFIED_ITEMS;
 
@@ -60,12 +78,40 @@ export class DatabaseListenForModifiedItems implements Action {
   ) {}
 }
 
+export class DatabaseListenForModifiedItemsError implements Action {
+  public readonly type = GizmoActionTypes.DATABASE_LISTEN_FOR_MODIFIED_ITEMS_ERROR;
+
+  constructor(
+    public payload: {
+      error: {
+        code: string;
+        message: string;
+        name: string;
+      };
+    },
+  ) {}
+}
+
 export class DatabaseListenForRemovedItems implements Action {
   public readonly type = GizmoActionTypes.DATABASE_LISTEN_FOR_REMOVED_ITEMS;
 
   constructor(
     public payload: {
       userId: string;
+    },
+  ) {}
+}
+
+export class DatabaseListenForRemovedItemsError implements Action {
+  public readonly type = GizmoActionTypes.DATABASE_LISTEN_FOR_REMOVED_ITEMS_ERROR;
+
+  constructor(
+    public payload: {
+      error: {
+        code: string;
+        message: string;
+        name: string;
+      };
     },
   ) {}
 }
@@ -123,6 +169,7 @@ export class StoreUpdateItems implements Action {
 export type GizmoActions =
   | DatabaseDeleteItem
   | DatabaseListenForAddedItems
+  | DatabaseListenForAddedItemsError
   | DatabaseListenForDataStart
   | DatabaseListenForDataStop
   | DatabaseListenForModifiedItems

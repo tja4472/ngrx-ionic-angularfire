@@ -5,6 +5,7 @@ import { Widget } from './widget.model';
 export enum WidgetActionTypes {
   //
   DATABASE_LISTEN_FOR_DATA_START = '[Widget] (Database) Listen For Data - Start',
+  DATABASE_LISTEN_FOR_DATA_START_ERROR = '[Widget] (Database) Listen For Data - Start - Error',
   DATABASE_LISTEN_FOR_DATA_STOP = '[Widget] (Database) Listen For Data - Stop',
   DELETE_ITEM = '[Widget] Delete Item',
   LOAD_SUCCESS = '[Widget] Load Success',
@@ -19,6 +20,20 @@ export class DatabaseListenForDataStart implements Action {
   constructor(
     public payload: {
       userId: string;
+    },
+  ) {}
+}
+
+export class DatabaseListenForDataStartError implements Action {
+  public readonly type = WidgetActionTypes.DATABASE_LISTEN_FOR_DATA_START_ERROR;
+
+  constructor(
+    public payload: {
+      error: {
+        code: string;
+        message: string;
+        name: string;
+      };
     },
   ) {}
 }
@@ -67,6 +82,7 @@ export type WidgetActions =
   | DeleteItem
   | LoadSuccess
   | DatabaseListenForDataStart
+  | DatabaseListenForDataStartError
   | DatabaseListenForDataStop
   | UpsertItem
   | UpsertItemError

@@ -15,6 +15,11 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { Error } from '../components/error/error.component';
 import { ExampleList } from '../components/example-list/example-list.component';
 import { TextItemEffects } from '../effects/text-item.effect';
+import { GadgetDataService } from '../gadget/gadget.data.service';
+import { GadgetEffects } from '../gadget/gadget.effect';
+import { GadgetService } from '../gadget/gadget.service';
+import { GadgetDetailModal } from '../gadget/modals/gadget-detail/gadget-detail.modal';
+import { GadgetListPage } from '../gadget/pages/gadget-list/gadget-list.page';
 import { GizmoDataService } from '../gizmo/gizmo.data.service';
 import { GizmoEffects } from '../gizmo/gizmo.effect';
 import { GizmoService } from '../gizmo/gizmo.service';
@@ -41,6 +46,8 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
   declarations: [
     WidgetDetailModal,
     WidgetListPage,
+    GadgetDetailModal,
+    GadgetListPage,
     GizmoDetailModal,
     GizmoListPage,
     Error,
@@ -66,12 +73,15 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
       AuthEffects,
       TextItemEffects,
       WidgetEffects,
+      GadgetEffects,
       GizmoEffects,
     ]),
   ],
   // tslint:disable-next-line:object-literal-sort-keys
   bootstrap: [IonicApp],
   entryComponents: [
+    GadgetDetailModal,
+    GadgetListPage,
     GizmoDetailModal,
     GizmoListPage,
     WidgetDetailModal,
@@ -88,6 +98,8 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
     AuthService,
     StatusBar,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    GadgetDataService,
+    GadgetService,
     GizmoDataService,
     GizmoService,
     WidgetDataService,

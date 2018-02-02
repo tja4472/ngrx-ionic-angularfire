@@ -2,6 +2,7 @@ import { ActionReducerMap, createSelector, MetaReducer } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 
 import * as fromAuth from '../app/auth/auth.reducer';
+import * as fromGadget from '../gadget/gadget.reducer';
 import * as fromGizmo from '../gizmo/gizmo.reducer';
 import * as fromWidget from '../widget/widget.reducer';
 import * as fromCollection from './collection';
@@ -9,6 +10,7 @@ import * as fromCollection from './collection';
 export interface State {
   collection: fromCollection.State;
   auth: fromAuth.State;
+  gadget: fromGadget.State;
   gizmo: fromGizmo.State;
   widget: fromWidget.State;
 }
@@ -16,6 +18,7 @@ export interface State {
 export const reducers: ActionReducerMap<State> = {
   auth: fromAuth.reducer,
   collection: fromCollection.reducer,
+  gadget: fromGadget.reducer,
   gizmo: fromGizmo.reducer,
   widget: fromWidget.reducer,
 };
@@ -147,3 +150,42 @@ export const selectCurrentWidget = createSelector(
   selectCurrentWidgetId,
   (widgetEntities, widgetId) => widgetEntities[widgetId],
 );
+//#region Gadget selectors
+export const getGadgetState = (state: State) => state.gadget;
+
+export const getGadgetLoaded = createSelector(
+  getGadgetState,
+  fromGadget.getLoaded,
+);
+export const getGadgetLoading = createSelector(
+  getGadgetState,
+  fromGadget.getLoading,
+);
+
+export const selectGadgetIds = createSelector(
+  getGadgetState,
+  fromGadget.selectGadgetIds,
+);
+export const selectGadgetEntities = createSelector(
+  getGadgetState,
+  fromGadget.selectGadgetEntities,
+);
+export const selectAllGadgets = createSelector(
+  getGadgetState,
+  fromGadget.selectAllGadgets,
+);
+export const selectGadgetTotal = createSelector(
+  getGadgetState,
+  fromGadget.selectGadgetTotal,
+);
+export const selectCurrentGadgetId = createSelector(
+  getGadgetState,
+  fromGadget.getSelectedGadgetId,
+);
+
+export const selectCurrentGadget = createSelector(
+  selectGadgetEntities,
+  selectCurrentGadgetId,
+  (widgetEntities, widgetId) => widgetEntities[widgetId],
+);
+//#endregion

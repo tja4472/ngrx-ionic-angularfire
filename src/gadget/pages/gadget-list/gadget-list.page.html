@@ -1,0 +1,39 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button
+                menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Gadgets(Realtime Database)</ion-title>
+        <ion-buttons end>
+            <button ion-button
+                    icon-end
+                    outline
+                    (click)="viewAdd()">
+                Add
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <div>
+        IsLoading: {{viewIsLoading$ | async}}
+    </div>
+    <div>
+        IsLoaded: {{viewIsLoaded$ | async}}
+    </div>
+    <ion-row>
+        <ion-list>
+            <ion-item *ngFor="let item of (viewData$ | async)">
+                <div>{{item.name}}</div>
+                <p>{{item.description}}</p>
+                <button ion-button
+                        (click)="viewEdit(item)">Edit</button>
+                <button ion-button
+                        color="danger"
+                        (click)="viewDelete(item)">delete</button>
+            </ion-item>
+        </ion-list>
+    </ion-row>
+</ion-content>

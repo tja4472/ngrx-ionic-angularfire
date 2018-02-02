@@ -1,3 +1,9 @@
+# Gadget
+
+* Firebase Realtime Database
+* [@ngrx/entity](https://github.com/ngrx/platform/tree/master/docs/entity)
+* [AngularFireList - valueChanges()](https://github.com/angular/angularfire2/blob/master/docs/rtdb/lists.md#valuechanges) returns sorted records
+
 # Gizmo
 
 * Firebase Cloud Firestore
@@ -46,6 +52,20 @@ export const MyFirebaseAppConfig: Readonly<FirebaseAppConfig> = {
     * 1
       * description
       * title
+* gadget
+  * ids
+    * 0: "aa"
+    * 1: "bb"
+  * entities
+    * aa
+      * description
+      * id
+      * name
+    * bb
+      * description
+      * id
+      * name
+  * selectedWidgetId
 * wgizmo
   * ids
     * 0: "aa"

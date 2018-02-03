@@ -30,11 +30,9 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import {
   catchError,
-  filter,
   map,
   switchMap,
   tap,
-  withLatestFrom,
 } from 'rxjs/operators';
 
 @Injectable()

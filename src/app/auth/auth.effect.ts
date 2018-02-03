@@ -55,7 +55,7 @@ export class AuthEffects {
       this.authService
         .signOut()
         .pipe(
-          map((res: any) => new SignOutSuccess()),
+          map(() => new SignOutSuccess()),
           catchError((error: any) => of(new SignOutFailure(error))),
         ),
     );

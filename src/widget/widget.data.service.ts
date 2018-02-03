@@ -40,9 +40,6 @@ export class WidgetDataService {
 
   public upsertItem(item: Widget, userId: string): Promise<void> {
     //
-    const doc = this.toFirestoreDoc(item);
-    const dateNow = Date().toString();
-
     if (item.id === '') {
       return this.createItem(item, userId);
     } else {

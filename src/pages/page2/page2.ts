@@ -44,7 +44,7 @@ export class Page2 {
     }
   }
 
-  public itemTapped(event: Event, item: ItemInterface) {
+  public itemTapped(item: ItemInterface) {
     // That's right, we're pushing to ourselves!
     this.navCtrl.push(Page2, {
       item,

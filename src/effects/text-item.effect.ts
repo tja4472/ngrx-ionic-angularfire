@@ -6,7 +6,6 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import {
-  catchError,
   filter,
   map,
   switchMap,
@@ -40,7 +39,7 @@ export class TextItemEffects {
     }),
     withLatestFrom(this.state$),
     // tslint:disable-next-line:no-unused-variable
-    filter(([action, state]) => (state as State).auth.isAuthenticated),
+    filter(([, state]) => (state as State).auth.isAuthenticated),
     // Watch database node and get TextItems.
     switchMap(() => this.afDb.list('/textItems').valueChanges()),
     tap((x) => {

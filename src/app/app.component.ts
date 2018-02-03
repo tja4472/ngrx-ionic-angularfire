@@ -4,7 +4,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { Store } from '@ngrx/store';
-import * as firebase from 'firebase/app';
 import { Nav, Platform } from 'ionic-angular';
 
 import { GadgetListPage } from '../gadget/pages/gadget-list/gadget-list.page';
@@ -81,7 +80,6 @@ export class MyApp {
       )
       .subscribe((loginState) => {
         console.log('loginState>', loginState);
-        const userId = 'dummyId';
 
         if (loginState.isAuthenticated) {
           this.rootPage = HomePage;

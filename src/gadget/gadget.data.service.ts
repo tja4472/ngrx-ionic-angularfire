@@ -39,8 +39,6 @@ export class GadgetDataService {
   public upsertItem(item: Gadget, userId: string): Promise<void> {
     //
     userId = userId;
-    const doc = this.toFirestoreDoc(item);
-    const dateNow = Date().toString();
 
     if (item.id === '') {
       return this.createItem(item, userId);

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { NavParams, ViewController } from 'ionic-angular';
 
-import { Widget } from '../../widget.model';
+import { NewWidget, Widget } from '../../widget.model';
 
 export interface ModalInput {
   item?: Widget;
@@ -14,13 +14,19 @@ export interface ModalResult {
   item?: Widget;
 }
 
+interface FormModel {
+  description: any;
+  name: any;
+}
+
 @Component({
   selector: 'tja-modal-widget-detail',
   templateUrl: 'widget-detail.modal.html',
 })
 export class WidgetDetailModal {
   // Called from view.
-  public viewForm: any;
+  // public viewForm: any;
+  public viewForm: FormGroup;
 
   public get viewCanSave(): boolean {
     return !(this.viewForm.dirty && this.viewForm.valid);
@@ -28,7 +34,7 @@ export class WidgetDetailModal {
 
   private readonly CLASS_NAME = 'WidgetDetailModal';
 
-  private formItem: Widget;
+  private dataModel: Widget;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -45,42 +51,30 @@ export class WidgetDetailModal {
 
     if (paramItem === undefined) {
       // new item.
-      this.formItem = { id: '', description: '', name: '' };
+      this.dataModel = NewWidget();
     } else {
       // navParams passes by reference.
-      this.formItem = Object.assign({}, navParams.get('item'));
+      this.dataModel = { ...paramItem };
     }
 
-    // navParams passes by reference.
-    const navParamsTodo: Readonly<Widget> = Object.assign(
-      {},
-      navParams.get('item'),
-    );
-    // a.description = 'GGGGGGGGGGGG';
-    console.log('navParamsTodo>', navParamsTodo);
-
-    /*
-    const navParamsTodo: Readonly<IWidget> = Object.assign(new TodoListsItem(), navParams.get('todo'));
-    console.log('navParamsTodo>', navParamsTodo);
-    console.log('navParamsTodo.isNew()>', navParamsTodo.isNew());
-
-    this.viewItem = Object.assign(new TodoListsItem(), navParamsTodo);
-    console.log('this.todo>', this.viewItem);
-*/
+    console.log('}}}}}}paramItem>', paramItem);
+    console.log('}}}}}}this.dataModel>', this.dataModel);
   }
 
   public ngOnInit() {
     console.log('###%s:ngOnInit>', this.CLASS_NAME);
-    // console.log('this.todo.isNew()>', this.todo.isNew());
-    /*
-            if (this.todo.$key === undefined) {
-                this.isEditing = false;
-            }
-    */
+
     this.viewForm = this.formBuilder.group({
-      description: [this.formItem.description],
-      name: [this.formItem.name, Validators.required],
-    });
+      description: [this.dataModel.description],
+      name: [this.dataModel.name, Validators.required],
+    } as FormModel);
+
+    /*
+    this.viewForm.setValue({
+      description: this.dataModel.description,
+      name: this.dataModel.name,
+    } as FormModel);
+    */
   }
 
   public viewCancel() {
@@ -98,10 +92,22 @@ export class WidgetDetailModal {
     }
 
     console.log('this.todoForm.value>', this.viewForm.value);
-    console.log('this.formItem>', this.formItem);
 
-    const editedItem: Widget = { ...this.formItem, ...this.viewForm.value };
-    const result: ModalResult = { save: true, item: editedItem };
+    const saveItem = this.prepareSaveItem();
+    console.log('saveItem>', saveItem);
+    const result: ModalResult = { save: true, item: saveItem };
     this.viewController.dismiss(result);
+  }
+
+  private prepareSaveItem(): Widget {
+    const formModel: FormModel = this.viewForm.value;
+
+    const saveItem: Widget = {
+      ...this.dataModel,
+      description: formModel.description,
+      name: formModel.name,
+    };
+
+    return saveItem;
   }
 }

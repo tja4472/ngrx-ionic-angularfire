@@ -64,8 +64,13 @@ export class WidgetListPage {
 
     const modal = this.modalCtrl.create(WidgetDetailModal, modalInput);
 
-    modal.onDidDismiss((data: ModalResult) => {
+    modal.onDidDismiss((data: ModalResult | null) => {
       console.log('onDidDismiss>', data);
+
+      if (data === null) {
+        console.log('onDidDismiss:NULL');
+        return;
+      }
 
       if (data.save && data.item) {
         this.widgetService.upsertItem(data.item);

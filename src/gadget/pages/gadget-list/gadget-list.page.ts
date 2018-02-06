@@ -7,7 +7,7 @@ import { Gadget } from '../../gadget.model';
 import { GadgetService } from '../../gadget.service';
 import {
   GadgetDetailModal,
-  ModalInput,
+  getModalInput,
   ModalResult,
 } from '../../modals/gadget-detail/gadget-detail.modal';
 
@@ -60,7 +60,7 @@ export class GadgetListPage {
 
   private showModal(item?: Gadget) {
     //
-    const modalInput: ModalInput = { item };
+    const modalInput = getModalInput(item);
 
     const modal = this.modalCtrl.create(GadgetDetailModal, modalInput);
 

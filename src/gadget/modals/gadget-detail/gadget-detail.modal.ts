@@ -1,17 +1,31 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { NavParams, ViewController } from 'ionic-angular';
 
-import { Gadget } from '../../gadget.model';
+import { Gadget, newGadget } from '../../gadget.model';
 
 export interface ModalInput {
   item?: Gadget;
 }
 
+export function getModalInput(item: Gadget | undefined) {
+  //
+  const modalInput: ModalInput = { item };
+
+  return {
+    modalInput,
+  };
+}
+
 export interface ModalResult {
   save: boolean;
   item?: Gadget;
+}
+
+interface FormModel {
+  description: any;
+  name: any;
 }
 
 @Component({
@@ -20,7 +34,7 @@ export interface ModalResult {
 })
 export class GadgetDetailModal {
   // Called from view.
-  public viewForm: any;
+  public viewForm: FormGroup;
 
   public get viewCanSave(): boolean {
     return !(this.viewForm.dirty && this.viewForm.valid);
@@ -28,7 +42,7 @@ export class GadgetDetailModal {
 
   private readonly CLASS_NAME = 'GadgetDetailModal';
 
-  private formItem: Gadget;
+  private dataModel: Gadget;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -37,40 +51,23 @@ export class GadgetDetailModal {
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
 
-    console.log('navParams>', navParams);
-    console.log('navParams.data>', navParams.data);
-    console.log('navParams.get("item")>', navParams.get('item'));
+    const modalInput: ModalInput = this.getModalInput();
 
-    const paramItem: Gadget = navParams.get('item');
-
-    if (paramItem === undefined) {
+    if (modalInput.item === undefined) {
       // new item.
-      this.formItem = { id: '', description: '', name: '' };
+      this.dataModel = newGadget();
     } else {
       // navParams passes by reference.
-      this.formItem = Object.assign({}, navParams.get('item'));
+      this.dataModel = { ...modalInput.item };
     }
-
-    // navParams passes by reference.
-    const navParamsTodo: Readonly<Gadget> = Object.assign(
-      {},
-      navParams.get('item'),
-    );
-    // a.description = 'GGGGGGGGGGGG';
-    console.log('navParamsTodo>', navParamsTodo);
   }
 
   public ngOnInit() {
     console.log('###%s:ngOnInit>', this.CLASS_NAME);
-    // console.log('this.todo.isNew()>', this.todo.isNew());
-    /*
-            if (this.todo.$key === undefined) {
-                this.isEditing = false;
-            }
-    */
+
     this.viewForm = this.formBuilder.group({
-      description: [this.formItem.description],
-      name: [this.formItem.name, Validators.required],
+      description: [this.dataModel.description],
+      name: [this.dataModel.name, Validators.required],
     });
   }
 
@@ -88,11 +85,25 @@ export class GadgetDetailModal {
       return;
     }
 
-    console.log('this.todoForm.value>', this.viewForm.value);
-    console.log('this.formItem>', this.formItem);
-
-    const editedItem: Gadget = { ...this.formItem, ...this.viewForm.value };
-    const result: ModalResult = { save: true, item: editedItem };
+    const saveItem = this.prepareSaveItem();
+    const result: ModalResult = { save: true, item: saveItem };
     this.viewController.dismiss(result);
+  }
+
+  private getModalInput(): ModalInput {
+    //
+    return this.navParams.get('modalInput');
+  }
+
+  private prepareSaveItem(): Gadget {
+    const formModel: FormModel = this.viewForm.value;
+
+    const saveItem: Gadget = {
+      ...this.dataModel,
+      description: formModel.description,
+      name: formModel.name,
+    };
+
+    return saveItem;
   }
 }

@@ -28,3 +28,7 @@ export interface Gadget {
   readonly id: string;
   readonly name: string;
 }
+
+export function newGadget(): Gadget {
+  return { description: '', id: '', name: '' };
+}

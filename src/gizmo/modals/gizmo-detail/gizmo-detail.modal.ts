@@ -1,17 +1,31 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { NavParams, ViewController } from 'ionic-angular';
 
-import { Gizmo } from '../../gizmo.model';
+import { Gizmo, newGizmo } from '../../gizmo.model';
 
 export interface ModalInput {
   item?: Gizmo;
 }
 
+export function getModalInput(item: Gizmo | undefined) {
+  //
+  const modalInput: ModalInput = { item };
+
+  return {
+    modalInput,
+  };
+}
+
 export interface ModalResult {
   save: boolean;
   item?: Gizmo;
+}
+
+interface FormModel {
+  description: any;
+  name: any;
 }
 
 @Component({
@@ -20,7 +34,7 @@ export interface ModalResult {
 })
 export class GizmoDetailModal {
   // Called from view.
-  public viewForm: any;
+  public viewForm: FormGroup;
 
   public get viewCanSave(): boolean {
     return !(this.viewForm.dirty && this.viewForm.valid);
@@ -28,7 +42,7 @@ export class GizmoDetailModal {
 
   private readonly CLASS_NAME = 'GizmoDetailModal';
 
-  private formItem: Gizmo;
+  private dataModel: Gizmo;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -37,36 +51,15 @@ export class GizmoDetailModal {
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
 
-    console.log('navParams>', navParams);
-    console.log('navParams.data>', navParams.data);
-    console.log('navParams.get("item")>', navParams.get('item'));
+    const modalInput: ModalInput = this.getModalInput();
 
-    const paramItem: Gizmo = navParams.get('item');
-
-    if (paramItem === undefined) {
+    if (modalInput.item === undefined) {
       // new item.
-      this.formItem = { id: '', description: '', name: '' };
+      this.dataModel = newGizmo();
     } else {
       // navParams passes by reference.
-      this.formItem = Object.assign({}, navParams.get('item'));
+      this.dataModel = { ...modalInput.item };
     }
-
-    // navParams passes by reference.
-    const navParamsTodo: Readonly<Gizmo> = Object.assign(
-      {},
-      navParams.get('item'),
-    );
-    // a.description = 'GGGGGGGGGGGG';
-    console.log('navParamsTodo>', navParamsTodo);
-
-    /*
-    const navParamsTodo: Readonly<IGizmo> = Object.assign(new TodoListsItem(), navParams.get('todo'));
-    console.log('navParamsTodo>', navParamsTodo);
-    console.log('navParamsTodo.isNew()>', navParamsTodo.isNew());
-
-    this.viewItem = Object.assign(new TodoListsItem(), navParamsTodo);
-    console.log('this.todo>', this.viewItem);
-*/
   }
 
   public ngOnInit() {
@@ -78,8 +71,8 @@ export class GizmoDetailModal {
             }
     */
     this.viewForm = this.formBuilder.group({
-      description: [this.formItem.description],
-      name: [this.formItem.name, Validators.required],
+      description: [this.dataModel.description],
+      name: [this.dataModel.name, Validators.required],
     });
   }
 
@@ -97,11 +90,25 @@ export class GizmoDetailModal {
       return;
     }
 
-    console.log('this.todoForm.value>', this.viewForm.value);
-    console.log('this.formItem>', this.formItem);
-
-    const editedItem: Gizmo = { ...this.formItem, ...this.viewForm.value };
-    const result: ModalResult = { save: true, item: editedItem };
+    const saveItem = this.prepareSaveItem();
+    const result: ModalResult = { save: true, item: saveItem };
     this.viewController.dismiss(result);
+  }
+
+  private getModalInput(): ModalInput {
+    //
+    return this.navParams.get('modalInput');
+  }
+
+  private prepareSaveItem(): Gizmo {
+    const formModel: FormModel = this.viewForm.value;
+
+    const saveItem: Gizmo = {
+      ...this.dataModel,
+      description: formModel.description,
+      name: formModel.name,
+    };
+
+    return saveItem;
   }
 }

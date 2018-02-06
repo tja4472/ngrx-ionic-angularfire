@@ -6,8 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import { Gizmo } from '../../gizmo.model';
 import { GizmoService } from '../../gizmo.service';
 import {
+  getModalInput,
   GizmoDetailModal,
-  ModalInput,
   ModalResult,
 } from '../../modals/gizmo-detail/gizmo-detail.modal';
 
@@ -59,7 +59,7 @@ export class GizmoListPage {
 
   private showModal(item?: Gizmo) {
     //
-    const modalInput: ModalInput = { item };
+    const modalInput = getModalInput(item);
 
     const modal = this.modalCtrl.create(GizmoDetailModal, modalInput);
 

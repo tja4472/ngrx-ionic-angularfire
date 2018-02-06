@@ -28,3 +28,7 @@ export interface Gizmo {
   readonly id: string;
   readonly name: string;
 }
+
+export function newGizmo(): Gizmo {
+  return { description: '', id: '', name: '' };
+}

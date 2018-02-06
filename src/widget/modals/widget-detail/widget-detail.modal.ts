@@ -3,10 +3,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { NavParams, ViewController } from 'ionic-angular';
 
-import { NewWidget, Widget } from '../../widget.model';
+import { newWidget, Widget } from '../../widget.model';
 
-export interface ModalInput {
+interface ModalInput {
   item?: Widget;
+}
+
+export function getModalInput(item: Widget | undefined) {
+  //
+  const modalInput: ModalInput = { item };
+
+  return {
+    modalInput,
+  };
 }
 
 export interface ModalResult {
@@ -46,18 +55,23 @@ export class WidgetDetailModal {
     console.log('navParams>', navParams);
     console.log('navParams.data>', navParams.data);
     console.log('navParams.get("item")>', navParams.get('item'));
+    console.log('navParams.get("modalInput")>', navParams.get('modalInput'));
 
-    const paramItem: Widget = navParams.get('item');
+    // const modalInput: ModalInput = navParams.get('modalInput');
+    const modalInput: ModalInput = this.getModalInput();
 
-    if (paramItem === undefined) {
+    // const paramItem: Widget = navParams.get('item');
+    // const paramItem: Widget | undefined = modalInput.item;
+
+    if (modalInput.item === undefined) {
       // new item.
-      this.dataModel = NewWidget();
+      this.dataModel = newWidget();
     } else {
       // navParams passes by reference.
-      this.dataModel = { ...paramItem };
+      this.dataModel = { ...modalInput.item };
     }
 
-    console.log('}}}}}}paramItem>', paramItem);
+    console.log('}}}}}}modalInput.item >', modalInput.item );
     console.log('}}}}}}this.dataModel>', this.dataModel);
   }
 
@@ -97,6 +111,11 @@ export class WidgetDetailModal {
     console.log('saveItem>', saveItem);
     const result: ModalResult = { save: true, item: saveItem };
     this.viewController.dismiss(result);
+  }
+
+  private getModalInput(): ModalInput {
+    //
+    return this.navParams.get('modalInput');
   }
 
   private prepareSaveItem(): Widget {

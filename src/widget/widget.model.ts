@@ -29,6 +29,6 @@ export interface Widget {
   readonly name: string;
 }
 
-export function NewWidget(): Widget {
+export function newWidget(): Widget {
   return { description: '', id: '', name: '' };
 }

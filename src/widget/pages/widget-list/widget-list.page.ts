@@ -4,7 +4,7 @@ import { ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import {
-  ModalInput,
+  getModalInput,
   ModalResult,
   WidgetDetailModal,
 } from '../../modals/widget-detail/widget-detail.modal';
@@ -60,7 +60,8 @@ export class WidgetListPage {
 
   private showModal(item?: Widget) {
     //
-    const modalInput: ModalInput = { item };
+    // const modalInput: ModalInput = { item };
+    const modalInput = getModalInput(item);
 
     const modal = this.modalCtrl.create(WidgetDetailModal, modalInput);
 

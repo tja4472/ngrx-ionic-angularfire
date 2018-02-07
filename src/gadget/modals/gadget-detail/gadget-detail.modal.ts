@@ -5,7 +5,7 @@ import { NavParams, ViewController } from 'ionic-angular';
 
 import { Gadget, newGadget } from '../../gadget.model';
 
-export interface ModalInput {
+interface ModalInput {
   item?: Gadget;
 }
 

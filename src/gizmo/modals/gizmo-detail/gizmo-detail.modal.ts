@@ -5,7 +5,7 @@ import { NavParams, ViewController } from 'ionic-angular';
 
 import { Gizmo, newGizmo } from '../../gizmo.model';
 
-export interface ModalInput {
+interface ModalInput {
   item?: Gizmo;
 }
 

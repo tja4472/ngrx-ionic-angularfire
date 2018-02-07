@@ -63,8 +63,13 @@ export class GizmoListPage {
 
     const modal = this.modalCtrl.create(GizmoDetailModal, modalInput);
 
-    modal.onDidDismiss((data: ModalResult) => {
+    modal.onDidDismiss((data: ModalResult | null) => {
       console.log('onDidDismiss>', data);
+
+      if (data === null) {
+        console.log('onDidDismiss:NULL');
+        return;
+      }
 
       if (data.save && data.item) {
         this.gizmoService.upsert(data.item);

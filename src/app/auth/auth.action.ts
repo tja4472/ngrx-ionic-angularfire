@@ -2,41 +2,18 @@
 import { Action } from '@ngrx/store';
 
 export enum AuthActionTypes {
-  CHECK_AUTH_FAILURE = '[Auth] Check Auth Failure',
-  CHECK_AUTH_NO_USER = '[Auth] Check Auth No User',
-  CHECK_AUTH_SUCCESS = '[Auth] Check Auth Success',
   CreateUser = '[Auth] Create User',
   CreateUserFailure = '[Auth] Create User Failure',
   EMAIL_AUTHENTICATION = '[Auth] Email Authentication',
   EMAIL_AUTHENTICATION_FAILURE = '[Auth] Email Authentication Failure',
   EMAIL_AUTHENTICATION_SUCCESS = '[Auth] Email Authentication Success',
+  LISTEN_FOR_AUTH = '[Auth] Listen For Auth',
+  LISTEN_FOR_AUTH_FAILURE = '[Auth] Listen For Auth Failure',
+  LISTEN_FOR_AUTH_NO_USER = '[Auth] Listen For Auth No User',
+  LISTEN_FOR_AUTH_SUCCESS = '[Auth] Listen For Auth Success',
   SIGN_OUT = '[Auth] Sign Out',
   SIGN_OUT_FAILURE = '[Auth] Sign Out Failure',
   SIGN_OUT_SUCCESS = '[Auth] Sign Out Success',
-}
-
-export class CheckAuthFailure implements Action {
-  public readonly type = AuthActionTypes.CHECK_AUTH_FAILURE;
-
-  constructor(public payload: any) {}
-}
-
-export class CheckAuthNoUser implements Action {
-  public readonly type = AuthActionTypes.CHECK_AUTH_NO_USER;
-}
-
-export class CheckAuthSuccess implements Action {
-  public readonly type = AuthActionTypes.CHECK_AUTH_SUCCESS;
-
-  constructor(
-    public payload: {
-      signedInUser: {
-        displayName: string | null;
-        email: string | null;
-        userId: string;
-      };
-    },
-  ) {}
 }
 
 export class CreateUser implements Action {
@@ -77,6 +54,34 @@ export class EmailAuthenticationSuccess implements Action {
   public readonly type = AuthActionTypes.EMAIL_AUTHENTICATION_SUCCESS;
 }
 
+export class ListenForAuth implements Action {
+  public readonly type = AuthActionTypes.LISTEN_FOR_AUTH;
+}
+
+export class ListenForAuthFailure implements Action {
+  public readonly type = AuthActionTypes.LISTEN_FOR_AUTH_FAILURE;
+
+  constructor(public payload: any) {}
+}
+
+export class ListenForAuthNoUser implements Action {
+  public readonly type = AuthActionTypes.LISTEN_FOR_AUTH_NO_USER;
+}
+
+export class ListenForAuthSuccess implements Action {
+  public readonly type = AuthActionTypes.LISTEN_FOR_AUTH_SUCCESS;
+
+  constructor(
+    public payload: {
+      signedInUser: {
+        displayName: string | null;
+        email: string | null;
+        userId: string;
+      };
+    },
+  ) {}
+}
+
 export class SignOut implements Action {
   public readonly type = AuthActionTypes.SIGN_OUT;
 }
@@ -92,8 +97,9 @@ export class SignOutSuccess implements Action {
 }
 
 export type AuthActions =
-  | CheckAuthNoUser
-  | CheckAuthSuccess
+  | ListenForAuth
+  | ListenForAuthNoUser
+  | ListenForAuthSuccess
   | CreateUser
   | CreateUserFailure
   // CreateUserSuccessAction |

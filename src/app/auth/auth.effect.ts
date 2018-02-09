@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+import { defer } from 'rxjs/observable/defer';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
+import { Observable } from 'rxjs/Observable';
 import {
   AuthActionTypes,
-  CheckAuthFailure,
-  CheckAuthNoUser,
-  CheckAuthSuccess,
   EmailAuthentication,
   EmailAuthenticationFailure,
   EmailAuthenticationSuccess,
+  ListenForAuth,
+  ListenForAuthFailure,
+  ListenForAuthNoUser,
+  ListenForAuthSuccess,
   SignOutFailure,
   SignOutSuccess,
 } from './auth.action';
@@ -25,13 +28,14 @@ export class AuthEffects {
 
   // tslint:disable-next-line:member-ordering
   @Effect()
-  public checkAuth$ = this.actions$.pipe(
-    ofType(ROOT_EFFECTS_INIT),
+  public ListenForAuth$ = this.actions$.pipe(
+    ofType<ListenForAuth>(AuthActionTypes.LISTEN_FOR_AUTH),
+    tap(() => console.log('ListenForAuth$')),
     switchMap(() =>
       this.authService.authState$().pipe(
         map((firebaseUser) => {
           if (firebaseUser) {
-            return new CheckAuthSuccess({
+            return new ListenForAuthSuccess({
               signedInUser: {
                 displayName: firebaseUser.displayName,
                 email: firebaseUser.email,
@@ -39,10 +43,10 @@ export class AuthEffects {
               },
             });
           } else {
-            return new CheckAuthNoUser();
+            return new ListenForAuthNoUser();
           }
         }),
-        catchError((error: any) => of(new CheckAuthFailure(error))),
+        catchError((error: any) => of(new ListenForAuthFailure(error))),
       ),
     ),
   );
@@ -75,4 +79,10 @@ export class AuthEffects {
           ),
         ),
     );
+
+  // Should be your last effect
+  // tslint:disable-next-line:member-ordering
+ @Effect() public init$: Observable<any> = defer(() => {
+  return of(new ListenForAuth());
+});
 }

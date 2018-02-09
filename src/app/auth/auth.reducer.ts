@@ -22,7 +22,7 @@ const initialState: State = {
 
 export function reducer(state = initialState, action: AuthActions): State {
   switch (action.type) {
-    case AuthActionTypes.CHECK_AUTH_SUCCESS: {
+    case AuthActionTypes.LISTEN_FOR_AUTH_SUCCESS: {
       return {
         ...state,
         displayName: makeDisplayName(action.payload.signedInUser),
@@ -34,7 +34,7 @@ export function reducer(state = initialState, action: AuthActions): State {
       };
     }
 
-    case AuthActionTypes.CHECK_AUTH_NO_USER: {
+    case AuthActionTypes.LISTEN_FOR_AUTH_NO_USER: {
       return {
         ...state,
         displayName: 'Not Signed In',

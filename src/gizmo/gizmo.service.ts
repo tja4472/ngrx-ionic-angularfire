@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { take } from 'rxjs/operators';
 
@@ -17,36 +17,35 @@ export class GizmoService {
   constructor(private store: Store<FromRootReducer.State>) {}
 
   public getData$(): Observable<ReadonlyArray<Gizmo>> {
-    return this.store.select(FromRootReducer.selectAllGizmos);
+    //
+    return this.store.pipe(select(FromRootReducer.selectAllGizmos));
   }
 
   public ListenForDataStart(): void {
-    // this.store.dispatch(new DatabaseStartListeningForData());
-
+    //
     this.store
-      .select(FromRootReducer.getAuthState)
-      .pipe(take(1))
-      .subscribe((loginState) => {
-        if (loginState.isAuthenticated) {
+    .pipe(select(FromRootReducer.getAuthState), take(1))
+      .subscribe((authState) => {
+        if (authState.isAuthenticated) {
           this.store.dispatch(
-            new DatabaseListenForDataStart({ userId: loginState.userId }),
+            new DatabaseListenForDataStart({ userId: authState.userId }),
           );
         }
       });
   }
 
   public ListenForDataStop(): void {
+    //
     this.store.dispatch(new DatabaseListenForDataStop());
   }
 
   public deleteItem(item: Gizmo) {
+    //
     this.store
-      .select(FromRootReducer.getAuthState)
-      .pipe(take(1))
-      .subscribe((loginState) => {
-        // const userId = 'dummyId';
+    .pipe(select(FromRootReducer.getAuthState), take(1))
+      .subscribe((authState) => {
         this.store.dispatch(
-          new DatabaseDeleteItem({ id: item.id, userId: loginState.userId }),
+          new DatabaseDeleteItem({ id: item.id, userId: authState.userId }),
         );
       });
   }
@@ -67,21 +66,21 @@ export class GizmoService {
   public upsert(item: Gizmo) {
     //
     this.store
-      .select(FromRootReducer.getAuthState)
-      .pipe(take(1))
-      .subscribe((loginState) => {
-        // const userId = 'dummyId';
+    .pipe(select(FromRootReducer.getAuthState), take(1))
+      .subscribe((authState) => {
         this.store.dispatch(
-          new DatabaseUpsertItem({ item, userId: loginState.userId }),
+          new DatabaseUpsertItem({ item, userId: authState.userId }),
         );
       });
   }
 
   public isLoaded(): Observable<boolean> {
-    return this.store.select(FromRootReducer.getGizmoLoaded);
+    //
+    return this.store.pipe(select(FromRootReducer.getGizmoLoaded));
   }
 
   public isLoading(): Observable<boolean> {
-    return this.store.select(FromRootReducer.getGizmoLoading);
+    //
+    return this.store.pipe(select(FromRootReducer.getGizmoLoading));
   }
 }

@@ -4,7 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { Store } from '@ngrx/store';
-import { Nav, Platform } from 'ionic-angular';
+import { MenuController, Nav, Platform } from 'ionic-angular';
 
 import { GadgetListPage } from '../gadget/pages/gadget-list/gadget-list.page';
 import { GizmoListPage } from '../gizmo/pages/gizmo-list/gizmo-list.page';
@@ -46,8 +46,12 @@ export class MyApp {
   public loginState$: any;
   // private subscription;
 
+  private readonly signedInMenuId = 'signedInMenu';
+  private readonly signedOutMenuId = 'signedOutMenu';
+
   constructor(
     public afAuth: AngularFireAuth,
+    public menuController: MenuController,
     public platform: Platform,
     public statusBar: StatusBar,
     private store: Store<FromRoot.State>,
@@ -82,8 +86,10 @@ export class MyApp {
         console.log('loginState>', loginState);
 
         if (loginState.isAuthenticated) {
+          this.enableMenu(true);
           this.rootPage = HomePage;
         } else {
+          this.enableMenu(false);
           this.rootPage = Page1;
         }
       });
@@ -165,5 +171,25 @@ export class MyApp {
     } else {
       this.nav.setRoot(page.component);
     }
+  }
+
+  private enableMenu(signedIn: boolean): void {
+    //
+    if (!this.menuController.get(this.signedInMenuId)) {
+      console.error(
+        `enableMenu() *** WARNING: Menu not found>`,
+        this.signedInMenuId,
+      );
+    }
+
+    if (!this.menuController.get(this.signedOutMenuId)) {
+      console.error(
+        `enableMenu() *** WARNING: Menu not found>`,
+        this.signedOutMenuId,
+      );
+    }
+
+    this.menuController.enable(signedIn, this.signedInMenuId);
+    this.menuController.enable(!signedIn, this.signedOutMenuId);
   }
 }

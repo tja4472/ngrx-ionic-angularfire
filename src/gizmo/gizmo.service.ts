@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 
+import * as FromAuthSelector from '../app/auth/auth.selector';
 import * as FromRootReducer from '../reducers';
 import {
   DatabaseDeleteItem,
@@ -14,6 +16,12 @@ import { Gizmo } from './gizmo.model';
 
 @Injectable()
 export class GizmoService {
+  //
+  private init$ = this.store.pipe(
+    select(FromAuthSelector.getUserId),
+    filter((userId) => userId !== ''),
+  );
+
   constructor(private store: Store<FromRootReducer.State>) {}
 
   public getData$(): Observable<ReadonlyArray<Gizmo>> {
@@ -23,15 +31,9 @@ export class GizmoService {
 
   public ListenForDataStart(): void {
     //
-    this.store
-    .pipe(select(FromRootReducer.getAuthState), take(1))
-      .subscribe((authState) => {
-        if (authState.isAuthenticated) {
-          this.store.dispatch(
-            new DatabaseListenForDataStart({ userId: authState.userId }),
-          );
-        }
-      });
+    this.init$.pipe(take(1)).subscribe((userId) => {
+      this.store.dispatch(new DatabaseListenForDataStart({ userId }));
+    });
   }
 
   public ListenForDataStop(): void {
@@ -41,21 +43,11 @@ export class GizmoService {
 
   public deleteItem(item: Gizmo) {
     //
-    this.store
-    .pipe(select(FromRootReducer.getAuthState), take(1))
-      .subscribe((authState) => {
-        this.store.dispatch(
-          new DatabaseDeleteItem({ id: item.id, userId: authState.userId }),
-        );
-      });
+    this.init$.pipe(take(1)).subscribe((userId) => {
+      this.store.dispatch(new DatabaseDeleteItem({ id: item.id, userId }));
+    });
   }
-  /*
-  public update(item: Gizmo) {
-    this.store.dispatch(
-      new UpdateGizmo({ gizmo: { id: item.id, changes: item } }),
-    );
-  }
-*/
+
   /*
   Best practice is to provide the user as part of the payload as mentioned
   instead of selecting it from the state in the effect. This keeps the Effect
@@ -65,13 +57,9 @@ export class GizmoService {
   */
   public upsert(item: Gizmo) {
     //
-    this.store
-    .pipe(select(FromRootReducer.getAuthState), take(1))
-      .subscribe((authState) => {
-        this.store.dispatch(
-          new DatabaseUpsertItem({ item, userId: authState.userId }),
-        );
-      });
+    this.init$.pipe(take(1)).subscribe((userId) => {
+      this.store.dispatch(new DatabaseUpsertItem({ item, userId }));
+    });
   }
 
   public isLoaded(): Observable<boolean> {

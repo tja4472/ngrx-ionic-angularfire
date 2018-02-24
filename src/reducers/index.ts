@@ -59,6 +59,7 @@ export const getCollectionTextItems = createSelector(
   fromCollection.getTextItems,
 );
 //
+/*
 export const getAuthState = (state: State) => state.auth;
 
 export const getAuthDisplayName = createSelector(
@@ -74,6 +75,8 @@ export const getAuthIsAuthenticating = createSelector(
   getAuthState,
   fromAuth.getIsAuthenticating,
 );
+export const getAuthUserId = createSelector(getAuthState, fromAuth.getUserId);
+*/
 //
 export const getGizmoState = (state: State) => state.gizmo;
 

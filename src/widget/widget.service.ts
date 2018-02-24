@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 
-import * as FromRootReducer from '../reducers/index';
+import * as FromAuthSelector from '../app/auth/auth.selector';
+import * as FromRootReducer from '../reducers';
 import {
   DatabaseListenForDataStart,
   DatabaseListenForDataStop,
@@ -15,6 +16,12 @@ import { Widget } from './widget.model';
 
 @Injectable()
 export class WidgetService {
+  //
+  private init$ = this.store.pipe(
+    select(FromAuthSelector.getUserId),
+    filter((userId) => userId !== ''),
+  );
+
   constructor(private store: Store<FromRootReducer.State>) {}
 
   public getData$(): Observable<Widget[]> {
@@ -24,15 +31,9 @@ export class WidgetService {
 
   public ListenForDataStart(): void {
     //
-    this.store
-      .pipe(select(FromRootReducer.getAuthState), take(1))
-      .subscribe((authState) => {
-        if (authState.isAuthenticated) {
-          this.store.dispatch(
-            new DatabaseListenForDataStart({ userId: authState.userId }),
-          );
-        }
-      });
+    this.init$.pipe(take(1)).subscribe((userId) => {
+      this.store.dispatch(new DatabaseListenForDataStart({ userId }));
+    });
   }
 
   public ListenForDataStop(): void {
@@ -42,22 +43,16 @@ export class WidgetService {
 
   public deleteItem(item: Widget) {
     //
-    this.store
-      .pipe(select(FromRootReducer.getAuthState), take(1))
-      .subscribe((authState) => {
-        this.store.dispatch(
-          new DeleteItem({ id: item.id, userId: authState.userId }),
-        );
-      });
+    this.init$.pipe(take(1)).subscribe((userId) => {
+      this.store.dispatch(new DeleteItem({ id: item.id, userId }));
+    });
   }
 
   public upsertItem(item: Widget) {
     //
-    this.store
-      .pipe(select(FromRootReducer.getAuthState), take(1))
-      .subscribe((authState) => {
-        this.store.dispatch(new UpsertItem({ item, userId: authState.userId }));
-      });
+    this.init$.pipe(take(1)).subscribe((userId) => {
+      this.store.dispatch(new UpsertItem({ item, userId }));
+    });
   }
 
   public isLoaded(): Observable<boolean> {

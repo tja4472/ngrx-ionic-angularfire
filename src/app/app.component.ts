@@ -5,7 +5,9 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Store } from '@ngrx/store';
 import { MenuController, Nav, Platform } from 'ionic-angular';
+import { skip } from 'rxjs/operators';
 
+import * as FromAuthSelector from '../app/auth/auth.selector';
 import { GadgetListPage } from '../gadget/pages/gadget-list/gadget-list.page';
 import { GizmoListPage } from '../gizmo/pages/gizmo-list/gizmo-list.page';
 import { HomePage } from '../pages/home/home.page';
@@ -18,7 +20,6 @@ import * as FromRoot from '../reducers';
 import { WidgetListPage } from '../widget/pages/widget-list/widget-list.page';
 import * as AuthActions from './auth/auth.action';
 
-import { skip } from 'rxjs/operators';
 // Should be import * as LoginActions from '../actions/login.action';
 // See: https://gitter.im/ngrx/effects?at=57f3a2cbd45d7f0f52601422
 //
@@ -60,7 +61,7 @@ export class MyApp {
     console.log('MyApp:constructor');
     this.initializeApp();
 
-    this.loginState$ = this.store.select(FromRoot.getAuthState);
+    this.loginState$ = this.store.select(FromAuthSelector.getAuthState);
     // this.rootPage = Page1;
     // used for an example of ngFor and navigation
     this.pages = [
@@ -77,7 +78,7 @@ export class MyApp {
     ];
 
     this.store
-      .select(FromRoot.getAuthState)
+      .select(FromAuthSelector.getAuthState)
       .pipe(
         // Ignore setting of initial state
         skip(1),

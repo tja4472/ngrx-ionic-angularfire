@@ -98,3 +98,4 @@ export const getDisplayName = (state: State) => state.displayName;
 export const getError = (state: State) => state.error;
 export const getIsAuthenticated = (state: State) => state.isAuthenticated;
 export const getIsAuthenticating = (state: State) => state.isAuthenticating;
+export const getUserId = (state: State) => state.userId;

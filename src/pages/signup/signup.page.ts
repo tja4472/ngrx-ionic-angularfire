@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 
 import * as authActions from '../../app/auth/auth.action';
+import * as FromAuthSelector from '../../app/auth/auth.selector';
 import * as fromRoot from '../../reducers';
 
 @Component({
@@ -22,7 +23,7 @@ export class SignupPage {
     private store: Store<fromRoot.State>,
   ) {
     //
-    this.loginState$ = this.store.select(fromRoot.getAuthState);
+    this.loginState$ = this.store.select(FromAuthSelector.getAuthState);
 
     this.loginForm = this.formBuilder.group({
       password: ['', Validators.required],

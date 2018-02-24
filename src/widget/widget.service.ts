@@ -24,7 +24,7 @@ export class WidgetService {
 
   constructor(private store: Store<FromRootReducer.State>) {}
 
-  public getData$(): Observable<Widget[]> {
+  public getData$(): Observable<ReadonlyArray<Widget>> {
     //
     return this.store.pipe(select(FromRootReducer.selectAllWidgets));
   }

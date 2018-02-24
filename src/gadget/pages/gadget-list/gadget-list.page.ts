@@ -20,7 +20,7 @@ import {
   templateUrl: 'gadget-list.page.html',
 })
 export class GadgetListPage {
-  public viewData$: Observable<Gadget[]>;
+  public viewData$: Observable<ReadonlyArray<Gadget>>;
   public viewIsLoaded$: Observable<boolean>;
   public viewIsLoading$: Observable<boolean>;
 

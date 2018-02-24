@@ -24,7 +24,7 @@ export class GadgetService {
 
   constructor(private store: Store<FromRootReducer.State>) {}
 
-  public getData$(): Observable<Gadget[]> {
+  public getData$(): Observable<ReadonlyArray<Gadget>> {
     //
     return this.store.pipe(select(FromRootReducer.selectAllGadgets));
   }

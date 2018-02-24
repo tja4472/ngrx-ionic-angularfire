@@ -20,7 +20,7 @@ import { WidgetService } from '../../widget.service';
   templateUrl: 'widget-list.page.html',
 })
 export class WidgetListPage {
-  public viewData$: Observable<Widget[]>;
+  public viewData$: Observable<ReadonlyArray<Widget>>;
   public viewIsLoaded$: Observable<boolean>;
   public viewIsLoading$: Observable<boolean>;
 

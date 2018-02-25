@@ -10,11 +10,33 @@
     </ion-toolbar>
   </ion-header>
   <ion-content>
+    <!-- App Pages -->
     <ion-list>
+      <ion-list-header>
+        App Pages
+      </ion-list-header>
+      <button ion-item
+              menuClose
+              *ngFor="let p of viewAppPages"
+              (click)="viewOpenPage(p)">
+        <ion-icon item-left
+                  [name]="p.icon"
+                  [color]="viewIsActive(p)"></ion-icon>
+        {{p.title}}
+      </button>
+    </ion-list>
+    <!--  Signed In Pages -->
+    <ion-list>
+      <ion-list-header>
+        Signed In Pages
+      </ion-list-header>
       <button menuClose
               ion-item
-              *ngFor="let p of pages"
-              (click)="openPage(p)">
+              *ngFor="let p of viewSignedInPages"
+              (click)="viewOpenPage(p)">
+        <ion-icon item-left
+                  [name]="p.icon"
+                  [color]="viewIsActive(p)"></ion-icon>
         {{p.title}}
       </button>
     </ion-list>
@@ -34,11 +56,33 @@
     </ion-toolbar>
   </ion-header>
   <ion-content>
+    <!-- App Pages -->
     <ion-list>
+      <ion-list-header>
+        App Pages
+      </ion-list-header>
+      <button ion-item
+              menuClose
+              *ngFor="let p of viewAppPages"
+              (click)="viewOpenPage(p)">
+        <ion-icon item-left
+                  [name]="p.icon"
+                  [color]="viewIsActive(p)"></ion-icon>
+        {{p.title}}
+      </button>
+    </ion-list>
+    <!-- Signed Out Pages -->
+    <ion-list>
+      <ion-list-header>
+        Signed Out Pages
+      </ion-list-header>
       <button menuClose
               ion-item
-              *ngFor="let p of pages"
-              (click)="openPage(p)">
+              *ngFor="let p of viewSignedOutPages"
+              (click)="viewOpenPage(p)">
+        <ion-icon item-left
+                  [name]="p.icon"
+                  [color]="viewIsActive(p)"></ion-icon>
         {{p.title}}
       </button>
     </ion-list>

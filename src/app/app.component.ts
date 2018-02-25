@@ -28,10 +28,8 @@ import * as AuthActions from './auth/auth.action';
 export interface PageInterface {
   title: string;
   component: any;
-  // icon: string;
-  // logsOut?: boolean;
-  // index?: number;
-  // tabComponent?: any;
+  icon: string;
+  doSignOut?: boolean;
 }
 
 @Component({
@@ -40,12 +38,46 @@ export interface PageInterface {
 export class MyApp {
   @ViewChild(Nav) public nav: Nav;
 
-  // rootPageAA: any = Page1;
   public rootPage: any;
-  public pages: PageInterface[];
+
+  public viewAppPages: PageInterface[] = [
+    { title: 'Page One', component: Page1, icon: 'calendar' },
+    { title: 'Page Two', component: Page2, icon: 'calendar' },
+  ];
+
+  public viewSignedInPages: PageInterface[] = [
+    { title: 'Page Home', component: HomePage, icon: 'calendar' },
+    {
+      component: GadgetListPage,
+      icon: 'calendar',
+      title: 'Gadgets(Realtime Database)',
+    },
+    {
+      component: GizmoListPage,
+      icon: 'calendar',
+      title: 'Gizmos(Cloud Firestore)',
+    },
+    {
+      component: WidgetListPage,
+      icon: 'calendar',
+      title: 'Widgets(Cloud Firestore)',
+    },
+    {
+      component: RealtimeDatabasePage,
+      icon: 'calendar',
+      title: 'Realtime Database',
+    },
+    { title: 'Page Login', component: LoginPage, icon: 'calendar' },
+    { title: 'Page Signup', component: SignupPage, icon: 'calendar' },
+    { title: 'Sign Out', component: Page1, icon: 'log-out', doSignOut: true },
+  ];
+
+  public viewSignedOutPages: PageInterface[] = [
+    { title: 'Page Login', component: LoginPage, icon: 'calendar' },
+    { title: 'Page Signup', component: SignupPage, icon: 'calendar' },
+  ];
 
   public loginState$: any;
-  // private subscription;
 
   private readonly signedInMenuId = 'signedInMenu';
   private readonly signedOutMenuId = 'signedOutMenu';
@@ -62,8 +94,8 @@ export class MyApp {
     this.initializeApp();
 
     this.loginState$ = this.store.select(FromAuthSelector.getAuthState);
-    // this.rootPage = Page1;
-    // used for an example of ngFor and navigation
+
+    /*
     this.pages = [
       { title: 'Page One', component: Page1 },
       { title: 'Page Two', component: Page2 },
@@ -76,7 +108,7 @@ export class MyApp {
       { title: 'Page Signup', component: SignupPage },
       { title: 'Logout', component: Page1 },
     ];
-
+*/
     this.store
       .select(FromAuthSelector.getAuthState)
       .pipe(
@@ -155,14 +187,25 @@ export class MyApp {
     */
   }
 
-  public openPage(page: PageInterface) {
-    console.log('openPage');
+  public viewIsActive(page: PageInterface) {
+    if (
+      this.nav.getActive() &&
+      this.nav.getActive().component === page.component
+    ) {
+      return 'primary';
+    }
+    return;
+  }
+
+  public viewOpenPage(page: PageInterface) {
+    console.log('viewOpenPage');
 
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     // this.nav.setRoot(page.component);
 
-    if (page.title === 'Logout') {
+    // if (page.title === 'Logout') {
+    if (page.doSignOut) {
       // Give the menu time to close before changing to logged out
       setTimeout(() => {
         // this.userData.logout();

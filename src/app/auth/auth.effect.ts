@@ -39,6 +39,7 @@ export class AuthEffects {
               signedInUser: {
                 displayName: firebaseUser.displayName,
                 email: firebaseUser.email,
+                emailVerified: firebaseUser.emailVerified,
                 userId: firebaseUser.uid,
               },
             });
@@ -82,7 +83,8 @@ export class AuthEffects {
 
   // Should be your last effect
   // tslint:disable-next-line:member-ordering
- @Effect() public init$: Observable<any> = defer(() => {
-  return of(new ListenForAuth());
-});
+  @Effect()
+  public init$: Observable<any> = defer(() => {
+    return of(new ListenForAuth());
+  });
 }

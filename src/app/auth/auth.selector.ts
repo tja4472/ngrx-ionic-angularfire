@@ -12,6 +12,11 @@ export const getDisplayName = createSelector(
 
 export const getError = createSelector(getAuthState, fromAuth.getError);
 
+export const getEmailVerified = createSelector(
+  getAuthState,
+  fromAuth.getEmailVerified,
+);
+
 export const getIsAuthenticated = createSelector(
   getAuthState,
   fromAuth.getIsAuthenticated,

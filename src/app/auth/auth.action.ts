@@ -76,6 +76,7 @@ export class ListenForAuthSuccess implements Action {
       signedInUser: {
         displayName: string | null;
         email: string | null;
+        emailVerified: boolean;
         userId: string;
       };
     },

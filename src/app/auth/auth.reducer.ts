@@ -3,6 +3,7 @@ import { AuthActions, AuthActionTypes } from './auth.action';
 export interface State {
   displayName: string;
   email: string | null;
+  emailVerified: boolean;
   hasChecked: boolean;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
@@ -13,6 +14,7 @@ export interface State {
 const initialState: State = {
   displayName: '',
   email: '',
+  emailVerified: false,
   error: null,
   hasChecked: false,
   isAuthenticated: false,
@@ -27,6 +29,7 @@ export function reducer(state = initialState, action: AuthActions): State {
         ...state,
         displayName: makeDisplayName(action.payload.signedInUser),
         email: action.payload.signedInUser.email,
+        emailVerified: action.payload.signedInUser.emailVerified,
         hasChecked: true,
         isAuthenticated: true,
         isAuthenticating: false,
@@ -95,6 +98,7 @@ function makeDisplayName(user: {
 }
 
 export const getDisplayName = (state: State) => state.displayName;
+export const getEmailVerified = (state: State) => state.emailVerified;
 export const getError = (state: State) => state.error;
 export const getIsAuthenticated = (state: State) => state.isAuthenticated;
 export const getIsAuthenticating = (state: State) => state.isAuthenticating;

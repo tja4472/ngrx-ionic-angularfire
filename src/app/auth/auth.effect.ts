@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
+import { Observable } from 'rxjs/Observable';
 import { defer } from 'rxjs/observable/defer';
 import { of } from 'rxjs/observable/of';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-
-import { Observable } from 'rxjs/Observable';
+import { catchError, concatMap, map, switchMap, tap } from 'rxjs/operators';
 import {
   AuthActionTypes,
+  CreateUserWithEmailAndPassword,
+  CreateUserWithEmailAndPasswordFailure,
+  CreateUserWithEmailAndPasswordSuccess,
   EmailAuthentication,
   EmailAuthenticationFailure,
   EmailAuthenticationSuccess,
@@ -14,8 +16,17 @@ import {
   ListenForAuthFailure,
   ListenForAuthNoUser,
   ListenForAuthSuccess,
+  SendEmailVerification,
+  SendEmailVerificationFailure,
+  SendEmailVerificationSuccess,
+  SendPasswordResetEmail,
+  SendPasswordResetEmailFailure,
+  SendPasswordResetEmailSuccess,
   SignOutFailure,
   SignOutSuccess,
+  UpdatePassword,
+  UpdatePasswordFailure,
+  UpdatePasswordSuccess,
 } from './auth.action';
 import { AuthService } from './auth.service';
 
@@ -81,6 +92,74 @@ export class AuthEffects {
         ),
     );
 
+  // tslint:disable-next-line:member-ordering
+  @Effect()
+  public createUserWithEmailAndPassword$ = this.actions$.pipe(
+    ofType<CreateUserWithEmailAndPassword>(
+      AuthActionTypes.CREATE_USER_WITH_EMAIL_AND_PASSWORD,
+    ),
+    map((action) => action.payload),
+    concatMap((payload) =>
+      this.authService
+        .createUserWithEmailAndPassword(payload.email, payload.password)
+        .pipe(
+          map(() => new CreateUserWithEmailAndPasswordSuccess()),
+          catchError((error: any) =>
+            of(new CreateUserWithEmailAndPasswordFailure({ error })),
+          ),
+        ),
+    ),
+  );
+
+  // tslint:disable-next-line:member-ordering
+  @Effect()
+  public sendEmailVerification$ = this.actions$.pipe(
+    ofType<SendEmailVerification>(AuthActionTypes.SEND_EMAIL_VERIFICATION),
+    concatMap(() =>
+      this.authService
+        .sendEmailVerification()
+        .pipe(
+          map(() => new SendEmailVerificationSuccess()),
+          catchError((error: any) =>
+            of(new SendEmailVerificationFailure({ error })),
+          ),
+        ),
+    ),
+  );
+
+  // tslint:disable-next-line:member-ordering
+  @Effect()
+  public sendPasswordResetEmail$ = this.actions$.pipe(
+    ofType<SendPasswordResetEmail>(AuthActionTypes.SEND_PASSWORD_RESET_EMAIL),
+    map((action) => action.payload),
+    concatMap((payload) =>
+      this.authService
+        .sendPasswordResetEmail(payload.email)
+        .pipe(
+          map(() => new SendPasswordResetEmailSuccess()),
+          catchError((error: any) =>
+            of(new SendPasswordResetEmailFailure({ error })),
+          ),
+        ),
+    ),
+  );
+
+    // tslint:disable-next-line:member-ordering
+    @Effect()
+    public updatePassword$ = this.actions$.pipe(
+      ofType<UpdatePassword>(AuthActionTypes.UPDATE_PASSWORD),
+      map((action) => action.payload),
+      concatMap((payload) =>
+        this.authService
+          .updatePassword(payload.password)
+          .pipe(
+            map(() => new UpdatePasswordSuccess()),
+            catchError((error: any) =>
+              of(new UpdatePasswordFailure({ error })),
+            ),
+          ),
+      ),
+    );
   // Should be your last effect
   // tslint:disable-next-line:member-ordering
   @Effect()

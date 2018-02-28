@@ -15,8 +15,11 @@
           novalidate>
       <ion-item>
         <ion-label floating
-                   color="primary">Username</ion-label>
-        <ion-input type="text"
+                   color="primary">Email</ion-label>
+        <ion-input placeholder="Your email address"
+                   type="email"
+                   name="email"
+                   autocomplete="on"
                    formControlName="username">
         </ion-input>
       </ion-item>
@@ -34,6 +37,7 @@
         <ion-label floating
                    color="primary">Password</ion-label>
         <ion-input type="password"
+                   name="password"
                    formControlName="password">
         </ion-input>
       </ion-item>
@@ -59,6 +63,20 @@
                   (click)="onSignup()"
                   color="light"
                   block>Signup</button>
+        </ion-col>
+      </ion-row>
+      <ion-row responsive-sm>
+        <ion-col>
+          <button ion-button
+                  (click)="viewChangePasswordClick()"
+                  color="light"
+                  block>Change Password</button>
+        </ion-col>
+        <ion-col>
+          <button ion-button
+                  (click)="viewResetPasswordClick()"
+                  color="light"
+                  block>Reset Password</button>
         </ion-col>
       </ion-row>
     </form>

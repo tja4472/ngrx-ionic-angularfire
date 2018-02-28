@@ -9,7 +9,7 @@ import * as fromCollection from './collection';
 
 export interface State {
   collection: fromCollection.State;
-  auth: fromAuth.State;
+  auth: fromAuth.AuthState;
   gadget: fromGadget.State;
   gizmo: fromGizmo.State;
   widget: fromWidget.State;

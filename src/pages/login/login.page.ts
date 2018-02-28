@@ -76,4 +76,26 @@ export class LoginPage {
   public onSignup() {
     this.nav.push(SignupPage);
   }
+
+  public viewChangePasswordClick() {
+    console.log('viewChangePasswordClick');
+    if (this.loginForm.valid) {
+      this.store.dispatch(
+        new authActions.UpdatePassword({
+          password: this.loginForm.value.password,
+        }),
+      );
+    }
+  }
+
+  public viewResetPasswordClick() {
+    console.log('viewResetPasswordClick');
+    if (this.loginForm.valid) {
+      this.store.dispatch(
+        new authActions.SendPasswordResetEmail({
+          email: this.loginForm.value.username,
+        }),
+      );
+    }
+  }
 }

@@ -49,9 +49,9 @@ export class SignupPage {
 
     if (this.loginForm.valid) {
       this.store.dispatch(
-        new authActions.CreateUser({
+        new authActions.CreateUserWithEmailAndPassword({
+          email: this.loginForm.value.username,
           password: this.loginForm.value.password,
-          userName: this.loginForm.value.username,
         }),
       );
     }

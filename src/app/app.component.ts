@@ -4,7 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { Store } from '@ngrx/store';
-import { MenuController, Nav, Platform } from 'ionic-angular';
+import { AlertController, MenuController, Nav, Platform } from 'ionic-angular';
 import { skip } from 'rxjs/operators';
 
 import * as FromAuthSelector from '../app/auth/auth.selector';
@@ -84,6 +84,7 @@ export class MyApp {
 
   constructor(
     public afAuth: AngularFireAuth,
+    public alertController: AlertController,
     public menuController: MenuController,
     public platform: Platform,
     public statusBar: StatusBar,
@@ -95,65 +96,34 @@ export class MyApp {
 
     this.loginState$ = this.store.select(FromAuthSelector.getAuthState);
 
-    /*
-    this.pages = [
-      { title: 'Page One', component: Page1 },
-      { title: 'Page Two', component: Page2 },
-      { title: 'Page Home', component: HomePage },
-      { title: 'Gadgets(Realtime Database)', component: GadgetListPage },
-      { title: 'Gizmos(Cloud Firestore)', component: GizmoListPage },
-      { title: 'Widgets(Cloud Firestore)', component: WidgetListPage },
-      { title: 'Realtime Database', component: RealtimeDatabasePage },
-      { title: 'Page Login', component: LoginPage },
-      { title: 'Page Signup', component: SignupPage },
-      { title: 'Logout', component: Page1 },
-    ];
-*/
     this.store
       .select(FromAuthSelector.getAuthState)
       .pipe(
         // Ignore setting of initial state
         skip(1),
       )
-      .subscribe((loginState) => {
-        console.log('loginState>', loginState);
+      .subscribe((authState) => {
+        console.log('##########authState>', authState);
+        // const emailVerified = authState.emailVerified;
+        const emailVerified = true;
 
-        if (loginState.isAuthenticated) {
-          this.enableMenu(true);
-          this.rootPage = HomePage;
+        if (authState.isAuthenticated) {
+          if (emailVerified) {
+            this.enableMenu(true);
+            // this.rootPage = HomePage;
+            this.nav.setRoot(HomePage);
+          } else {
+            this.showEmailVerifiedAlert();
+            this.enableMenu(false);
+            // this.rootPage = Page1;
+            this.nav.setRoot(Page1);
+          }
         } else {
           this.enableMenu(false);
-          this.rootPage = Page1;
+          // this.rootPage = Page1;
+          this.nav.setRoot(Page1);
         }
       });
-
-    /*
-    // Subscribe to the auth object to check for the login status
-    // of the user.
-    afAuth.authState.take(1).subscribe((authState: firebase.User) => {
-      // Run once.
-      // af.auth.unsubscribe();
-
-      console.log('af.auth.subscribe:authState>', authState);
-      const authenticated: boolean = !!authState;
-
-      console.log('authenticated:', authenticated);
-      // this.rootPage = HomePage;
-      if (authenticated) {
-        this.rootPage = HomePage;
-        this.store.dispatch(
-          new LoginActions.RestoreAuthentication({
-            displayName: authState.displayName,
-            email: authState.email,
-            isAnonymous: authState.isAnonymous,
-          }),
-        );
-
-      } else {
-        this.rootPage = Page1;
-      }
-    });
-*/
   }
 
   public initializeApp() {
@@ -235,5 +205,31 @@ export class MyApp {
 
     this.menuController.enable(signedIn, this.signedInMenuId);
     this.menuController.enable(!signedIn, this.signedOutMenuId);
+  }
+
+  private showEmailVerifiedAlert() {
+    //
+    const confirm = this.alertController.create({
+      buttons: [
+        {
+          handler: () => {
+            console.log('Cancel clicked');
+          },
+          text: 'Cancel',
+        },
+        {
+          handler: () => {
+            console.log('Verify clicked');
+            this.store.dispatch(
+              new AuthActions.SendEmailVerification());
+          },
+          text: 'Verify',
+        },
+      ],
+      message:
+        'You need to verify your email address to sign in.',
+      title: 'Verify Email?',
+    });
+    confirm.present();
   }
 }

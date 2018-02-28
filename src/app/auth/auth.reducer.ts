@@ -1,6 +1,6 @@
 import { AuthActions, AuthActionTypes } from './auth.action';
 
-export interface State {
+export interface AuthState {
   displayName: string;
   email: string | null;
   emailVerified: boolean;
@@ -11,7 +11,7 @@ export interface State {
   userId: string;
 }
 
-const initialState: State = {
+const initialState: AuthState = {
   displayName: '',
   email: '',
   emailVerified: false,
@@ -22,7 +22,7 @@ const initialState: State = {
   userId: '',
 };
 
-export function reducer(state = initialState, action: AuthActions): State {
+export function reducer(state = initialState, action: AuthActions): AuthState {
   switch (action.type) {
     case AuthActionTypes.LISTEN_FOR_AUTH_SUCCESS: {
       return {
@@ -48,7 +48,7 @@ export function reducer(state = initialState, action: AuthActions): State {
         userId: '',
       };
     }
-    case AuthActionTypes.CreateUser:
+    case AuthActionTypes.CREATE_USER_WITH_EMAIL_AND_PASSWORD:
     case AuthActionTypes.EMAIL_AUTHENTICATION: {
       return {
         ...state,
@@ -65,7 +65,7 @@ export function reducer(state = initialState, action: AuthActions): State {
       };
     }
 
-    case AuthActionTypes.CreateUserFailure: {
+    case AuthActionTypes.CREATE_USER_WITH_EMAIL_AND_PASSWORD_FAILURE: {
       return {
         ...state,
         error: action.payload,
@@ -97,9 +97,9 @@ function makeDisplayName(user: {
   return defaultDisplayName;
 }
 
-export const getDisplayName = (state: State) => state.displayName;
-export const getEmailVerified = (state: State) => state.emailVerified;
-export const getError = (state: State) => state.error;
-export const getIsAuthenticated = (state: State) => state.isAuthenticated;
-export const getIsAuthenticating = (state: State) => state.isAuthenticating;
-export const getUserId = (state: State) => state.userId;
+export const getDisplayName = (state: AuthState) => state.displayName;
+export const getEmailVerified = (state: AuthState) => state.emailVerified;
+export const getError = (state: AuthState) => state.error;
+export const getIsAuthenticated = (state: AuthState) => state.isAuthenticated;
+export const getIsAuthenticating = (state: AuthState) => state.isAuthenticating;
+export const getUserId = (state: AuthState) => state.userId;

@@ -3,9 +3,9 @@ import { Component, ViewChild } from '@angular/core';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 import { StatusBar } from '@ionic-native/status-bar';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AlertController, MenuController, Nav, Platform } from 'ionic-angular';
-import { skip } from 'rxjs/operators';
+import { concatMap, filter } from 'rxjs/operators';
 
 import * as FromAuthSelector from '../app/auth/auth.selector';
 import { GadgetListPage } from '../gadget/pages/gadget-list/gadget-list.page';
@@ -67,14 +67,12 @@ export class MyApp {
       icon: 'calendar',
       title: 'Realtime Database',
     },
-    { title: 'Page Login', component: LoginPage, icon: 'calendar' },
-    { title: 'Page Signup', component: SignupPage, icon: 'calendar' },
     { title: 'Sign Out', component: Page1, icon: 'log-out', doSignOut: true },
   ];
 
   public viewSignedOutPages: PageInterface[] = [
-    { title: 'Page Login', component: LoginPage, icon: 'calendar' },
-    { title: 'Page Signup', component: SignupPage, icon: 'calendar' },
+    { title: 'Page Login', component: LoginPage, icon: 'log-in' },
+    { title: 'Page Signup', component: SignupPage, icon: 'person-add' },
   ];
 
   public loginState$: any;
@@ -95,38 +93,11 @@ export class MyApp {
     this.initializeApp();
 
     this.loginState$ = this.store.select(FromAuthSelector.getAuthState);
-
-    this.store
-      .select(FromAuthSelector.getAuthState)
-      .pipe(
-        // Ignore setting of initial state
-        skip(1),
-      )
-      .subscribe((authState) => {
-        console.log('##########authState>', authState);
-        // const emailVerified = authState.emailVerified;
-        const emailVerified = true;
-
-        if (authState.isAuthenticated) {
-          if (emailVerified) {
-            this.enableMenu(true);
-            // this.rootPage = HomePage;
-            this.nav.setRoot(HomePage);
-          } else {
-            this.showEmailVerifiedAlert();
-            this.enableMenu(false);
-            // this.rootPage = Page1;
-            this.nav.setRoot(Page1);
-          }
-        } else {
-          this.enableMenu(false);
-          // this.rootPage = Page1;
-          this.nav.setRoot(Page1);
-        }
-      });
   }
 
   public initializeApp() {
+    this.setStartPage();
+
     this.platform.ready().then(() => {
       console.log('platform.ready');
       // Okay, so the platform is ready and our plugins are available.
@@ -207,6 +178,46 @@ export class MyApp {
     this.menuController.enable(!signedIn, this.signedOutMenuId);
   }
 
+  private setStartPage(): void {
+    //
+    this.store
+      .pipe(
+        select(FromAuthSelector.getHasDoneFirstCheck),
+        filter((hasDoneFirstCheck) => hasDoneFirstCheck),
+        concatMap(() =>
+          this.store.pipe(select(FromAuthSelector.getIsAuthenticated)),
+        ),
+        filter((isAuthenticated) => isAuthenticated),
+      )
+      .subscribe(() => {
+        // const emailVerified = authState.emailVerified;
+        const emailVerified = true;
+
+        if (emailVerified) {
+          this.enableMenu(true);
+          this.nav.setRoot(HomePage);
+        } else {
+          this.showEmailVerifiedAlert();
+          this.enableMenu(false);
+          this.nav.setRoot(Page1);
+        }
+      });
+
+    this.store
+      .pipe(
+        select(FromAuthSelector.getHasDoneFirstCheck),
+        filter((hasDoneFirstCheck) => hasDoneFirstCheck),
+        concatMap(() =>
+          this.store.pipe(select(FromAuthSelector.getIsAuthenticated)),
+        ),
+        filter((isAuthenticated) => !isAuthenticated),
+      )
+      .subscribe(() => {
+        this.enableMenu(false);
+        this.nav.setRoot(Page1);
+      });
+  }
+
   private showEmailVerifiedAlert() {
     //
     const confirm = this.alertController.create({
@@ -220,14 +231,12 @@ export class MyApp {
         {
           handler: () => {
             console.log('Verify clicked');
-            this.store.dispatch(
-              new AuthActions.SendEmailVerification());
+            this.store.dispatch(new AuthActions.SendEmailVerification());
           },
           text: 'Verify',
         },
       ],
-      message:
-        'You need to verify your email address to sign in.',
+      message: 'You need to verify your email address to sign in.',
       title: 'Verify Email?',
     });
     confirm.present();

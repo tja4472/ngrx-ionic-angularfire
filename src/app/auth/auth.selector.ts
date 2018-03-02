@@ -10,6 +10,11 @@ export const getDisplayName = createSelector(
   fromAuth.getDisplayName,
 );
 
+export const getHasDoneFirstCheck = createSelector(
+  getAuthState,
+  fromAuth.getHasDoneFirstCheck,
+);
+
 export const getError = createSelector(getAuthState, fromAuth.getError);
 
 export const getEmailVerified = createSelector(

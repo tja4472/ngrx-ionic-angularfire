@@ -29,15 +29,13 @@ export class AuthService {
   }
 
   public sendPasswordResetEmail(email: string) {
-      return Observable.fromPromise(
-        this.auth$.auth.sendPasswordResetEmail(email),
-      );
+    return Observable.fromPromise(
+      this.auth$.auth.sendPasswordResetEmail(email),
+    );
   }
 
   public signInWithEmailAndPassword(email: string, password: string) {
-    return Observable.fromPromise(
-      this.auth$.auth.signInWithEmailAndPassword(email, password),
-    );
+    return this.auth$.auth.signInWithEmailAndPassword(email, password);
   }
 
   public signOut() {

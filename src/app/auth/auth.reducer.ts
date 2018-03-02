@@ -4,7 +4,7 @@ export interface AuthState {
   displayName: string;
   email: string | null;
   emailVerified: boolean;
-  hasChecked: boolean;
+  hasDoneFirstCheck: boolean;
   isAuthenticated: boolean;
   isAuthenticating: boolean;
   error: any;
@@ -16,7 +16,7 @@ const initialState: AuthState = {
   email: '',
   emailVerified: false,
   error: null,
-  hasChecked: false,
+  hasDoneFirstCheck: false,
   isAuthenticated: false,
   isAuthenticating: false,
   userId: '',
@@ -30,7 +30,7 @@ export function reducer(state = initialState, action: AuthActions): AuthState {
         displayName: makeDisplayName(action.payload.signedInUser),
         email: action.payload.signedInUser.email,
         emailVerified: action.payload.signedInUser.emailVerified,
-        hasChecked: true,
+        hasDoneFirstCheck: true,
         isAuthenticated: true,
         isAuthenticating: false,
         userId: action.payload.signedInUser.userId,
@@ -42,7 +42,7 @@ export function reducer(state = initialState, action: AuthActions): AuthState {
         ...state,
         displayName: 'Not Signed In',
         email: '',
-        hasChecked: true,
+        hasDoneFirstCheck: true,
         isAuthenticated: false,
         isAuthenticating: false,
         userId: '',
@@ -53,6 +53,7 @@ export function reducer(state = initialState, action: AuthActions): AuthState {
       return {
         ...state,
         error: null,
+        isAuthenticated: false,
         isAuthenticating: true,
       };
     }
@@ -61,7 +62,7 @@ export function reducer(state = initialState, action: AuthActions): AuthState {
       return {
         ...state,
         error: action.payload.error,
-        isAuthenticating: false,
+        // isAuthenticating: false,
       };
     }
 
@@ -98,6 +99,7 @@ function makeDisplayName(user: {
 }
 
 export const getDisplayName = (state: AuthState) => state.displayName;
+export const getHasDoneFirstCheck = (state: AuthState) => state.hasDoneFirstCheck;
 export const getEmailVerified = (state: AuthState) => state.emailVerified;
 export const getError = (state: AuthState) => state.error;
 export const getIsAuthenticated = (state: AuthState) => state.isAuthenticated;

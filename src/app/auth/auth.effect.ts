@@ -78,19 +78,16 @@ export class AuthEffects {
 
   // tslint:disable-next-line:member-ordering
   @Effect()
-  public emailAuthentication$ = this.actions$
-    .ofType(AuthActionTypes.EMAIL_AUTHENTICATION)
-    .map((action: EmailAuthentication) => action.payload)
-    .switchMap((payload) =>
+  public emailAuthentication$ = this.actions$.pipe(
+    ofType(AuthActionTypes.EMAIL_AUTHENTICATION),
+    map((action: EmailAuthentication) => action.payload),
+    concatMap((payload) =>
       this.authService
         .signInWithEmailAndPassword(payload.userName, payload.password)
-        .pipe(
-          map(() => new EmailAuthenticationSuccess()),
-          catchError((error: any) =>
-            of(new EmailAuthenticationFailure({ error })),
-          ),
-        ),
-    );
+        .then(() => new EmailAuthenticationSuccess())
+        .catch((error: any) => new EmailAuthenticationFailure({ error })),
+    ),
+  );
 
   // tslint:disable-next-line:member-ordering
   @Effect()
@@ -144,22 +141,20 @@ export class AuthEffects {
     ),
   );
 
-    // tslint:disable-next-line:member-ordering
-    @Effect()
-    public updatePassword$ = this.actions$.pipe(
-      ofType<UpdatePassword>(AuthActionTypes.UPDATE_PASSWORD),
-      map((action) => action.payload),
-      concatMap((payload) =>
-        this.authService
-          .updatePassword(payload.password)
-          .pipe(
-            map(() => new UpdatePasswordSuccess()),
-            catchError((error: any) =>
-              of(new UpdatePasswordFailure({ error })),
-            ),
-          ),
-      ),
-    );
+  // tslint:disable-next-line:member-ordering
+  @Effect()
+  public updatePassword$ = this.actions$.pipe(
+    ofType<UpdatePassword>(AuthActionTypes.UPDATE_PASSWORD),
+    map((action) => action.payload),
+    concatMap((payload) =>
+      this.authService
+        .updatePassword(payload.password)
+        .pipe(
+          map(() => new UpdatePasswordSuccess()),
+          catchError((error: any) => of(new UpdatePasswordFailure({ error }))),
+        ),
+    ),
+  );
   // Should be your last effect
   // tslint:disable-next-line:member-ordering
   @Effect()
